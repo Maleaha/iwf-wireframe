@@ -3,14 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Onboarding Flow Wireframe</title>
+  <title>Financial App for Women - Wireframe</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .device-frame {
+      position: relative;
+      border: 12px solid #2d3748;
+      border-radius: 32px;
+      background: #2d3748;
+      padding: 8px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    
+    .device-frame::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 24px;
+      background: #2d3748;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+    
+    .device-frame::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: #4a5568;
+      border-radius: 2px;
+    }
+
+    .screen {
+      border-radius: 24px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      min-height: 640px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
-  <!-- Main Content Area -->
-  <div class="min-h-screen">
-    <div class="max-w-sm mx-auto p-4">
-      
+<body class="bg-gray-100 min-h-screen">
+  <div id="app" class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="device-frame w-full max-w-sm mx-auto">
       <!-- Welcome Screen -->
       <section id="welcome" class="screen bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-next="profile">
         <div class="flex flex-col items-center space-y-6">
