@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Money - Tracking & Analytics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border: 12px solid #333;
+            border-radius: 36px;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            margin: 0 auto;
+        }
+
+        .phone-container {
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            padding-bottom: 100px;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .add-expense-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: #9b59b6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .icon-placeholder {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .expense-icon { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .goals-icon { background: linear-gradient(135deg, #27ae60, #229954); }
+        .reports-icon { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .analytics-icon { background: linear-gradient(135deg, #f39c12, #d68910); }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 12px 10px 8px;
+            border-top: 1px solid #eee;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            flex: 1;
+        }
+
+        .nav-item:hover {
+            background: #f8f9fa;
+        }
+
+        .nav-item.active {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            background: #bbb;
+            border-radius: 5px;
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active .nav-icon {
+            background: white;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .description {
+            font-size: 13px;
+            color: #7f8c8d;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .summary-amount {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .expense-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+        }
+
+        .expense-category {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .food-category { background: #e74c3c; }
+        .transport-category { background: #3498db; }
+        .shopping-category { background: #9b59b6; }
+        .bills-category { background: #f39c12; }
+        .health-category { background: #27ae60; }
+
+        .expense-info {
+            flex: 1;
+        }
+
+        .expense-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .expense-details {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .expense-amount {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e74c3c;
+        }
+
+        .goal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #eee;
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .goal-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .goal-target {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .emergency-progress { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+        .home-progress { background: linear-gradient(90deg, #27ae60, #229954); }
+        .vacation-progress { background: linear-gradient(90deg, #f39c12, #d68910); }
+
+        .goal-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #eee;
+            text-align: center;
+        }
+
+        .chart-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            margin: 0 auto 15px;
+            background: conic-gradient(
+                #e74c3c 0deg 108deg,
+                #3498db 108deg 180deg,
+                #9b59b6 180deg 252deg,
+                #f39c12 252deg 324deg,
+                #27ae60 324deg 360deg
+            );
+            position: relative;
+        }
+
+        .chart-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .chart-amount {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .chart-label {
+            font-size: 10px;
+            color: #7f8c8d;
+        }
+
+        .category-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 6px;
+            margin-right: 4px;
+        }
+
+        .insight-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #eee;
+            border-left: 4px solid #9b59b6;
+        }
+
+        .insight-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+
+        .insight-text {
+            font-size: 12px;
+            color: #7f8c8d;
+            line-height: 1.4;
+        }
+
+        .quick-action-btn {
+            width: 100%;
+            background: #9b59b6;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .monthly-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #eee;
+        }
+
+        .month-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .month-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .month-total {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .summary-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .positive-value {
+            color: #27ae60;
+        }
+
+        .negative-value {
+            color: #e74c3c;
+        }
+
+        /* Scrollbar styling */
+        .content-area::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .content-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content-area::-webkit-scrollbar-thumb {
+            background: #dee2e6;
+            border-radius: 2px;
+        }
+
+        .add-expense-form {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #eee;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f8f9fa;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #9b59b6;
+            background: white;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .category-btn {
+            padding: 12px 8px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .category-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .category-btn.selected {
+            background: #9b59b6;
+            color: white;
+            border-color: #9b59b6;
+        }
+
+        .save-btn {
+            width: 100%;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="phone-container">
+            <!-- Scrollable Content Area -->
+            <div class="content-area">
+                <!-- Main My Money Dashboard -->
+                <div class="screen active" id="main-screen">
+                    <div class="header">
+                        <div style="width: 35px;"></div>
+                        <h1>My Money</h1>
+                        <button class="add-expense-btn" onclick="showScreen('add-expense')">+</button>
+                    </div>
+
+                    <!-- Monthly Summary Card -->
+                    <div class="summary-card">
+                        <div class="summary-amount">PKR 23,450</div>
+                        <div class="summary-label">Spent this month</div>
+                        <div class="summary-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">PKR 1,550</div>
+                                <div class="stat-label">Left in budget</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">18</div>
+                                <div class="stat-label">Days remaining</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">₨86</div>
+                                <div class="stat-label">Daily budget</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Tracking Sections -->
+                    <div class="section-card" onclick="showScreen('expense-tracker')">
+                        <div class="icon-placeholder expense-icon">💰</div>
+                        <h2>Expense Tracker</h2>
+                        <p class="description">Track daily and monthly expenses</p>
+                        <small style="color: #7f8c8d;">12 expenses added today</small>
+                    </div>
+
+                    <div class="section-card" onclick="showScreen('goals-dashboard')">
+                        <div class="icon-placeholder goals-icon">🎯</div>
+                        <h2>Goals Dashboard</h2>
+                        <p class="description">Monitor all your financial goals and progress</p>
+                        <small style="color: #7f8c8d;">3 active goals</small>
+                    </div>
+
+                    <div class="section-card" onclick="showScreen('monthly-reports')">
+                        <div class="icon-placeholder reports-icon">📊</div>
+                        <h2>Monthly Reports</h2>
+                        <p class="description">Comprehensive financial summary and trends</p>
+                        <small style="color: #7f8c8d;">March 2025 report ready</small>
+                    </div>
+
+                    <div class="section-card" onclick="showScreen('analytics-insights')">
+                        <div class="icon-placeholder analytics-icon">📈</div>
+                        <h2>Analytics & Insights</h2>
+                        <p class="description">Discover spending patterns and get personalized recommendations</p>
+                        <small style="color: #7f8c8d;">5 new insights available</small>
+                    </div>
+                </div>
+
+                <!-- Expense Tracker Screen -->
+                <div class="screen" id="expense-tracker">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+                        <h1>Expense Tracker</h1>
+                        <button class="add-expense-btn" onclick="showScreen('add-expense')">+</button>
+                    </div>
+
+                    <div class="tab-nav">
+                        <button class="tab-btn active">Today</button>
+                        <button class="tab-btn">This Week</button>
+                        <button class="tab-btn">This Month</button>
+                    </div>
+
+                    <!-- Today's Expenses -->
+                    <div style="margin-bottom: 15px;">
+                        <h3 style="color: #7f8c8d; font-size: 14px; margin-bottom: 10px;">Today - PKR 850</h3>
+                        
+                        <div class="expense-item">
+                            <div class="expense-category food-category">🍽️</div>
+                            <div class="expense-info">
+                                <div class="expense-name">Lunch at Subway</div>
+                                <div class="expense-details">Food & Dining • 2:30 PM</div>
+                            </div>
+                            <div class="expense-amount">PKR 450</div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-category transport-category">🚗</div>
+                            <div class="expense-info">
+                                <div class="expense-name">Careem Ride</div>
+                                <div class="expense-details">Transportation • 10:15 AM</div>
+                            </div>
+                            <div class="expense-amount">PKR 280</div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-category shopping-category">🛍️</div>
+                            <div class="expense-info">
+                                <div class="expense-name">Grocery Items</div>
+                                <div class="expense-details">Shopping • 8:45 AM</div>
+                            </div>
+                            <div class="expense-amount">PKR 120</div>
+                        </div>
+                    </div>
+
+                    <!-- Yesterday's Expenses -->
+                    <div style="margin-bottom: 15px;">
+                        <h3 style="color: #7f8c8d; font-size: 14px; margin-bottom: 10px;">Yesterday - PKR 1,200</h3>
+                        
+                        <div class="expense-item">
+                            <div class="expense-category bills-category">💡</div>
+                            <div class="expense-info">
+                                <div class="expense-name">Electricity Bill</div>
+                                <div class="expense-details">Bills & Utilities • 4:00 PM</div>
+                            </div>
+                            <div class="expense-amount">PKR 800</div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-category health-category">💊</div>
+                            <div class="expense-info">
+                                <div class="expense-name">Pharmacy Visit</div>
+                                <div class="expense-details">Health & Medical • 11:30 AM</div>
+                            </div>
+                            <div class="expense-amount">PKR 400</div>
+                        </div>
+                    </div>
+
+                    <button class="quick-action-btn" onclick="showScreen('add-expense')">
+                        + Add New Expense
+                    </button>
+                </div>
+
+                <!-- Add Expense Screen -->
+                <div class="screen" id="add-expense">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('expense-tracker')">←</button>
+                        <h1>Add Expense</h1>
+                        <div style="width: 35px;"></div>
+                    </div>
+
+                    <div class="add-expense-form">
+                        <div class="form-group">
+                            <label class="form-label">Amount (PKR)</label>
+                            <input type="number" class="form-input" placeholder="Enter amount" value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-input" placeholder="What did you spend on?" value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <div class="category-grid">
+                                <div class="category-btn">🍽️ Food</div>
+                                <div class="category-btn">🚗 Transport</div>
+                                <div class="category-btn">🛍️ Shopping</div>
+                                <div class="category-btn">💡 Bills</div>
+                                <div class="category-btn">💊 Health</div>
+                                <div class="category-btn">🎬 Entertainment</div>
+                                <div class="category-btn">👕 Clothing</div>
+                                <div class="category-btn">🏠 Home</div>
+                                <div class="category-btn">📚 Education</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-input" value="2025-03-15">
+                        </div>
+
+                        <button class="save-btn">Save Expense</button>
+                    </div>
+                </div>
+
+                <!-- Goals Dashboard Screen -->
+                <div class="screen" id="goals-dashboard">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+                        <h1>Goals Dashboard</h1>
+                        <button class="add-expense-btn">+</button>
+                    </div>
+
+                    <!-- Active Goals -->
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <div class="goal-title">Emergency Fund</div>
+                            <div class="goal-target">PKR 150,000</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill emergency-progress" style="width: 40%;"></div>
+                        </div>
+                        <div class="goal-stats">
+                            <span>PKR 60,000 saved</span>
+                            <span>40% complete</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <div class="goal-title">Home Down Payment</div>
+                            <div class="goal-target">PKR 1,000,000</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill home-progress" style="width: 25%;"></div>
+                        </div>
+                        <div class="goal-stats">
+                            <span>PKR 250,000 saved</span>
+                            <span>25% complete</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <div class="goal-title">Vacation Fund</div>
+                            <div class="goal-target">PKR 80,000</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill vacation-progress" style="width: 75%;"></div>
+                        </div>
+                        <div class="goal-stats">
+                            <span>PKR 60,000 saved</span>
+                            <span>75% complete</span>
+                        </div>
+                    </div>
+
+                    <!-- Goal Insights -->
+                    <div class="insight-card">
+                        <div class="insight-title">🎯 Goal Achievement Tip</div>
+                        <div class="insight-text">
+                            You're doing great with your vacation fund! Consider increasing your emergency fund contribution by PKR 2,000/month to reach your target 3 months earlier.
+                        </div>
+                    </div>
+
+                    <button class="quick-action-btn">
+                        + Add New Goal
+                    </button>
+                </div>
+
+                <!-- Monthly Reports Screen -->
+                <div class="screen" id="monthly-reports">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+                        <h1>Monthly Reports</h1>
+                        <div style="width: 35px;"></div>
+                    </div>
+
+                    <div class="tab-nav">
+                        <button class="tab-btn active">March 2025</button>
+                        <button class="tab-btn">February</button>
+                        <button class="tab-btn">January</button>
+                    </div>
+
+                    <!-- Monthly Summary -->
+                    <div class="monthly-summary">
+                        <div class="month-header">
+                            <div class="month-title">March 2025</div>
+                            <div class="month-total">PKR 23,450</div>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Total Income</span>
+                            <span class="summary-value positive-value">PKR 45,000</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Total Expenses</span>
+                            <span class="summary-value negative-value">PKR 23,450</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Savings</span>
+                            <span class="summary-value positive-value">PKR 21,550</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Savings Rate</span>
+                            <span class="summary-value">48%</span>
+                        </div>
+                    </div>
+
+                    <!-- Spending by Category Chart -->
+                    <div class="chart-container">
+                        <h3>Spending by Category</h3>
+                        <div class="chart-placeholder">
+                            <div class="chart-center">
+                                <div class="chart-amount">₨23,450</div>
+                                <div class="chart-label">Total Spent</div>
+                            </div>
+                        </div>
+                        <div class="category-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #e74c3c;"></div>
+                                <span>Food (30%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #3498db;"></div>
+                                <span>Transport (20%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #9b59b6;"></div>
+                                <span>Shopping (20%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f39c12;"></div>
+                                <span>Bills (18%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #27ae60;"></div>
+                                <span>Health (12%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Comparison -->
+                    <div class="monthly-summary">
+                        <h3 style="margin-bottom: 15px;">vs Previous Month</h3>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Food & Dining</span>
+                            <span class="summary-value negative-value">+12% ↑</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Transportation</span>
+                            <span class="summary-value positive-value">-5% ↓</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Shopping</span>
+                            <span class="summary-value negative-value">+18% ↑</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Bills & Utilities</span>
+                            <span class="summary-value">Same ➡️</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics & Insights Screen -->
+                <div class="screen" id="analytics-insights">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+                        <h1>Analytics & Insights</h1>
+                        <div style="width: 35px;"></div>
+                    </div>
+
+                    <div class="tab-nav">
+                        <button class="tab-btn active">Insights</button>
+                        <button class="tab-btn">Patterns</button>
+                        <button class="tab-btn">Recommendations</button>
+                    </div>
+
+                    <!-- Key Insights -->
+                    <div class="insight-card">
+                        <div class="insight-title">💡 Spending Alert</div>
+                        <div class="insight-text">
+                            Your food expenses increased by 12% this month. Consider meal planning to save PKR 2,000-3,000 monthly.
+                        </div>
+                    </div>
+
+                    <div class="insight-card" style="border-left-color: #27ae60;">
+                        <div class="insight-title">✅ Good Progress</div>
+                        <div class="insight-text">
+                            You've maintained a 48% savings rate! You're on track to reach your emergency fund goal by August 2025.
+                        </div>
+                    </div>
+
+                    <div class="insight-card" style="border-left-color: #f39c12;">
+                        <div class="insight-title">⚠️ Budget Warning</div>
+                        <div class="insight-text">
+                            Shopping expenses are 20% higher than last month. Set a weekly shopping limit to stay on budget.
+                        </div>
+                    </div>
+
+                    <div class="insight-card" style="border-left-color: #3498db;">
+                        <div class="insight-title">📊 Spending Pattern</div>
+                        <div class="insight-text">
+                            You spend most on weekends (65% of weekly expenses). Consider planning weekend activities with a fixed budget.
+                        </div>
+                    </div>
+
+                    <!-- Spending Trends Chart -->
+                    <div class="chart-container">
+                        <h3>3-Month Spending Trend</h3>
+                        <div style="height: 120px; background: #f8f9fa; border-radius: 8px; margin: 15px 0; display: flex; align-items: end; justify-content: space-around; padding: 10px;">
+                            <div style="width: 30px; height: 60px; background: #e74c3c; border-radius: 4px; position: relative;">
+                                <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 10px;">Jan</span>
+                                <span style="position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); font-size: 9px;">22k</span>
+                            </div>
+                            <div style="width: 30px; height: 80px; background: #f39c12; border-radius: 4px; position: relative;">
+                                <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 10px;">Feb</span>
+                                <span style="position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); font-size: 9px;">26k</span>
+                            </div>
+                            <div style="width: 30px; height: 70px; background: #9b59b6; border-radius: 4px; position: relative;">
+                                <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 10px;">Mar</span>
+                                <span style="position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); font-size: 9px;">23k</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personalized Recommendations -->
+                    <div class="monthly-summary">
+                        <h3 style="margin-bottom: 15px;">💰 Money-Saving Tips for You</h3>
+                        
+                        <div style="margin-bottom: 12px; padding: 10px; background: #f8fff9; border-radius: 8px; border-left: 3px solid #27ae60;">
+                            <div style="font-size: 13px; font-weight: 600; color: #27ae60; margin-bottom: 4px;">Cook at Home More</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">Potential savings: PKR 3,000/month</div>
+                        </div>
+                        
+                        <div style="margin-bottom: 12px; padding: 10px; background: #fff8f0; border-radius: 8px; border-left: 3px solid #f39c12;">
+                            <div style="font-size: 13px; font-weight: 600; color: #f39c12; margin-bottom: 4px;">Use Public Transport</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">Potential savings: PKR 1,500/month</div>
+                        </div>
+                        
+                        <div style="margin-bottom: 12px; padding: 10px; background: #f8f5ff; border-radius: 8px; border-left: 3px solid #9b59b6;">
+                            <div style="font-size: 13px; font-weight: 600; color: #9b59b6; margin-bottom: 4px;">Set Shopping Lists</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">Potential savings: PKR 2,000/month</div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Health Score -->
+                    <div class="summary-card" style="background: linear-gradient(135deg, #27ae60, #229954);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 36px; font-weight: 700; margin-bottom: 5px;">85</div>
+                            <div style="font-size: 16px; margin-bottom: 10px;">Financial Health Score</div>
+                            <div style="font-size: 13px; opacity: 0.9;">
+                                Excellent! You're managing your money very well. Keep up the great work!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fixed Bottom Navigation -->
+    <div class="bottom-nav">
+    <button onclick="navigateToPage('dashboard.html?quiz=completed')" class="flex flex-col items-center">
+        <div class="w-6 h-6 bg-gray-400 rounded-lg mb-1"></div>
+        <span class="text-xs text-gray-400">Home</span>
+    </button>
+    <button onclick="navigateToPage('community.html')" class="flex flex-col items-center">
+        <div class="w-6 h-6 bg-purple-600 rounded-lg mb-1"></div>
+        <span class="text-xs text-purple-600 font-semibold">Community</span>
+    </button>
+    <button onclick="navigateToPage('learn.html')" class="flex flex-col items-center">
+        <div class="w-6 h-6 bg-gray-400 rounded-lg mb-1"></div>
+        <span class="text-xs text-gray-400">Learn</span>
+    </button>
+    <button onclick="navigateToPage('tracking.html')" class="flex flex-col items-center">
+        <div class="w-6 h-6 bg-gray-400 rounded-lg mb-1"></div>
+        <span class="text-xs text-gray-400">My Money</span>
+    </button>
+    </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            
+            // Show target screen
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+        }
+            function navigateToPage(page) {
+        window.location.href = page;
+    }
+
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from siblings
+                    this.parentElement.querySelectorAll('.tab-btn').forEach(sibling => {
+                        sibling.classList.remove('active');
+                    });
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                });
+            });
+
+            // Handle category selection in add expense form
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove selected class from siblings
+                    this.parentElement.querySelectorAll('.category-btn').forEach(sibling => {
+                        sibling.classList.remove('selected');
+                    });
+                    // Add selected class to clicked button
+                    this.classList.add('selected');
+                });
+            });
+
+            // Add hover effects and click feedback
+            const clickableElements = document.querySelectorAll('.section-card, .expense-item, .goal-card, .insight-card');
+            
+            clickableElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    // Add slight animation feedback
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial App - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border: 12px solid #333;
+            border-radius: 36px;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            margin: 0 auto;
+        }
+        
+        .screen-content {
+            height: 100%;
+            padding: 16px;
+            position: relative;
+        }
+        
+        .screen {
+            display: none;
+            height: 100%;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+
+        .dashboard-content {
+            height: calc(100% - 60px);
+            overflow: hidden;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 8px 16px 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .language-popup {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .language-popup.active {
+            display: flex;
+        }
+
+        .language-popup-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 20px;
+            width: 320px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-option {
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .language-option:hover {
+            border-color: #9CA3AF;
+            background: #F9FAFB;
+        }
+
+        .language-option.selected {
+            border-color: #4B5563;
+            background: #F9FAFB;
+        }
+
+        .profile-option {
+            transition: all 0.2s ease;
+        }
+
+        .profile-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .progress-dot.active {
+            background: #1F2937;
+        }
+
+        .progress-dot.inactive {
+            background: #D1D5DB;
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #9CA3AF;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #4B5563;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="phone-frame">
+        
+        <!-- Dashboard Screen (Empty State) -->
+        <div id="dashboard-screen" class="screen active">
+            <div class="dashboard-content">
+                <!-- Header -->
+                <div class="flex justify-between items-start px-5 pt-4 pb-4 flex-shrink-0">
+                    <div>
+                        <h1 class="text-xl font-bold mb-1">Welcome back,</h1>
+                        <h1 class="text-xl font-bold" id="user-greeting">Friend!</h1>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                            <div class="w-4 h-4 bg-gray-400 rounded"></div>
+                        </div>
+                        <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                            <div class="w-4 h-4 bg-gray-400 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Primary CTA Card - DOMINANT -->
+                <div class="mx-5 mb-6 flex-shrink-0" id="primary-cta-section">
+                    <!-- Initial Quiz CTA Card -->
+                    <div id="quiz-cta-card" class="border-2 border-gray-300 rounded-2xl p-6 bg-gray-50 shadow-sm cursor-pointer hover:bg-gray-100 transition-colors" onclick="goToQuiz()">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h2 class="text-2xl font-bold mb-1">Know Your</h2>
+                                <h2 class="text-2xl font-bold">Money</h2>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 border-4 border-gray-300 rounded-full flex items-center justify-center relative">
+                                    <span class="text-lg font-bold">0%</span>
+                                </div>
+                                <div class="text-sm text-gray-500 mt-2">Complete</div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 text-white text-center py-4 px-4 rounded-xl text-base font-semibold">
+                            <div class="flex items-center justify-center gap-3">
+                                <div class="w-3 h-3 bg-white rounded-full"></div>
+                                <span>Take the Quiz to Build Your Budget</span>
+                                <div class="w-3 h-3 bg-white rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Progress Card (Initially Hidden) -->
+                    <div id="budget-progress-card" class="border-2 border-gray-300 rounded-2xl p-6 bg-gray-50 shadow-sm" style="display: none;">
+                        <div class="mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h2 class="text-xl font-bold">Monthly Budget</h2>
+                                <span class="text-lg font-bold text-gray-700">PKR 15,000 left</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-green-500 h-3 rounded-full" style="width: 60%"></div>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600 mt-1">
+                                <span>Used: PKR 10,000</span>
+                                <span>Total: PKR 25,000</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="navigateToPage('budget.html')" class="border-2 border-gray-300 rounded-xl py-3 px-4 text-center font-medium hover:border-gray-400 hover:bg-gray-100 transition-colors">
+                                Manage Budget
+                            </button>
+                            <button onclick="navigateToPage('expense.html')" class="bg-gray-800 text-white rounded-xl py-3 px-4 text-center font-medium hover:bg-gray-900 transition-colors">
+                                Add Expense
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Header -->
+                <div class="px-5 mb-4 flex-shrink-0">
+                    <p class="text-center text-base text-gray-600 font-medium">Build your foundation step by step</p>
+                </div>
+
+                <!-- Secondary Cards -->
+                <div class="px-5 mb-6 flex-1">
+                    <div class="grid grid-cols-2 gap-4 h-full">
+                        <div onclick="navigateToPage('savings.html')" class="border-2 border-gray-200 rounded-xl p-4 bg-white shadow-sm flex flex-col cursor-pointer hover:border-gray-400 hover:bg-gray-50 transition-colors">
+                            <div class="w-8 h-8 bg-pink-200 rounded-lg mb-3 flex items-center justify-center">
+                                <div class="w-4 h-4 bg-pink-500 rounded"></div>
+                            </div>
+                            <h3 class="font-bold text-base mb-2">Savings 101</h3>
+                            <p class="text-sm text-gray-500 mb-4 flex-1">Build your emergency cushion</p>
+                            <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto">
+                                <span>Explore</span>
+                                <div class="w-2 h-2 bg-gray-400 rounded"></div>
+                            </div>
+                        </div>
+                        
+                        <div onclick="navigateToPage('learn.html')" class="border-2 border-gray-200 rounded-xl p-4 bg-white shadow-sm flex flex-col cursor-pointer hover:border-gray-400 hover:bg-gray-50 transition-colors">
+                            <div class="w-8 h-8 bg-green-200 rounded-lg mb-3 flex items-center justify-center">
+                                <div class="w-4 h-4 bg-green-500 rounded"></div>
+                            </div>
+                            <h3 class="font-bold text-base mb-2">Investment & Future Planning</h3>
+                            <p class="text-sm text-gray-500 mb-4 flex-1">Plan for growth and retirement</p>
+                            <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto">
+                                <span>Explore</span>
+                                <div class="w-2 h-2 bg-gray-400 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Onboarding Message -->
+                <div class="mx-5 mb-4 flex-shrink-0">
+                    <div class="bg-gray-100 border border-gray-200 rounded-xl p-4 text-center">
+                        <p class="text-sm text-gray-600">You're just getting started – <span class="font-semibold text-purple-600">let's build together!</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <button onclick="navigateToPage('index.html')" class="flex flex-col items-center">
+                    <div class="w-6 h-6 bg-purple-600 rounded-lg mb-1"></div>
+                    <span class="text-xs text-purple-600 font-semibold">Home</span>
+                </button>
+                <button onclick="navigateToPage('community.html')" class="flex flex-col items-center">
+                    <div class="w-6 h-6 bg-gray-400 rounded-lg mb-1"></div>
+                    <span class="text-xs text-gray-400">Community</span>
+                </button>
+                <button onclick="navigateToPage('learn.html')" class="flex flex-col items-center">
+                    <div class="w-6 h-6 bg-gray-400 rounded-lg mb-1"></div>
+                    <span class="text-xs text-gray-400">Learn</span>
+                </button>
+                <button onclick="navigateToPage('tracking.html')" class="flex flex-col items-center">
+                    <div class="w-6 h-6 bg-gray-400 rounded-lg mb-1"></div>
+                    <span class="text-xs text-gray-400">My Money</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Introduction Screen -->
+        <div id="quiz-intro-screen" class="screen">
+            <div class="screen-content flex flex-col h-full p-4">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
+                    <button onclick="goBackToDashboard()" class="w-5 h-5 bg-gray-400 rounded cursor-pointer"></button>
+                    <h1 class="text-base font-semibold">Know Your Money</h1>
+                    <div class="w-5 h-5"></div>
+                </div>
+
+                <!-- Intro Content -->
+                <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl mb-6">
+                    <div class="text-2xl mb-2">💰</div>
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">Let's Learn About Your Money Style!</h2>
+                    <p class="text-sm text-gray-600 mb-3">Answer a few simple questions so we can help you build the perfect budget</p>
+                    <div class="text-xs text-gray-500">Takes only 2 minutes</div>
+                </div>
+
+                <div class="border-2 border-gray-200 rounded-2xl p-4 mb-6">
+                    <h3 class="font-semibold text-sm mb-3">What This Quiz Will Do:</h3>
+                    <div class="space-y-3 text-sm text-gray-700">
+                        <div class="flex items-start gap-3">
+                            <div class="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
+                            <div>Find out if you're a spender, saver, or somewhere in between</div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
+                            <div>Set up your first budget with smart recommendations</div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
+                            <div>Customize the app to match your goals</div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-3">Your answers help us give you better advice</div>
+                </div>
+
+                <div class="mt-auto">
+                    <button onclick="startQuiz()" class="w-full bg-gray-800 text-white py-3 rounded-lg text-base font-semibold">
+                        Start Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Question 1 -->
+        <div id="quiz-question-1" class="screen">
+            <div class="screen-content flex flex-col h-full p-4">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
+                    <button onclick="goToQuizIntro()" class="w-5 h-5 bg-gray-400 rounded cursor-pointer"></button>
+                    <h1 class="text-base font-semibold">Question 1 of 3</h1>
+                    <div class="w-5 h-5"></div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+                    <div class="bg-gradient-to-r from-yellow-400 to-green-500 h-2 rounded-full" style="width: 33%"></div>
+                </div>
+
+                <!-- Question Content -->
+                <div class="border-2 border-gray-200 rounded-2xl p-6 mb-6">
+                    <h2 class="text-lg font-bold text-gray-800 mb-4">When you get money, what happens first?</h2>
+                    
+                    <div class="space-y-3">
+                        <div class="border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors quiz-option" onclick="selectQuizAnswer(this, 'spender', 1)">
+                            <div class="font-medium mb-1">I think about what I want to buy</div>
+                            <div class="text-xs text-gray-600">Shopping, treats, or things I've been wanting</div>
+                        </div>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors quiz-option" onclick="selectQuizAnswer(this, 'balanced', 1)">
+                            <div class="font-medium mb-1">I cover my needs, then see what's left</div>
+                            <div class="text-xs text-gray-600">Bills and essentials first, then decide</div>
+                        </div>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors quiz-option" onclick="selectQuizAnswer(this, 'saver', 1)">
+                            <div class="font-medium mb-1">I put some aside for saving first</div>
+                            <div class="text-xs text-gray-600">Save money before I spend on anything</div>
+                        </div>
+                    </div>
+
+                    <div class="text-xs text-gray-500 mt-4 text-center">Be honest - there's no wrong answer!</div>
+                </div>
+
+                <div class="mt-auto">
+                    <button onclick="nextQuizQuestion(2)" class="w-full bg-gray-800 text-white py-3 rounded-lg text-base font-semibold" id="quiz-next-1" disabled style="opacity: 0.5;">
+                        Next Question
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Question 2 -->
+        <div id="quiz-question-2" class="screen">
+            <div class="screen-content flex flex-col h-full p-4">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
+                    <button onclick="prevQuizQuestion(1)" class="w-5 h-5 bg-gray-400 rounded cursor-pointer"></button>
+                    <h1 class="text-base font-semibold">Question 2 of 3</h1>
+                    <div class="w-5 h-5"></div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+                    <div class="bg-gradient-to-r from-yellow-400 to-green-500 h-2 rounded-full" style="width: 66%"></div>
+                </div>
+
+                <!-- Question Content -->
+                <div class="border-2 border-gray-200 rounded-2xl p-6 mb-6">
+                    <h2 class="text-lg font-bold text-gray-800 mb-4">How comfortable are you with managing money?</h2>
+                    
+                    <div class="space-y-3">
+                        <div class="border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors quiz-option" onclick="selectQuizAnswer(this, 'beginner', 2)">
+                            <div class="font-medium mb-1">I'm just starting to learn</div>
+                            <div class="text-xs text-gray-600">Need lots of guidance and simple explanations</div>
+                        </div>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors quiz-option" onclick="selectQuizAnswer(this, 'intermediate', 2)">
+                            <div class="font-medium mb-1">I know some basics</div>
+                            <div class="text-xs text-gray-600">Understand the basics but want to improve</div>
+                        </div>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors quiz-option" onclick="selectQuizAnswer(this, 'advanced', 2)">
+                            <div class="font-medium mb-1">I'm pretty confident</div>
+                            <div class="text-xs text-gray-600">Comfortable with budgets and planning</div>
+                        </div>
+                    </div>
+
+                    <div class="text-xs text-gray-500 mt-4 text-center">This helps us show you the right level of detail</div>
+                </div>
+
+                <div class="mt-auto">
+                    <button onclick="nextQuizQuestion(3)" class="w-full bg-gray-800 text-white py-3 rounded-lg text-base font-semibold" id="quiz-next-2" disabled style="opacity: 0.5;">
+                        Next Question
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Question 3 -->
+        <div id="quiz-question-3" class="screen">
+            <div class="screen-content flex flex-col h-full p-4">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
+                    <button onclick="prevQuizQuestion(2)" class="w-5 h-5 bg-gray-400 rounded cursor-pointer"></button>
+                    <h1 class="text-base font-semibold">Question 3 of 3</h1>
+                    <div class="w-5 h-5"></div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                    <div class="bg-gradient-to-r from-yellow-400 to-green-500 h-2 rounded-full" style="width: 100%"></div>
+                </div>
+
+                <!-- Question Content -->
+                <div class="border-2 border-gray-200 rounded-2xl p-4 mb-4 flex-1 overflow-y-auto">
+                    <h2 class="text-lg font-bold text-gray-800 mb-3">What's your approximate monthly income?</h2>
+                    <p class="text-xs text-gray-600 mb-4">This helps us suggest realistic budget amounts. You can be as specific or general as you're comfortable with.</p>
+                    
+                    <!-- Income Range Options -->
+                    <div class="space-y-3 mb-4">
+                        <div class="border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors quiz-option" onclick="selectQuizAnswer(this, 'low', 3)">
+                            <div class="font-medium mb-1">Under PKR 30,000</div>
+                            <div class="text-xs text-gray-600">Tight budget, every rupee matters</div>
+                        </div>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors quiz-option" onclick="selectQuizAnswer(this, 'medium', 3)">
+                            <div class="font-medium mb-1">PKR 30,000 - 80,000</div>
+                            <div class="text-xs text-gray-600">Comfortable range with room to save</div>
+                        </div>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors quiz-option" onclick="selectQuizAnswer(this, 'high', 3)">
+                            <div class="font-medium mb-1">Above PKR 80,000</div>
+                            <div class="text-xs text-gray-600">Good income, focus on optimization</div>
+                        </div>
+                    </div>
+
+                    <!-- Specific Income Option -->
+                    <div class="border-t border-gray-200 pt-3">
+                        <div class="text-sm font-medium text-gray-700 mb-2">Or enter your specific amount:</div>
+                        <div class="flex gap-2">
+                            <span class="text-sm text-gray-600 py-2">PKR</span>
+                            <input type="number" id="specific-income" placeholder="25,000" class="flex-1 p-2 border border-gray-300 rounded-lg text-sm" oninput="handleSpecificIncome()">
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">Optional - for more precise recommendations</div>
+                    </div>
+                </div>
+
+                <div class="mt-auto">
+                    <button onclick="showQuizResults()" class="w-full bg-green-600 text-white py-3 rounded-lg text-base font-semibold" id="quiz-next-3" disabled style="opacity: 0.5;">
+                        See My Results
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Results Screen -->
+        <div id="quiz-results-screen" class="screen">
+            <div class="screen-content flex flex-col h-full p-4">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-3 pb-2 border-b border-gray-200">
+                    <div class="w-5 h-5"></div>
+                    <h1 class="text-base font-semibold">Your Money Style</h1>
+                    <div class="w-5 h-5"></div>
+                </div>
+
+                <!-- Scrollable Content -->
+                <div class="flex-1 overflow-y-auto mb-4">
+                    <!-- Results Card -->
+                    <div class="bg-gradient-to-br from-yellow-100 to-yellow-200 border-2 border-yellow-400 rounded-2xl p-4 text-center mb-4">
+                        <div class="flex justify-center mb-3">
+                            <div class="w-12 h-12 bg-blue-400 rounded-lg flex items-center justify-center">
+                                <div class="w-6 h-6 bg-yellow-400 rounded"></div>
+                            </div>
+                        </div>
+                        <h2 class="text-lg font-bold text-gray-800 mb-2" id="quiz-result-title">You're a Thoughtful Spender!</h2>
+                        <p class="text-sm text-gray-700 mb-2" id="quiz-result-description">You enjoy spending money but want to be smarter about it. You're ready to learn!</p>
+                        <div class="text-xs text-gray-600" id="quiz-result-tip">We'll help you track spending and build good habits</div>
+                    </div>
+
+                    <!-- Budget Recommendation -->
+                    <div class="border-2 border-gray-200 rounded-2xl p-4 bg-white mb-4">
+                        <h3 class="font-semibold text-base mb-3">Your Recommended Budget:</h3>
+                        
+                        <div class="bg-gray-50 rounded-xl p-3 mb-3">
+                            <div class="flex justify-between text-sm font-semibold mb-3 pb-2 border-b border-gray-300">
+                                <span>Monthly Budget</span>
+                                <span id="results-total-budget">PKR 25,000</span>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Essential Needs (<span id="results-needs-percent">70</span>%)</span>
+                                    <span class="font-semibold" id="results-needs-amount">PKR 17,500</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Personal Wants (<span id="results-wants-percent">20</span>%)</span>
+                                    <span class="font-semibold" id="results-wants-amount">PKR 5,000</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Savings (<span id="results-savings-percent">10</span>%)</span>
+                                    <span class="font-semibold" id="results-savings-amount">PKR 2,500</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-600 text-center mb-2" id="budget-rationale">This conservative approach helps you build good habits first</div>
+                    </div>
+
+                    <!-- Reassurance Message -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-2">
+                        <div class="flex items-start gap-2">
+                            <div class="w-4 h-4 bg-blue-500 rounded-full mt-0.5 flex-shrink-0"></div>
+                            <div class="text-xs text-blue-800">
+                                <div class="font-medium mb-1">Full Control is Yours!</div>
+                                <div class="text-blue-700">You can always customize your budget percentages in the 'Manage Budget' section. This is just our starting recommendation based on your answers.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fixed Action Button -->
+                <div class="flex-shrink-0">
+                    <button onclick="setBudgetAndReturnToDashboard()" class="w-full bg-green-600 text-white py-3 rounded-lg text-base font-semibold mb-1">
+                        Set This Budget
+                    </button>
+                    <div class="text-xs text-gray-500 text-center">You can adjust percentages anytime</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedLanguage = null;
+        let userName = '';
+        let hasCompletedQuiz = false;
+        let quizAnswers = {};
+        let currentBudget = null;
+
+        // Utility function to show screens
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function navigateToPage(page) {
+        window.location.href = page;
+        }
+        // Navigation functions
+        function goToQuiz() {
+            showScreen('quiz-intro-screen');
+        }
+
+        function startQuiz() {
+            showScreen('quiz-question-1');
+        }
+
+        function goToQuizIntro() {
+            showScreen('quiz-intro-screen');
+        }
+
+        function nextQuizQuestion(questionNum) {
+            showScreen(`quiz-question-${questionNum}`);
+        }
+
+        function prevQuizQuestion(questionNum) {
+            showScreen(`quiz-question-${questionNum}`);
+        }
+
+        function selectQuizAnswer(element, value, questionNum) {
+            // Store the answer
+            quizAnswers[`question-${questionNum}`] = value;
+            
+            // Clear specific income if range is selected for question 3
+            if (questionNum === 3) {
+                document.getElementById('specific-income').value = '';
+            }
+            
+            // Remove selection from all options in this question
+            element.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('border-blue-500', 'bg-blue-50');
+                opt.classList.add('border-gray-200');
+            });
+            
+            // Select this option
+            element.classList.remove('border-gray-200');
+            element.classList.add('border-blue-500', 'bg-blue-50');
+            
+            // Enable next button
+            const nextButton = document.getElementById(`quiz-next-${questionNum}`);
+            nextButton.disabled = false;
+            nextButton.style.opacity = '1';
+        }
+
+        function handleSpecificIncome() {
+            const specificIncome = document.getElementById('specific-income');
+            const value = parseInt(specificIncome.value);
+            
+            if (value && value > 0) {
+                // Clear range selections
+                document.querySelectorAll('#quiz-question-3 .quiz-option').forEach(opt => {
+                    opt.classList.remove('border-blue-500', 'bg-blue-50');
+                    opt.classList.add('border-gray-200');
+                });
+                
+                // Store specific income
+                quizAnswers['question-3'] = 'specific';
+                quizAnswers['specific-income'] = value;
+                
+                // Enable next button
+                const nextButton = document.getElementById('quiz-next-3');
+                nextButton.disabled = false;
+                nextButton.style.opacity = '1';
+            } else {
+                // Clear specific income answer
+                delete quizAnswers['specific-income'];
+                if (quizAnswers['question-3'] === 'specific') {
+                    delete quizAnswers['question-3'];
+                    const nextButton = document.getElementById('quiz-next-3');
+                    nextButton.disabled = true;
+                    nextButton.style.opacity = '0.5';
+                }
+            }
+        }
+
+        function calculateQuizResults() {
+            const spendingStyle = quizAnswers['question-1'];
+            const confidence = quizAnswers['question-2'];
+            const income = quizAnswers['question-3'];
+            const specificIncome = quizAnswers['specific-income'];
+
+            let budgetData = {
+                total: 25000,
+                needsPercent: 70,
+                wantsPercent: 20,
+                savingsPercent: 10,
+                personality: 'Thoughtful Spender',
+                description: 'You enjoy spending money but want to be smarter about it. You\'re ready to learn!',
+                tip: 'We\'ll help you track spending and build good habits',
+                rationale: 'This conservative approach helps you build good habits first'
+            };
+
+            // Adjust based on spending style
+            if (spendingStyle === 'spender') {
+                budgetData.needsPercent = 70;
+                budgetData.wantsPercent = 20;
+                budgetData.savingsPercent = 10;
+                budgetData.personality = 'Thoughtful Spender';
+                budgetData.description = 'You enjoy spending money but want to be smarter about it. You\'re ready to learn!';
+                budgetData.tip = 'We\'ll help you track spending and build good habits';
+                budgetData.rationale = 'This conservative approach helps you build good habits first';
+            } else if (spendingStyle === 'saver') {
+                budgetData.needsPercent = 50;
+                budgetData.wantsPercent = 30;
+                budgetData.savingsPercent = 20;
+                budgetData.personality = 'Smart Saver';
+                budgetData.description = 'You naturally prioritize saving and want to optimize your money growth.';
+                budgetData.tip = 'We\'ll help you maximize savings and explore investment options';
+                budgetData.rationale = 'We allocated more to savings since you\'re already good at controlling spending';
+            } else {
+                budgetData.needsPercent = 60;
+                budgetData.wantsPercent = 30;
+                budgetData.savingsPercent = 10;
+                budgetData.personality = 'Naturally Balanced';
+                budgetData.description = 'You have a good balance between enjoying life and being responsible with money.';
+                budgetData.tip = 'We\'ll help you fine-tune this balance and reach your goals';
+                budgetData.rationale = 'This balanced approach works well for most people';
+            }
+
+            // Adjust budget amount based on income
+            if (specificIncome) {
+                budgetData.total = specificIncome;
+            } else if (income === 'low') {
+                budgetData.total = 20000;
+            } else if (income === 'medium') {
+                budgetData.total = 40000;
+            } else if (income === 'high') {
+                budgetData.total = 60000;
+            }
+
+            return budgetData;
+        }
+
+        function updateQuizResultsDisplay() {
+            const results = calculateQuizResults();
+            
+            // Calculate amounts
+            const needsAmount = Math.round(results.total * results.needsPercent / 100);
+            const wantsAmount = Math.round(results.total * results.wantsPercent / 100);
+            const savingsAmount = Math.round(results.total * results.savingsPercent / 100);
+
+            // Update display elements
+            document.getElementById('quiz-result-title').textContent = `You're a ${results.personality}!`;
+            document.getElementById('quiz-result-description').textContent = results.description;
+            document.getElementById('quiz-result-tip').textContent = results.tip;
+            
+            document.getElementById('results-total-budget').textContent = `PKR ${results.total.toLocaleString()}`;
+            document.getElementById('results-needs-percent').textContent = results.needsPercent;
+            document.getElementById('results-needs-amount').textContent = `PKR ${needsAmount.toLocaleString()}`;
+            document.getElementById('results-wants-percent').textContent = results.wantsPercent;
+            document.getElementById('results-wants-amount').textContent = `PKR ${wantsAmount.toLocaleString()}`;
+            document.getElementById('results-savings-percent').textContent = results.savingsPercent;
+            document.getElementById('results-savings-amount').textContent = `PKR ${savingsAmount.toLocaleString()}`;
+            document.getElementById('budget-rationale').textContent = results.rationale;
+
+            // Store for dashboard update
+            currentBudget = results;
+        }
+
+        function goBackToDashboard() {
+            showScreen('dashboard-screen');
+        }
+
+        function showQuizResults() {
+            updateQuizResultsDisplay();
+            showScreen('quiz-results-screen');
+        }
+
+        function setBudgetAndReturnToDashboard() {
+            hasCompletedQuiz = true;
+            updateDashboardAfterQuiz();
+            showScreen('dashboard-screen');
+        }
+
+        // Dashboard state management
+        function updateDashboardAfterQuiz() {
+            if (hasCompletedQuiz) {
+                document.getElementById('quiz-cta-card').style.display = 'none';
+                document.getElementById('budget-progress-card').style.display = 'block';
+            }
+        }
+
+        function updateUserGreeting() {
+            if (userName) {
+                document.getElementById('user-greeting').textContent = userName + '!';
+            }
+        }
+
+        // Navigation function to handle page transitions
+        function navigateToPage(filename) {
+            window.location.href = filename;
+        }
+
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user came from quiz completion or has existing data
+            const urlParams = new URLSearchParams(window.location.search);
+            const completedQuiz = urlParams.get('quiz');
+            const name = urlParams.get('name');
+            
+            if (name) {
+                userName = name;
+                updateUserGreeting();
+            }
+            
+            if (completedQuiz === 'completed') {
+                hasCompletedQuiz = true;
+                updateDashboardAfterQuiz();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,2414 +1,524 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Financial App for Women - Wireframe</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    .device-frame {
-      position: relative;
-      border: 12px solid #2d3748;
-      border-radius: 32px;
-      background: #2d3748;
-      padding: 8px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-    
-    .device-frame::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 24px;
-      background: #2d3748;
-      border-bottom-left-radius: 16px;
-      border-bottom-right-radius: 16px;
-    }
-    
-    .device-frame::after {
-      content: '';
-      position: absolute;
-      bottom: 6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 4px;
-      background: #4a5568;
-      border-radius: 2px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial App Wireframe - Complete Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border: 12px solid #333;
+            border-radius: 36px;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            margin: 0 auto;
+        }
+        
+        .screen-content {
+            height: 100%;
+            padding: 16px;
+            position: relative;
+        }
+        
+        .screen {
+            display: none;
+            height: 100%;
+        }
+        
+        .screen.active {
+            display: block;
+        }
 
-    .screen {
-      border-radius: 24px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      min-height: 640px;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
-  </style>
+        .dashboard-content {
+            height: calc(100% - 60px);
+            overflow: hidden;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            padding: 8px 16px 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .language-popup {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .language-popup.active {
+            display: flex;
+        }
+
+        .language-popup-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 20px;
+            width: 320px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-option {
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .language-option:hover {
+            border-color: #9CA3AF;
+            background: #F9FAFB;
+        }
+
+        .language-option.selected {
+            border-color: #4B5563;
+            background: #F9FAFB;
+        }
+
+        .profile-option {
+            transition: all 0.2s ease;
+        }
+
+        .profile-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .progress-dot.active {
+            background: #1F2937;
+        }
+
+        .progress-dot.inactive {
+            background: #D1D5DB;
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #9CA3AF;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #4B5563;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-  <div id="app" class="min-h-screen flex items-center justify-center px-4 py-12">
-    <div class="device-frame w-full max-w-sm mx-auto">
-      <!-- Welcome Screen -->
-      <section id="welcome" class="screen bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-next="profile">
-        <div class="flex flex-col items-center space-y-6">
-          <!-- Logo Placeholder -->
-          <div class="w-16 h-16 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-            <span class="text-xs text-gray-400">Logo</span>
-          </div>
-          
-          <!-- Text Content -->
-          <div class="text-center space-y-2">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Welcome</span>
-            </div>
-            <div class="h-12 bg-gray-100 rounded flex items-center justify-center px-4">
-              <span class="text-gray-400 text-sm">Text: App Description</span>
-            </div>
-          </div>
-
-          <!-- CTA Button -->
-          <button onclick="showScreen('profile')" class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-            Button: Get Started
-          </button>
-        </div>
-      </section>
-
-      <!-- Profile Selection Screen -->
-      <section id="profile" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-next="questionnaire" data-prev="welcome">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Select Profile</span>
-            </div>
-          </div>
-
-          <!-- Profile Options -->
-          <div class="space-y-3">
-            <button onclick="showScreen('questionnaire')" class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Option: Student
-            </button>
-            <button onclick="showScreen('questionnaire')" class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Option: Working Woman
-            </button>
-            <button onclick="showScreen('questionnaire')" class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Option: Housewife
-            </button>
-            <button onclick="showScreen('questionnaire')" class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Option: Blue-Collar
-            </button>
-            <button onclick="showScreen('questionnaire')" class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Option: Unemployed
-            </button>
-          </div>
-
-          <!-- Back Button -->
-          <button onclick="showScreen('welcome')" class="w-full py-3 bg-gray-100 rounded text-gray-400">
-            Button: Back
-          </button>
-        </div>
-      </section>
-
-      <!-- Questionnaire Screen -->
-      <section id="questionnaire" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-next="account-setup" data-prev="profile">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Questionnaire</span>
-            </div>
-          </div>
-
-          <!-- Form Fields -->
-          <div class="space-y-4">
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Monthly Income</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Financial Goals</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <!-- Radio Groups -->
-            <div class="space-y-3">
-              <div class="h-6 bg-gray-100 rounded flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Have Debts?</span>
-              </div>
-              <div class="flex space-x-4">
-                <div class="flex-1 h-10 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">Yes</span>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="phone-frame">
+        
+        <!-- Language Selection Popup -->
+        <div id="language-popup" class="language-popup">
+            <div class="language-popup-content">
+                <h2 class="text-xl font-semibold text-center mb-6">Choose Your Language</h2>
+                <div class="space-y-3">
+                    <div class="language-option" onclick="selectLanguage('english')">
+                        <div class="text-lg font-medium">English</div>
+                        <div class="text-sm text-gray-600">Continue in English</div>
+                    </div>
+                    <div class="language-option" onclick="selectLanguage('urdu')">
+                        <div class="text-lg font-medium">اردو</div>
+                        <div class="text-sm text-gray-600">اردو میں جاری رکھیں</div>
+                    </div>
                 </div>
-                <div class="flex-1 h-10 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">No</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-y-3">
-              <div class="h-6 bg-gray-100 rounded flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Currently Investing?</span>
-              </div>
-              <div class="flex space-x-4">
-                <div class="flex-1 h-10 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">Yes</span>
-                </div>
-                <div class="flex-1 h-10 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">No</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation Buttons -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('profile')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('account-setup')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Continue</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Account Setup Screen -->
-      <section id="account-setup" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-next="terms" data-prev="questionnaire">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Account Setup</span>
-            </div>
-          </div>
-
-          <!-- Form Fields -->
-          <div class="space-y-4">
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Full Name</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Email</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Password</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Phone</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-          </div>
-
-          <!-- Navigation Buttons -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('questionnaire')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('terms')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Terms Screen -->
-      <section id="terms" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-next="tutorial" data-prev="account-setup">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Terms & Privacy</span>
-            </div>
-          </div>
-
-          <!-- Terms Content -->
-          <div class="h-32 border-2 border-dashed border-gray-300 rounded p-4">
-            <span class="text-gray-400 text-sm">Placeholder: Terms content</span>
-          </div>
-
-          <!-- Checkbox -->
-          <label class="flex items-center space-x-3">
-            <div class="w-5 h-5 border-2 border-dashed border-gray-300 rounded"></div>
-            <span class="text-gray-400 text-sm">Checkbox: I agree to Terms</span>
-          </label>
-
-          <!-- Navigation Buttons -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('account-setup')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('tutorial')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Continue</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Tutorial Screen -->
-      <section id="tutorial" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-next="dashboard" data-prev="terms">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: App Overview</span>
-            </div>
-          </div>
-
-          <!-- Tutorial Content -->
-          <div class="space-y-4">
-            <div class="h-16 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Text: Tutorial description</span>
-            </div>
-
-            <!-- Feature Points -->
-            <div class="space-y-2">
-              <div class="h-8 border-2 border-dashed border-gray-300 rounded flex items-center px-3">
-                <span class="text-gray-400">Feature point: Track budget</span>
-              </div>
-              <div class="h-8 border-2 border-dashed border-gray-300 rounded flex items-center px-3">
-                <span class="text-gray-400">Feature point: Emergency fund</span>
-              </div>
-              <div class="h-8 border-2 border-dashed border-gray-300 rounded flex items-center px-3">
-                <span class="text-gray-400">Feature point: Investments</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation Buttons -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('terms')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Go to Dashboard</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Dashboard Screen -->
-      <section id="dashboard" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="tutorial">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="space-y-2">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Dashboard</span>
-            </div>
-            <div class="h-6 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400 text-sm">Text: Welcome message</span>
-            </div>
-          </div>
-
-          <!-- Financial Cards -->
-          <div class="space-y-4">
-            <!-- Balance Card -->
-            <div class="border-2 border-dashed border-gray-300 rounded p-4 space-y-2">
-              <div class="h-6 bg-gray-100 rounded flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Current Balance</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <!-- Emergency Fund Card -->
-            <div class="border-2 border-dashed border-gray-300 rounded p-4 space-y-2">
-              <div class="h-6 bg-gray-100 rounded flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Emergency Fund</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-              <div class="h-2 bg-gray-200 rounded-full">
-                <div class="w-1/3 h-2 bg-gray-400 rounded-full"></div>
-              </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="grid grid-cols-2 gap-3">
-              <button onclick="showScreen('screen-9')" class="h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 hover:bg-gray-50 w-full">
-                Action: Budget
-              </button>
-              <button onclick="showScreen('screen-34')" class="h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 hover:bg-gray-50 w-full">
-                Action: Track
-              </button>
-              <button onclick="showScreen('screen-13')" class="h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 hover:bg-gray-50 w-full">
-                Action: Invest
-              </button>
-              <button onclick="showScreen('screen-21')" class="h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 hover:bg-gray-50 w-full">
-                Action: Learn
-              </button>
-            </div>
-          </div>
-
-          <!-- Bottom Navigation -->
-          <div class="space-y-3">
-            <button onclick="showScreen('tutorial')" class="w-full py-3 bg-gray-100 rounded text-gray-400">
-              Button: Back to Tutorial
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Budget: Overview -->
-      <section id="screen-9" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="dashboard" data-next="screen-10">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Label: Budget Summary</span>
-            </div>
-          </div>
-
-          <!-- Budget Summary Cards -->
-          <div class="grid grid-cols-3 gap-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3 text-center">
-              <div class="text-gray-400 text-sm">Total Budget</div>
-              <div class="h-6 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3 text-center">
-              <div class="text-gray-400 text-sm">Spent</div>
-              <div class="h-6 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3 text-center">
-              <div class="text-gray-400 text-sm">Remaining</div>
-              <div class="h-6 bg-gray-100 rounded mt-1"></div>
-            </div>
-          </div>
-
-          <!-- Visual Breakdown -->
-          <div class="space-y-2">
-            <div class="flex justify-between text-sm text-gray-400">
-              <span>Label: Current Month</span>
-              <span>Label: Status</span>
-            </div>
-            <div class="h-6 bg-gray-100 rounded-full overflow-hidden">
-              <div class="h-full bg-gray-300 w-2/3"></div>
-            </div>
-            <div class="flex justify-between text-xs text-gray-400">
-              <span>Text: Date Range</span>
-              <span>Text: Spending Status</span>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-10')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Customize</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Budget: Setup -->
-      <section id="screen-10" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-9" data-next="screen-11">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Label: Customize Budget</span>
-            </div>
-          </div>
-
-          <!-- Category Sliders -->
-          <div class="space-y-6">
-            <!-- Needs -->
-            <div class="space-y-2">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Label: Needs</span>
-                <div class="w-24 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">50%</span>
-                </div>
-              </div>
-              <div class="h-8 border-2 border-dashed border-gray-300 rounded flex items-center px-4">
-                <div class="w-full h-1 bg-gray-100 rounded-full">
-                  <div class="h-1 bg-gray-300 w-1/2"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Wants -->
-            <div class="space-y-2">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Label: Wants</span>
-                <div class="w-24 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">30%</span>
-                </div>
-              </div>
-              <div class="h-8 border-2 border-dashed border-gray-300 rounded flex items-center px-4">
-                <div class="w-full h-1 bg-gray-100 rounded-full">
-                  <div class="h-1 bg-gray-300 w-1/3"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Savings -->
-            <div class="space-y-2">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Label: Savings</span>
-                <div class="w-24 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">20%</span>
-                </div>
-              </div>
-              <div class="h-8 border-2 border-dashed border-gray-300 rounded flex items-center px-4">
-                <div class="w-full h-1 bg-gray-100 rounded-full">
-                  <div class="h-1 bg-gray-300 w-1/5"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="grid grid-cols-2 gap-4">
-            <button class="py-3 bg-gray-100 rounded text-gray-400">Button: Reset</button>
-            <button class="py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Save</button>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-9')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-11')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Budget: Categories -->
-      <section id="screen-11" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-10" data-next="screen-12">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Label: Expense Categories</span>
-            </div>
-          </div>
-
-          <!-- Category List -->
-          <div class="space-y-3">
-            <div class="flex items-center space-x-3">
-              <div class="w-6 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              <div class="flex-1 h-10 border-2 border-dashed border-gray-300 rounded flex items-center px-3">
-                <span class="text-gray-400">Category: Food</span>
-              </div>
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="w-6 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              <div class="flex-1 h-10 border-2 border-dashed border-gray-300 rounded flex items-center px-3">
-                <span class="text-gray-400">Category: Rent</span>
-              </div>
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="w-6 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              <div class="flex-1 h-10 border-2 border-dashed border-gray-300 rounded flex items-center px-3">
-                <span class="text-gray-400">Category: Transport</span>
-              </div>
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="w-6 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              <div class="flex-1 h-10 border-2 border-dashed border-gray-300 rounded flex items-center px-3">
-                <span class="text-gray-400">Category: Shopping</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Add Category -->
-          <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-            Button: Add Category
-          </button>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-10')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-12')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Review</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Budget: Review -->
-      <section id="screen-12" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-11" data-next="dashboard">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Label: Budget Performance</span>
-            </div>
-          </div>
-
-          <!-- Chart Placeholder -->
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-            <div class="h-40 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Placeholder: Performance Chart</span>
-            </div>
-          </div>
-
-          <!-- Insights -->
-          <div class="space-y-3">
-            <div class="h-10 bg-gray-100 rounded flex items-center px-3">
-              <span class="text-gray-400">Text: Budget Insights</span>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div class="border-2 border-dashed border-gray-300 rounded p-3">
-                <div class="text-gray-400 text-sm">Best Category</div>
-                <div class="h-6 bg-gray-100 rounded mt-1"></div>
-              </div>
-              <div class="border-2 border-dashed border-gray-300 rounded p-3">
-                <div class="text-gray-400 text-sm">Needs Attention</div>
-                <div class="h-6 bg-gray-100 rounded mt-1"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-11')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Done</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Emergency Fund Module Screens -->
-      
-      <!-- Emergency Fund: Calculator -->
-      <section id="screen-13" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="dashboard" data-next="screen-14">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Emergency Fund Calculator</span>
-            </div>
-          </div>
-
-          <!-- Calculator Form -->
-          <div class="space-y-4">
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Monthly Expenses</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Number of Months</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Current Savings</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-          </div>
-
-          <!-- Result Box -->
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Label: Required Emergency Fund</span>
-            </div>
-            <div class="h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-              <span class="text-gray-400">Result: Calculated Amount</span>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-14')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Emergency Fund: Progress -->
-      <section id="screen-14" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-13" data-next="screen-15">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Fund Progress</span>
-            </div>
-          </div>
-
-          <!-- Progress Visual -->
-          <div class="space-y-3">
-            <div class="h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-              <span class="text-gray-400">Visual: Progress Chart</span>
-            </div>
-            <div class="h-2 bg-gray-100 rounded-full">
-              <div class="w-1/3 h-2 bg-gray-300 rounded-full"></div>
-            </div>
-          </div>
-
-          <!-- Stats Grid -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Current Amount</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Target Amount</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Monthly Contribution</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Time Remaining</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-13')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-15')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Emergency Fund: Settings -->
-      <section id="screen-15" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-14" data-next="screen-16">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Fund Settings</span>
-            </div>
-          </div>
-
-          <!-- Settings Form -->
-          <div class="space-y-4">
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Auto-contribution</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <div class="w-12 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-                <span class="text-gray-400 text-sm">Toggle Switch</span>
-              </div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Contribution Day</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Alert Threshold</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-14')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-16')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Emergency Fund: AWS Integration -->
-      <section id="screen-16" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-15">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: AWS Template</span>
-            </div>
-          </div>
-
-          <!-- Template Selection -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-              <div class="space-y-2">
-                <div class="h-6 bg-gray-100 rounded flex items-center px-3">
-                  <span class="text-gray-400 text-sm">Label: Select Template</span>
-                </div>
-                <div class="h-32 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">Template Options</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Integration Settings -->
-            <div class="space-y-3">
-              <div class="h-6 bg-gray-100 rounded flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: API Settings</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-15')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Done</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- End Emergency Fund Module -->
-
-      <!-- Investment & Risk Assessment Module Screens -->
-      
-      <!-- Investment: Risk Assessment Quiz -->
-      <section id="screen-21" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="dashboard" data-next="screen-22">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Risk Assessment</span>
-            </div>
-          </div>
-
-          <!-- Progress Bar -->
-          <div class="h-2 bg-gray-100 rounded-full">
-            <div class="w-1/4 h-2 bg-gray-300 rounded-full"></div>
-          </div>
-
-          <!-- Question Box -->
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-4">
-            <div class="h-16 bg-gray-100 rounded flex items-center justify-center px-4">
-              <span class="text-gray-400 text-center">Question: Investment experience level?</span>
-            </div>
-
-            <!-- Answer Options -->
-            <div class="space-y-3">
-              <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-                Option: Beginner
-              </button>
-              <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-                Option: Intermediate
-              </button>
-              <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-                Option: Advanced
-              </button>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-22')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Investment: Risk Profile Results -->
-      <section id="screen-22" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-21" data-next="screen-23">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Your Risk Profile</span>
-            </div>
-          </div>
-
-          <!-- Profile Summary -->
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-4">
-            <div class="h-12 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Profile: Moderate Conservative</span>
-            </div>
-            <div class="h-24 bg-gray-100 rounded flex items-center justify-center px-4">
-              <span class="text-gray-400 text-sm">Description of risk profile and implications</span>
-            </div>
-          </div>
-
-          <!-- Risk Metrics -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Risk Score</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Return Potential</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-21')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-23')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Investment: Recommendations -->
-      <section id="screen-23" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-22" data-next="screen-24">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Recommended Investments</span>
-            </div>
-          </div>
-
-          <!-- Investment Cards -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-2">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Government Securities</span>
-                <span class="text-gray-400">40%</span>
-              </div>
-              <div class="h-2 bg-gray-100 rounded-full">
-                <div class="w-2/5 h-2 bg-gray-300 rounded-full"></div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-2">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Mutual Funds</span>
-                <span class="text-gray-400">30%</span>
-              </div>
-              <div class="h-2 bg-gray-100 rounded-full">
-                <div class="w-1/3 h-2 bg-gray-300 rounded-full"></div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-2">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Stocks</span>
-                <span class="text-gray-400">20%</span>
-              </div>
-              <div class="h-2 bg-gray-100 rounded-full">
-                <div class="w-1/5 h-2 bg-gray-300 rounded-full"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-22')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-24')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Investment: Portfolio -->
-      <section id="screen-24" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-23" data-next="screen-25">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Investment Portfolio</span>
-            </div>
-          </div>
-
-          <!-- Portfolio Summary -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Total Invested</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Current Value</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-          </div>
-
-          <!-- Portfolio Chart -->
-          <div class="h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-            <span class="text-gray-400">Chart: Portfolio Allocation</span>
-          </div>
-
-          <!-- Holdings List -->
-          <div class="space-y-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Government Bond</span>
-                <span class="text-gray-400">Returns %</span>
-              </div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Mutual Fund</span>
-                <span class="text-gray-400">Returns %</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-23')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-25')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Investment: Asset Allocation -->
-      <section id="screen-25" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-24" data-next="screen-26">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Asset Allocation Guide</span>
-            </div>
-          </div>
-
-          <!-- Allocation Chart -->
-          <div class="h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-            <span class="text-gray-400">Chart: Asset Distribution</span>
-          </div>
-
-          <!-- Asset Categories -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-400">Fixed Income</span>
-                <span class="text-gray-400">60%</span>
-              </div>
-              <div class="space-y-2">
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-400">Government Securities</span>
-                  <span class="text-gray-400">35%</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-400">Corporate Bonds</span>
-                  <span class="text-gray-400">25%</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-400">Equity</span>
-                <span class="text-gray-400">40%</span>
-              </div>
-              <div class="space-y-2">
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-400">Mutual Funds</span>
-                  <span class="text-gray-400">25%</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-400">Stocks</span>
-                  <span class="text-gray-400">15%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-24')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-26')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Investment: Securities Explorer -->
-      <section id="screen-26" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-25" data-next="screen-27">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Pakistan Securities</span>
-            </div>
-          </div>
-
-          <!-- Search Bar -->
-          <div class="border-2 border-dashed border-gray-300 rounded flex items-center p-2">
-            <div class="flex-1 h-8 bg-gray-100 rounded mr-2"></div>
-            <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-              <span class="text-gray-400">🔍</span>
-            </div>
-          </div>
-
-          <!-- Securities List -->
-          <div class="space-y-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-400">Pakistan Investment Bond</span>
-                <span class="text-gray-400">7.25%</span>
-              </div>
-              <div class="text-sm text-gray-400">3-Year Term</div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-400">Treasury Bill</span>
-                <span class="text-gray-400">6.75%</span>
-              </div>
-              <div class="text-sm text-gray-400">12-Month Term</div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-25')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-27')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Investment: Mutual Funds -->
-      <section id="screen-27" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-26" data-next="screen-28">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Mutual Funds</span>
-            </div>
-          </div>
-
-          <!-- Fund Categories -->
-          <div class="grid grid-cols-2 gap-3">
-            <button class="h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400">
-              Equity Funds
-            </button>
-            <button class="h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400">
-              Income Funds
-            </button>
-            <button class="h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400">
-              Islamic Funds
-            </button>
-            <button class="h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400">
-              Money Market
-            </button>
-          </div>
-
-          <!-- Fund List -->
-          <div class="space-y-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-400">Al Meezan Fund</span>
-                <span class="text-gray-400">+12.5%</span>
-              </div>
-              <div class="flex justify-between text-sm">
-                <span class="text-gray-400">Risk: Moderate</span>
-                <span class="text-gray-400">Islamic</span>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-400">NBP Fund</span>
-                <span class="text-gray-400">+8.7%</span>
-              </div>
-              <div class="flex justify-between text-sm">
-                <span class="text-gray-400">Risk: Low</span>
-                <span class="text-gray-400">Income</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-26')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-28')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Investment: Ramp-up Plan -->
-      <section id="screen-28" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-27">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Investment Plan</span>
-            </div>
-          </div>
-
-          <!-- Timeline Chart -->
-          <div class="h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-            <span class="text-gray-400">Chart: Investment Timeline</span>
-          </div>
-
-          <!-- Investment Stages -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center space-x-3 mb-2">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                  <span class="text-gray-400">1</span>
-                </div>
-                <span class="text-gray-400">Emergency Fund</span>
-              </div>
-              <div class="pl-11 text-sm text-gray-400">
-                Build 6 months savings
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center space-x-3 mb-2">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                  <span class="text-gray-400">2</span>
-                </div>
-                <span class="text-gray-400">Fixed Income</span>
-              </div>
-              <div class="pl-11 text-sm text-gray-400">
-                Start with government securities
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center space-x-3 mb-2">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                  <span class="text-gray-400">3</span>
-                </div>
-                <span class="text-gray-400">Mutual Funds</span>
-              </div>
-              <div class="pl-11 text-sm text-gray-400">
-                Diversify with managed funds
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-27')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Done</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- End Investment & Risk Assessment Module Part 1 -->
-
-      <!-- Retirement Planning Module Screens -->
-      
-      <!-- Retirement: Overview -->
-      <section id="screen-29" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="dashboard" data-next="screen-30">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Retirement Overview</span>
-            </div>
-          </div>
-
-          <!-- Summary Stats -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Target Amount</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Current Progress</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-          </div>
-
-          <!-- Progress Visual -->
-          <div class="space-y-2">
-            <div class="h-4 bg-gray-100 rounded-full">
-              <div class="w-1/4 h-4 bg-gray-300 rounded-full"></div>
-            </div>
-            <div class="flex justify-between text-sm text-gray-400">
-              <span>25% Complete</span>
-              <span>Target: Age 60</span>
-            </div>
-          </div>
-
-          <!-- Quick Actions -->
-          <div class="space-y-3">
-            <button onclick="showScreen('screen-30')" class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Compare Pension Schemes
-            </button>
-            <button onclick="showScreen('screen-31')" class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Calculate Benefits
-            </button>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-30')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Retirement: Pension Schemes -->
-      <section id="screen-30" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-29" data-next="screen-31">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Pension Schemes</span>
-            </div>
-          </div>
-
-          <!-- Scheme Cards -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Government Pension</span>
-                <div class="w-16 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              </div>
-              <div class="space-y-2">
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-400">Monthly Contribution</span>
-                  <span class="text-gray-400">Amount</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-400">Retirement Age</span>
-                  <span class="text-gray-400">60 years</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Private Pension</span>
-                <div class="w-16 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              </div>
-              <div class="space-y-2">
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-400">Monthly Contribution</span>
-                  <span class="text-gray-400">Amount</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-400">Retirement Age</span>
-                  <span class="text-gray-400">55 years</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-29')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-31')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Retirement: Calculator -->
-      <section id="screen-31" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-30" data-next="screen-32">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Al Meezan Calculator</span>
-            </div>
-          </div>
-
-          <!-- Calculator Form -->
-          <div class="space-y-4">
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Current Age</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Retirement Age</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Monthly Income</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Expected Return Rate</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-30')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-32')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Calculate</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Retirement: Tax Benefits -->
-      <section id="screen-32" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-31" data-next="screen-33">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Tax Benefits</span>
-            </div>
-          </div>
-
-          <!-- Benefits Summary -->
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-            <div class="flex justify-between items-center">
-              <span class="text-gray-400">Annual Contribution</span>
-              <span class="text-gray-400">Amount</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-gray-400">Tax Savings</span>
-              <span class="text-gray-400">Amount</span>
-            </div>
-            <div class="h-2 bg-gray-100 rounded-full">
-              <div class="w-2/3 h-2 bg-gray-300 rounded-full"></div>
-            </div>
-          </div>
-
-          <!-- Tax Brackets -->
-          <div class="space-y-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Current Tax Bracket</span>
-                <span class="text-gray-400">25%</span>
-              </div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">After Benefits</span>
-                <span class="text-gray-400">20%</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-31')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-33')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Retirement: Timeline -->
-      <section id="screen-33" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-32">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Retirement Timeline</span>
-            </div>
-          </div>
-
-          <!-- Timeline Visual -->
-          <div class="h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-            <span class="text-gray-400">Visual: Timeline Chart</span>
-          </div>
-
-          <!-- Milestones -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                  <span class="text-gray-400">1</span>
-                </div>
-                <div>
-                  <div class="text-gray-400">Early Savings</div>
-                  <div class="text-sm text-gray-400">Age 25-35</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                  <span class="text-gray-400">2</span>
-                </div>
-                <div>
-                  <div class="text-gray-400">Peak Investment</div>
-                  <div class="text-sm text-gray-400">Age 35-50</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                  <span class="text-gray-400">3</span>
-                </div>
-                <div>
-                  <div class="text-gray-400">Pre-Retirement</div>
-                  <div class="text-sm text-gray-400">Age 50-60</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-32')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Done</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- End Retirement Planning Module -->
-
-      <!-- Tracking & Analytics Module Screens -->
-      
-      <!-- Tracking: Expense Tracker -->
-      <section id="screen-34" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="dashboard" data-next="screen-35">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Expense Tracker</span>
-            </div>
-          </div>
-
-          <!-- Monthly Overview -->
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-            <div class="flex justify-between items-center">
-              <span class="text-gray-400">July 2023</span>
-              <div class="flex space-x-2">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">←</span>
-                </div>
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">→</span>
-                </div>
-              </div>
-            </div>
-            <div class="h-2 bg-gray-100 rounded-full">
-              <div class="w-3/4 h-2 bg-gray-300 rounded-full"></div>
-            </div>
-            <div class="flex justify-between text-sm text-gray-400">
-              <span>Spent: ₨ 45,000</span>
-              <span>Budget: ₨ 60,000</span>
-            </div>
-          </div>
-
-          <!-- Expense List -->
-          <div class="space-y-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                  <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                    <span class="text-gray-400">🛒</span>
-                  </div>
-                  <span class="text-gray-400">Groceries</span>
-                </div>
-                <span class="text-gray-400">₨ 15,000</span>
-              </div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                  <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                    <span class="text-gray-400">🏠</span>
-                  </div>
-                  <span class="text-gray-400">Rent</span>
-                </div>
-                <span class="text-gray-400">₨ 30,000</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Add Expense Button -->
-          <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-            Add New Expense
-          </button>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-35')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Tracking: Goals Dashboard -->
-      <section id="screen-35" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-34" data-next="screen-36">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Financial Goals</span>
-            </div>
-          </div>
-
-          <!-- Goals List -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-2">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Emergency Fund</span>
-                <span class="text-gray-400">75%</span>
-              </div>
-              <div class="h-2 bg-gray-100 rounded-full">
-                <div class="w-3/4 h-2 bg-gray-300 rounded-full"></div>
-              </div>
-              <div class="flex justify-between text-sm text-gray-400">
-                <span>Current: ₨ 150,000</span>
-                <span>Target: ₨ 200,000</span>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-2">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">House Down Payment</span>
-                <span class="text-gray-400">40%</span>
-              </div>
-              <div class="h-2 bg-gray-100 rounded-full">
-                <div class="w-2/5 h-2 bg-gray-300 rounded-full"></div>
-              </div>
-              <div class="flex justify-between text-sm text-gray-400">
-                <span>Current: ₨ 400,000</span>
-                <span>Target: ₨ 1,000,000</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Add Goal Button -->
-          <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-            Add New Goal
-          </button>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-34')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-36')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Tracking: Monthly Reports -->
-      <section id="screen-36" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-35" data-next="screen-37">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Monthly Report</span>
-            </div>
-          </div>
-
-          <!-- Report Summary -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Income</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Expenses</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Savings</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Investments</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-          </div>
-
-          <!-- Charts -->
-          <div class="space-y-4">
-            <div class="h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-              <span class="text-gray-400">Chart: Expense Categories</span>
-            </div>
-            <div class="h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-              <span class="text-gray-400">Chart: Monthly Trend</span>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-35')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-37')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Tracking: Analytics -->
-      <section id="screen-37" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-36" data-next="screen-38">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Analytics & Insights</span>
-            </div>
-          </div>
-
-          <!-- Insights Cards -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-              <div class="flex items-center space-x-3 mb-2">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">📈</span>
-                </div>
-                <span class="text-gray-400">Spending Pattern</span>
-              </div>
-              <div class="text-sm text-gray-400">
-                Your highest spending category is groceries
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-              <div class="flex items-center space-x-3 mb-2">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">💡</span>
-                </div>
-                <span class="text-gray-400">Recommendation</span>
-              </div>
-              <div class="text-sm text-gray-400">
-                Consider bulk buying to save 15%
-              </div>
-            </div>
-          </div>
-
-          <!-- Detailed Analysis -->
-          <div class="h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-            <span class="text-gray-400">Chart: Spending Analysis</span>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-36')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-38')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Tracking: Peer Comparison -->
-      <section id="screen-38" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-37">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Peer Comparison</span>
-            </div>
-          </div>
-
-          <!-- Comparison Chart -->
-          <div class="h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-            <span class="text-gray-400">Chart: Peer Comparison</span>
-          </div>
-
-          <!-- Stats -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Your Savings Rate</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="text-gray-400 text-sm">Peer Average</div>
-              <div class="h-8 bg-gray-100 rounded mt-1"></div>
-            </div>
-          </div>
-
-          <!-- Achievements -->
-          <div class="space-y-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                  <span class="text-gray-400">🏆</span>
-                </div>
-                <span class="text-gray-400">Top 10% in Savings</span>
-              </div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-3">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                  <span class="text-gray-400">🎯</span>
-                </div>
-                <span class="text-gray-400">Better than Average in Investments</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-37')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Done</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Educational Content Module Screens -->
-      
-      <!-- Education: Learning Hub -->
-      <section id="screen-39" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="dashboard" data-next="screen-40">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Learning Hub</span>
-            </div>
-          </div>
-
-          <!-- Course Categories -->
-          <div class="grid grid-cols-2 gap-3">
-            <button class="h-20 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-400 p-2">
-              <span>Basics of Finance</span>
-              <span class="text-xs">4 Lessons</span>
-            </button>
-            <button class="h-20 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-400 p-2">
-              <span>Investment 101</span>
-              <span class="text-xs">6 Lessons</span>
-            </button>
-            <button class="h-20 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-400 p-2">
-              <span>Debt Management</span>
-              <span class="text-xs">3 Lessons</span>
-            </button>
-            <button class="h-20 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-400 p-2">
-              <span>Retirement Planning</span>
-              <span class="text-xs">5 Lessons</span>
-            </button>
-          </div>
-
-          <!-- Featured Course -->
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-            <div class="h-32 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Course Preview Image</span>
-            </div>
-            <div class="space-y-2">
-              <div class="text-gray-400 font-medium">Islamic Finance Basics</div>
-              <div class="text-sm text-gray-400">Learn Shariah-compliant investing</div>
-              <div class="flex justify-between text-sm text-gray-400">
-                <span>8 Lessons</span>
-                <span>45 mins</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-40')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Education: Calculators -->
-      <section id="screen-40" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-39" data-next="screen-41">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Financial Calculators</span>
-            </div>
-          </div>
-
-          <!-- Calculator Grid -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4 text-center">
-              <div class="w-12 h-12 border-2 border-dashed border-gray-300 rounded-full mx-auto mb-2 flex items-center justify-center">
-                <span class="text-gray-400">💰</span>
-              </div>
-              <div class="text-gray-400">Zakat Calculator</div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-4 text-center">
-              <div class="w-12 h-12 border-2 border-dashed border-gray-300 rounded-full mx-auto mb-2 flex items-center justify-center">
-                <span class="text-gray-400">🏠</span>
-              </div>
-              <div class="text-gray-400">Mortgage Calculator</div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-4 text-center">
-              <div class="w-12 h-12 border-2 border-dashed border-gray-300 rounded-full mx-auto mb-2 flex items-center justify-center">
-                <span class="text-gray-400">📈</span>
-              </div>
-              <div class="text-gray-400">Investment Returns</div>
-            </div>
-            <div class="border-2 border-dashed border-gray-300 rounded p-4 text-center">
-              <div class="w-12 h-12 border-2 border-dashed border-gray-300 rounded-full mx-auto mb-2 flex items-center justify-center">
-                <span class="text-gray-400">🎓</span>
-              </div>
-              <div class="text-gray-400">Education Savings</div>
-            </div>
-          </div>
-
-          <!-- Featured Calculator -->
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-            <div class="text-gray-400 font-medium">Retirement Calculator</div>
-            <div class="space-y-2">
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-              <button class="w-full py-2 bg-gray-100 rounded text-gray-400">Calculate</button>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-39')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-41')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Education: Finance Guide -->
-      <section id="screen-41" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-40" data-next="screen-42">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Pakistan Finance Guide</span>
-            </div>
-          </div>
-
-          <!-- Guide Topics -->
-          <div class="space-y-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <div class="w-10 h-10 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                    <span class="text-gray-400">📱</span>
-                  </div>
-                  <span class="text-gray-400">Digital Banking</span>
-                </div>
-                <div class="w-6 h-6 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">→</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <div class="w-10 h-10 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                    <span class="text-gray-400">📊</span>
-                  </div>
-                  <span class="text-gray-400">Stock Market Basics</span>
-                </div>
-                <div class="w-6 h-6 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">→</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <div class="w-10 h-10 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                    <span class="text-gray-400">🏦</span>
-                  </div>
-                  <span class="text-gray-400">Banking System</span>
-                </div>
-                <div class="w-6 h-6 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                  <span class="text-gray-400">→</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-40')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-42')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Education: Simulations -->
-      <section id="screen-42" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-41">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Interactive Learning</span>
-            </div>
-          </div>
-
-          <!-- Simulation Cards -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-              <div class="space-y-3">
-                <div class="text-gray-400 font-medium">Stock Market Simulator</div>
-                <div class="h-32 bg-gray-100 rounded flex items-center justify-center">
-                  <span class="text-gray-400">Market Simulation Graph</span>
-                </div>
-                <button class="w-full py-2 border-2 border-dashed border-gray-300 rounded text-gray-400">
-                  Start Trading
+                <button id="confirm-language-btn" onclick="confirmLanguage()" class="w-full bg-gray-800 text-white py-3 rounded-lg mt-6" style="opacity: 0.5;" disabled>
+                    Continue
                 </button>
-              </div>
             </div>
+        </div>
 
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-              <div class="space-y-3">
-                <div class="text-gray-400 font-medium">Budget Challenge</div>
-                <div class="grid grid-cols-2 gap-2">
-                  <div class="h-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                    <span class="text-gray-400">Easy</span>
-                  </div>
-                  <div class="h-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                    <span class="text-gray-400">Medium</span>
-                  </div>
-                  <div class="h-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                    <span class="text-gray-400">Hard</span>
-                  </div>
-                  <div class="h-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                    <span class="text-gray-400">Expert</span>
-                  </div>
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="screen-content flex flex-col h-full">
+                <div class="flex justify-end mb-4">
+                    <button class="text-sm text-gray-600 border border-gray-300 rounded-full px-3 py-1">
+                        English | اردو
+                    </button>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-41')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Done</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- End Educational Content Module -->
-
-      <!-- Settings & Profile Module Screens -->
-      
-      <!-- Settings: User Profile -->
-      <section id="screen-43" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="dashboard" data-next="screen-44">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: User Profile</span>
-            </div>
-          </div>
-
-          <!-- Profile Picture -->
-          <div class="flex flex-col items-center space-y-3">
-            <div class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-              <span class="text-gray-400">Photo</span>
-            </div>
-            <button class="px-4 py-2 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Change Photo
-            </button>
-          </div>
-
-          <!-- Profile Form -->
-          <div class="space-y-4">
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Full Name</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Email</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-
-            <div>
-              <div class="h-6 bg-gray-100 rounded mb-2 flex items-center px-3">
-                <span class="text-gray-400 text-sm">Label: Phone</span>
-              </div>
-              <div class="h-10 border-2 border-dashed border-gray-300 rounded"></div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-44')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Settings: App Settings -->
-      <section id="screen-44" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-43" data-next="screen-45">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: App Settings</span>
-            </div>
-          </div>
-
-          <!-- Settings List -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Notifications</span>
-                <div class="w-12 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Dark Mode</span>
-                <div class="w-12 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Currency</span>
-                <div class="w-24 h-8 border-2 border-dashed border-gray-300 rounded"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-43')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-45')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Settings: Security -->
-      <section id="screen-45" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-44" data-next="screen-46">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Security & Privacy</span>
-            </div>
-          </div>
-
-          <!-- Security Options -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Two-Factor Auth</span>
-                <div class="w-12 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Biometric Login</span>
-                <div class="w-12 h-6 border-2 border-dashed border-gray-300 rounded"></div>
-              </div>
-            </div>
-
-            <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Change Password
-            </button>
-
-            <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Privacy Settings
-            </button>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-44')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-46')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Settings: Language -->
-      <section id="screen-46" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-45" data-next="screen-47">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Language Settings</span>
-            </div>
-          </div>
-
-          <!-- Language Options -->
-          <div class="space-y-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center space-x-3">
-                <div class="w-6 h-6 border-2 border-dashed border-gray-300 rounded-full"></div>
-                <span class="text-gray-400">English</span>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex items-center space-x-3">
-                <div class="w-6 h-6 border-2 border-dashed border-gray-300 rounded-full"></div>
-                <span class="text-gray-400">اردو</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-45')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-47')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Settings: Help & Support -->
-      <section id="screen-47" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-46" data-next="screen-48">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Help & Support</span>
-            </div>
-          </div>
-
-          <!-- Support Options -->
-          <div class="space-y-4">
-            <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              FAQs
-            </button>
-            <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Contact Support
-            </button>
-            <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              Report an Issue
-            </button>
-            <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-              User Guide
-            </button>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-46')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-48')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Settings: About -->
-      <section id="screen-48" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-47">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: About App</span>
-            </div>
-          </div>
-
-          <!-- App Info -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400">Version</span>
-                <span class="text-gray-400">1.0.0</span>
-              </div>
-            </div>
-
-            <div class="h-32 border-2 border-dashed border-gray-300 rounded p-4">
-              <span class="text-gray-400">App Description</span>
-            </div>
-
-            <div class="space-y-2">
-              <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-                Terms of Service
-              </button>
-              <button class="w-full py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">
-                Privacy Policy
-              </button>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-47')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Done</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Community Features Module Screens -->
-      
-      <!-- Community: Success Stories -->
-      <section id="screen-49" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="dashboard" data-next="screen-50">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Success Stories</span>
-            </div>
-          </div>
-
-          <!-- Stories List -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-              <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 border-2 border-dashed border-gray-300 rounded-full"></div>
-                <div>
-                  <div class="text-gray-400">Fatima's Journey</div>
-                  <div class="text-sm text-gray-400">Small Business Owner</div>
+                
+                <div class="flex-grow flex flex-col items-center justify-center">
+                    <div class="w-24 h-24 bg-gray-200 rounded-full mb-6"></div>
+                    <h1 class="text-xl font-semibold mb-2">Welcome</h1>
+                    <p class="text-sm text-gray-600 text-center mb-8">Start your financial journey with us</p>
                 </div>
-              </div>
-              <div class="h-24 border-2 border-dashed border-gray-300 rounded p-2">
-                <span class="text-gray-400 text-sm">Story content preview...</span>
-              </div>
-            </div>
-
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-              <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 border-2 border-dashed border-gray-300 rounded-full"></div>
-                <div>
-                  <div class="text-gray-400">Ayesha's Story</div>
-                  <div class="text-sm text-gray-400">Student Investor</div>
+                
+                <div class="mt-auto">
+                    <label class="flex items-center gap-2 mb-4">
+                        <input type="checkbox" id="terms-checkbox" class="w-4 h-4 border-2 border-gray-300">
+                        <span class="text-sm">I agree to the Terms & Conditions</span>
+                    </label>
+                    <button onclick="goToSignUp()" class="w-full bg-gray-800 text-white py-3 rounded-lg" id="continue-btn" style="opacity: 0.5;" disabled>
+                        Continue
+                    </button>
                 </div>
-              </div>
-              <div class="h-24 border-2 border-dashed border-gray-300 rounded p-2">
-                <span class="text-gray-400 text-sm">Story content preview...</span>
-              </div>
             </div>
-          </div>
-
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-50')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
         </div>
-      </section>
 
-      <!-- Community: Discussion Forums -->
-      <section id="screen-50" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-49" data-next="screen-51">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Discussion Forums</span>
-            </div>
-          </div>
-
-          <!-- Forum Categories -->
-          <div class="grid grid-cols-2 gap-3">
-            <button class="h-16 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-400 p-2">
-              <span>Investment Tips</span>
-              <span class="text-xs">24 Topics</span>
-            </button>
-            <button class="h-16 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-400 p-2">
-              <span>Savings Goals</span>
-              <span class="text-xs">18 Topics</span>
-            </button>
-            <button class="h-16 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-400 p-2">
-              <span>Market Updates</span>
-              <span class="text-xs">32 Topics</span>
-            </button>
-            <button class="h-16 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-400 p-2">
-              <span>Ask Expert</span>
-              <span class="text-xs">15 Topics</span>
-            </button>
-          </div>
-
-          <!-- Recent Discussions -->
-          <div class="space-y-3">
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                  <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full"></div>
-                  <span class="text-gray-400">Best savings account?</span>
+        <!-- Sign Up Screen -->
+        <div id="signup-screen" class="screen">
+            <div class="screen-content flex flex-col h-full">
+                <div class="flex justify-end mb-4">
+                    <button class="text-sm text-gray-600 border border-gray-300 rounded-full px-3 py-1">
+                        English | اردو
+                    </button>
                 </div>
-                <span class="text-sm text-gray-400">12 replies</span>
-              </div>
-            </div>
 
-            <div class="border-2 border-dashed border-gray-300 rounded p-4">
-              <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                  <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full"></div>
-                  <span class="text-gray-400">Stock market tips</span>
+                <div class="flex-grow">
+                    <div class="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-6"></div>
+                    <h2 class="text-xl font-semibold text-center mb-6">Create Account</h2>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <input type="text" placeholder="Full Name" class="w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <input type="tel" placeholder="Phone Number" class="w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <input type="password" placeholder="Create Password" class="w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
                 </div>
-                <span class="text-sm text-gray-400">8 replies</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-49')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('screen-51')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Next</button>
-          </div>
+                <div class="mt-auto">
+                    <button onclick="goToRoadmap()" class="w-full bg-gray-800 text-white py-3 rounded-lg mb-4">Create Account</button>
+                    <p class="text-sm text-center">Already have an account? <button class="text-gray-800">Sign In</button></p>
+                </div>
+            </div>
         </div>
-      </section>
 
-      <!-- Community: Challenges -->
-      <section id="screen-51" class="screen hidden bg-white border-2 border-dashed border-gray-300 rounded-lg p-6" data-prev="screen-50">
-        <div class="space-y-6">
-          <!-- Header -->
-          <div class="text-center">
-            <div class="h-8 bg-gray-100 rounded flex items-center justify-center">
-              <span class="text-gray-400">Heading: Challenges</span>
-            </div>
-          </div>
+        <!-- Roadmap Screen -->
+        <div id="roadmap-screen" class="screen">
+            <div class="screen-content flex flex-col h-full">
+                <div class="flex-grow overflow-y-auto px-6 py-8">
+                    <!-- Header -->
+                    <div class="border-2 rounded-lg p-6 mb-8">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                            </svg>
+                            <h1 class="text-xl font-medium">Your financial journey starts here!</h1>
+                        </div>
+                    </div>
 
-          <!-- Active Challenges -->
-          <div class="space-y-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400 font-medium">30-Day Saving Challenge</span>
-                <div class="text-sm text-gray-400">5 days left</div>
-              </div>
-              <div class="h-2 bg-gray-100 rounded-full">
-                <div class="w-3/4 h-2 bg-gray-300 rounded-full"></div>
-              </div>
-              <div class="flex justify-between text-sm text-gray-400">
-                <span>Current: ₨ 15,000</span>
-                <span>Goal: ₨ 20,000</span>
-              </div>
-            </div>
+                    <!-- Journey Steps -->
+                    <div class="relative py-8 px-4">
+                        <div class="absolute left-1/2 top-12 bottom-12 w-px border-l-2 border-dashed border-gray-300"></div>
 
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-400 font-medium">Investment Challenge</span>
-                <div class="text-sm text-gray-400">2 weeks left</div>
-              </div>
-              <div class="h-2 bg-gray-100 rounded-full">
-                <div class="w-1/2 h-2 bg-gray-300 rounded-full"></div>
-              </div>
-              <div class="flex justify-between text-sm text-gray-400">
-                <span>Returns: 8%</span>
-                <span>Target: 12%</span>
-              </div>
-            </div>
-          </div>
+                        <div class="space-y-16">
+                            <div class="relative flex items-center">
+                                <div class="absolute w-32 h-0.5 bg-gray-300 right-1/2 top-1/2"></div>
+                                <div class="w-48 h-16 border-2 rounded-full flex items-center justify-center bg-white relative z-10 text-sm text-center px-2">
+                                    Set up your profile
+                                </div>
+                            </div>
 
-          <!-- Leaderboard -->
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-            <div class="text-gray-400 mb-3">Top Performers</div>
-            <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                    <span class="text-gray-400">1</span>
-                  </div>
-                  <span class="text-gray-400">Sarah A.</span>
+                            <div class="relative flex items-center justify-end">
+                                <div class="absolute w-32 h-0.5 bg-gray-300 left-1/2 top-1/2"></div>
+                                <div class="w-48 h-16 border-2 rounded-full flex items-center justify-center bg-white relative z-10 text-sm text-center px-2">
+                                    Take the money quiz
+                                </div>
+                            </div>
+
+                            <div class="relative flex items-center">
+                                <div class="absolute w-32 h-0.5 bg-gray-300 right-1/2 top-1/2"></div>
+                                <div class="w-48 h-16 border-2 rounded-full flex items-center justify-center bg-white relative z-10 text-sm text-center px-2">
+                                    Build your budget
+                                </div>
+                            </div>
+
+                            <div class="relative flex items-center justify-end">
+                                <div class="absolute w-32 h-0.5 bg-gray-300 left-1/2 top-1/2"></div>
+                                <div class="w-48 h-16 border-2 rounded-full flex items-center justify-center bg-white relative z-10 text-sm text-center px-2">
+                                    Track expenses daily
+                                </div>
+                            </div>
+
+                            <div class="relative flex items-center">
+                                <div class="absolute w-32 h-0.5 bg-gray-300 right-1/2 top-1/2"></div>
+                                <div class="w-48 h-16 border-2 rounded-full flex items-center justify-center bg-white relative z-10 text-sm text-center px-2">
+                                    Achieve your goals
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <span class="text-gray-400">₨ 25,000</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                  <div class="w-8 h-8 border-2 border-dashed border-gray-300 rounded-full flex items-center justify-center">
-                    <span class="text-gray-400">2</span>
-                  </div>
-                  <span class="text-gray-400">Amina K.</span>
-                </div>
-                <span class="text-gray-400">₨ 22,000</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- Navigation -->
-          <div class="flex justify-between">
-            <button onclick="showScreen('screen-50')" class="px-6 py-3 bg-gray-100 rounded text-gray-400">Button: Back</button>
-            <button onclick="showScreen('dashboard')" class="px-6 py-3 border-2 border-dashed border-gray-300 rounded text-gray-400">Button: Done</button>
-          </div>
+                <!-- Bottom Section -->
+                <div class="mt-auto p-6">
+                    <button onclick="showLanguagePopup()" class="w-full py-4 border-2 rounded-full text-center mb-8">
+                        Let's get started.
+                    </button>
+                    <div class="flex justify-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-black"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </section>
 
-      <!-- End Community Features Module -->
+        <!-- Profile Selection Screen -->
+        <div id="profile-selection-screen" class="screen">
+            <div class="screen-content flex flex-col h-full p-4">
+                <h2 class="text-lg font-medium text-center mb-6">
+                    Which of these describes you the best?
+                </h2>
 
-      <!-- End Tracking & Analytics Module -->
+                <div class="grid grid-cols-2 gap-3 flex-grow">
+                    <label class="block p-3 border-2 border-gray-200 rounded-lg hover:border-gray-400 cursor-pointer profile-option">
+                        <div class="flex flex-col items-center">
+                            <input type="radio" name="profile" value="student" class="hidden" onchange="enableProfileContinue()">
+                            <svg class="w-8 h-8 mb-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                            <span class="text-gray-800 font-medium text-sm">Student</span>
+                            <span class="text-xs text-gray-500">Learning & saving</span>
+                        </div>
+                    </label>
+                    
+                    <label class="block p-3 border-2 border-gray-200 rounded-lg hover:border-gray-400 cursor-pointer profile-option">
+                        <div class="flex flex-col items-center">
+                            <input type="radio" name="profile" value="working" class="hidden" onchange="enableProfileContinue()">
+                            <svg class="w-8 h-8 mb-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span class="text-gray-800 font-medium text-sm">Working professional</span>
+                            <span class="text-xs text-gray-500">Career focused</span>
+                        </div>
+                    </label>
+                    
+                    <label class="block p-3 border-2 border-gray-200 rounded-lg hover:border-gray-400 cursor-pointer profile-option">
+                        <div class="flex flex-col items-center">
+                            <input type="radio" name="profile" value="housewife" class="hidden" onchange="enableProfileContinue()">
+                            <svg class="w-8 h-8 mb-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span class="text-gray-800 font-medium text-sm">Housewife</span>
+                            <span class="text-xs text-gray-500">Managing home</span>
+                        </div>
+                    </label>
+                    
+                    <label class="block p-3 border-2 border-gray-200 rounded-lg hover:border-gray-400 cursor-pointer profile-option">
+                        <div class="flex flex-col items-center">
+                            <input type="radio" name="profile" value="blue-collar" class="hidden" onchange="enableProfileContinue()">
+                            <svg class="w-8 h-8 mb-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                            </svg>
+                            <span class="text-gray-800 font-medium text-sm">Blue collar worker</span>
+                            <span class="text-xs text-gray-500">Skilled labor</span>
+                        </div>
+                    </label>
+                    
+                    <label class="block p-3 border-2 border-gray-200 rounded-lg hover:border-gray-400 cursor-pointer profile-option">
+                        <div class="flex flex-col items-center">
+                            <input type="radio" name="profile" value="unemployed" class="hidden" onchange="enableProfileContinue()">
+                            <svg class="w-8 h-8 mb-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="text-gray-800 font-medium text-sm">Currently unemployed</span>
+                            <span class="text-xs text-gray-500">Seeking opportunities</span>
+                        </div>
+                    </label>
 
+                    <label class="block p-3 border-2 border-gray-200 rounded-lg hover:border-gray-400 cursor-pointer profile-option">
+                        <div class="flex flex-col items-center">
+                            <input type="radio" name="profile" value="retired" class="hidden" onchange="enableProfileContinue()">
+                            <svg class="w-8 h-8 mb-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="text-gray-800 font-medium text-sm">Retired/Elderly</span>
+                            <span class="text-xs text-gray-500">Planning for future</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="mt-4">
+                    <button onclick="goToNameInput()" class="w-full bg-gray-800 text-white py-3 rounded-lg mb-4" id="profile-continue-btn" style="opacity: 0.5;" disabled>Continue</button>
+                    <div class="flex justify-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-black"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Name Input Screen -->
+        <div id="name-input-screen" class="screen">
+            <div class="screen-content flex flex-col h-full p-4">
+                <div class="flex-grow flex flex-col justify-center">
+                    <div class="text-center mb-8">
+                        <div class="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-6"></div>
+                        <h2 class="text-xl font-semibold mb-2">What should we call you?</h2>
+                        <p class="text-sm text-gray-600">This helps us personalize your experience</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <input type="text" id="user-name" placeholder="Enter your name" class="w-full p-3 border border-gray-300 rounded-lg text-center" oninput="enableNameContinue()">
+                    </div>
+                </div>
+
+                <div class="mt-auto">
+                    <button onclick="goToDashboard()" class="w-full bg-gray-800 text-white py-3 rounded-lg mb-4" id="name-continue-btn" style="opacity: 0.5;" disabled>Continue to Dashboard</button>
+                    <div class="flex justify-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-black"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    function showScreen(screenId) {
-      // Hide all screens
-      document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.add('hidden');
-      });
-      
-      // Show selected screen
-      const screen = document.getElementById(screenId);
-      if (screen) {
-        screen.classList.remove('hidden');
-        // Scroll to top when changing screens
-        window.scrollTo(0, 0);
-      }
-    }
+    <script>
+        let selectedLanguage = null;
+        let userName = '';
 
-    // Show welcome screen by default
-    showScreen('welcome');
-  </script>
+        // Utility function to show screens
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Navigation functions
+        function goToSignUp() {
+            showScreen('signup-screen');
+        }
+        
+        function goToRoadmap() {
+            showScreen('roadmap-screen');
+        }
+        
+        function goToProfileSelection() {
+            showScreen('profile-selection-screen');
+        }
+        
+        function goToNameInput() {
+            showScreen('name-input-screen');
+        }
+        
+        function goToDashboard() {
+            // Redirect to dashboard.html with user data
+            const name = userName || 'Friend';
+            window.location.href = `dashboard.html?name=${encodeURIComponent(name)}`;
+        }
+
+        // Language popup functions
+        function showLanguagePopup() {
+            document.getElementById('language-popup').classList.add('active');
+        }
+
+        function selectLanguage(language) {
+            selectedLanguage = language;
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.language-option').classList.add('selected');
+            
+            const confirmBtn = document.getElementById('confirm-language-btn');
+            confirmBtn.style.opacity = '1';
+            confirmBtn.disabled = false;
+        }
+
+        function confirmLanguage() {
+            if (selectedLanguage) {
+                document.getElementById('language-popup').classList.remove('active');
+                goToProfileSelection();
+            }
+        }
+
+        // Enable/disable continue buttons
+        function enableProfileContinue() {
+            const continueBtn = document.getElementById('profile-continue-btn');
+            continueBtn.style.opacity = '1';
+            continueBtn.disabled = false;
+        }
+
+        function enableNameContinue() {
+            const input = document.getElementById('user-name');
+            const continueBtn = document.getElementById('name-continue-btn');
+            userName = input.value.trim();
+            
+            continueBtn.style.opacity = userName ? '1' : '0.5';
+            continueBtn.disabled = !userName;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle terms checkbox
+            document.getElementById('terms-checkbox').addEventListener('change', function(e) {
+                const continueBtn = document.getElementById('continue-btn');
+                continueBtn.style.opacity = e.target.checked ? '1' : '0.5';
+                continueBtn.disabled = !e.target.checked;
+            });
+
+            // Handle profile selection visual feedback
+            document.querySelectorAll('input[name="profile"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.querySelectorAll('.profile-option').forEach(option => {
+                        option.classList.remove('border-gray-800', 'bg-gray-50');
+                        option.classList.add('border-gray-200');
+                    });
+                    
+                    if (this.checked) {
+                        const parentLabel = this.closest('.profile-option');
+                        parentLabel.classList.remove('border-gray-200');
+                        parentLabel.classList.add('border-gray-800', 'bg-gray-50');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
-</html> 
+</html>

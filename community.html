@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Module Wireframe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border: 12px solid #333;
+            border-radius: 36px;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            margin: 0 auto;
+        }
+
+        .phone-container {
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            padding-bottom: 100px; /* More space for fixed bottom nav */
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .back-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .add-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: #9b59b6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .section-card:hover {
+            border-color: #9b59b6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .icon-placeholder {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .stories-icon { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .forum-icon { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .challenge-icon { background: linear-gradient(135deg, #f39c12, #d68910); }
+
+        .bottom-nav {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid #E5E7EB;
+        padding: 8px 16px 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;   
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            flex: 1;
+        }
+
+        .nav-item:hover {
+            background: #f8f9fa;
+        }
+
+        .nav-item.active {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            background: #bbb;
+            border-radius: 5px;
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active .nav-icon {
+            background: white;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #eee;
+            transition: all 0.2s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .story-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 12px;
+        }
+
+        .story-info {
+            flex: 1;
+        }
+
+        .username {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+
+        .achievement-badge {
+            background: linear-gradient(135deg, #f39c12, #d68910);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .story-content {
+            font-size: 13px;
+            color: #2c3e50;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .story-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .story-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            color: #9b59b6;
+        }
+
+        .forum-topic {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .forum-topic:hover {
+            border-color: #3498db;
+            transform: translateX(5px);
+        }
+
+        .topic-category {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .topic-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .topic-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+
+        .challenge-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 2px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .challenge-card:hover {
+            border-color: #f39c12;
+            transform: translateY(-2px);
+        }
+
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .challenge-icon {
+            width: 40px;
+            height: 40px;
+            background: #f39c12;
+            border-radius: 8px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .challenge-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #27ae60;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .challenge-status.upcoming {
+            background: #95a5a6;
+        }
+
+        .challenge-status.active {
+            background: #e74c3c;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f39c12, #d68910);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .challenge-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+
+        .description {
+            font-size: 13px;
+            color: #7f8c8d;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            background: white;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: #9b59b6;
+            background: white;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        /* Scrollbar styling */
+        .content-area::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .content-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content-area::-webkit-scrollbar-thumb {
+            background: #dee2e6;
+            border-radius: 2px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #eee;
+        }
+
+        .rank-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            background: #f39c12;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+            margin-right: 12px;
+        }
+
+        .rank-badge.gold {
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+        }
+
+        .rank-badge.silver {
+            background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+        }
+
+        .rank-badge.bronze {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .user-score {
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+
+        .points {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="phone-container">
+            <!-- Scrollable Content Area -->
+            <div class="content-area">
+                <!-- Main Community Hub Screen -->
+                <div class="screen active" id="main-screen">
+                    <div class="header">
+                        <div style="width: 35px;"></div>
+                        <h1>Community</h1>
+                        <div style="width: 35px;"></div>
+                    </div>
+
+                    <input type="text" class="search-bar" placeholder="Search community...">
+
+                    <!-- Main Community Sections -->
+                    <div class="section-card" onclick="showScreen('success-stories')">
+                        <div class="icon-placeholder stories-icon">🏆</div>
+                        <h2>Success Stories</h2>
+                        <p class="description">Share your financial achievements and inspire others</p>
+                        <small style="color: #7f8c8d;">24 new stories this week</small>
+                    </div>
+
+                    <div class="section-card" onclick="showScreen('discussion-forums')">
+                        <div class="icon-placeholder forum-icon">💬</div>
+                        <h2>Discussion Forums</h2>
+                        <p class="description">Ask questions and discuss financial topics</p>
+                        <small style="color: #7f8c8d;">156 active discussions</small>
+                    </div>
+
+                    <div class="section-card" onclick="showScreen('challenges')">
+                        <div class="icon-placeholder challenge-icon">🎯</div>
+                        <h2>Challenges & Competitions</h2>
+                        <p class="description">Join fun challenges to improve your financial habits</p>
+                        <small style="color: #7f8c8d;">3 active challenges</small>
+                    </div>
+                </div>
+
+                <!-- Success Stories Screen -->
+                <div class="screen" id="success-stories">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+                        <h1>Success Stories</h1>
+                        <button class="add-btn">+</button>
+                    </div>
+
+                    <div class="tab-nav">
+                        <button class="tab-btn active">Recent</button>
+                        <button class="tab-btn">Popular</button>
+                        <button class="tab-btn">Following</button>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="user-avatar">AS</div>
+                            <div class="story-info">
+                                <div class="username">Ayesha Shah</div>
+                                <div class="timestamp">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="achievement-badge">🎯 Emergency Fund Complete</div>
+                        <div class="story-content">
+                            Finally saved PKR 150,000 for my emergency fund! It took me 8 months but the Learning Hub modules really helped me stay on track. Starting my investment journey next! 💪
+                        </div>
+                        <div class="story-stats">
+                            <div class="story-actions">
+                                <button class="action-btn">👍 24</button>
+                                <button class="action-btn">💬 8</button>
+                                <button class="action-btn">📤 Share</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="user-avatar">FN</div>
+                            <div class="story-info">
+                                <div class="username">Fatima Noor</div>
+                                <div class="timestamp">5 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="achievement-badge">💰 First Investment</div>
+                        <div class="story-content">
+                            Bought my first mutual fund units today! PKR 5,000 in a balanced fund. Small steps but I'm so excited to start growing my wealth. Thanks to this community for all the guidance! 🌱
+                        </div>
+                        <div class="story-stats">
+                            <div class="story-actions">
+                                <button class="action-btn">👍 18</button>
+                                <button class="action-btn">💬 12</button>
+                                <button class="action-btn">📤 Share</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="user-avatar">SH</div>
+                            <div class="story-info">
+                                <div class="username">Sana Hassan</div>
+                                <div class="timestamp">1 day ago</div>
+                            </div>
+                        </div>
+                        <div class="achievement-badge">🏠 Home Savings Goal</div>
+                        <div class="story-content">
+                            Reached 50% of my home down payment goal! PKR 500,000 saved so far. The budget planner calculator has been a game changer for tracking my progress. 🏡
+                        </div>
+                        <div class="story-stats">
+                            <div class="story-actions">
+                                <button class="action-btn">👍 32</button>
+                                <button class="action-btn">💬 15</button>
+                                <button class="action-btn">📤 Share</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="user-avatar">MK</div>
+                            <div class="story-info">
+                                <div class="username">Maria Khan</div>
+                                <div class="timestamp">2 days ago</div>
+                            </div>
+                        </div>
+                        <div class="achievement-badge">📈 Investment Growth</div>
+                        <div class="story-content">
+                            My investment portfolio hit PKR 100,000 today! Started with just PKR 10,000 two years ago. Consistency and patience really pay off! 📊
+                        </div>
+                        <div class="story-stats">
+                            <div class="story-actions">
+                                <button class="action-btn">👍 45</button>
+                                <button class="action-btn">💬 22</button>
+                                <button class="action-btn">📤 Share</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Discussion Forums Screen -->
+                <div class="screen" id="discussion-forums">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+                        <h1>Discussion Forums</h1>
+                        <button class="add-btn">+</button>
+                    </div>
+
+                    <div class="tab-nav">
+                        <button class="tab-btn active">All Topics</button>
+                        <button class="tab-btn">My Posts</button>
+                        <button class="tab-btn">Saved</button>
+                    </div>
+
+                    <div class="forum-topic" onclick="showScreen('forum-detail')">
+                        <div class="topic-category">INVESTMENT</div>
+                        <div class="topic-title">Best mutual funds for beginners in Pakistan?</div>
+                        <div class="topic-meta">
+                            <span>Started by Zara Ahmed • 23 replies</span>
+                            <span>2h ago</span>
+                        </div>
+                    </div>
+
+                    <div class="forum-topic" onclick="showScreen('forum-detail')">
+                        <div class="topic-category">BUDGETING</div>
+                        <div class="topic-title">How to reduce monthly grocery expenses?</div>
+                        <div class="topic-meta">
+                            <span>Started by Saima Ali • 45 replies</span>
+                            <span>4h ago</span>
+                        </div>
+                    </div>
+
+                    <div class="forum-topic" onclick="showScreen('forum-detail')">
+                        <div class="topic-category">SAVINGS</div>
+                        <div class="topic-title">Emergency fund: 3 months or 6 months expenses?</div>
+                        <div class="topic-meta">
+                            <span>Started by Rabia Malik • 18 replies</span>
+                            <span>6h ago</span>
+                        </div>
+                    </div>
+
+                    <div class="forum-topic" onclick="showScreen('forum-detail')">
+                        <div class="topic-category">INSURANCE</div>
+                        <div class="topic-title">Health insurance recommendations for families</div>
+                        <div class="topic-meta">
+                            <span>Started by Nida Rashid • 12 replies</span>
+                            <span>8h ago</span>
+                        </div>
+                    </div>
+
+                    <div class="forum-topic" onclick="showScreen('forum-detail')">
+                        <div class="topic-category">REAL ESTATE</div>
+                        <div class="topic-title">Is now a good time to buy property in Lahore?</div>
+                        <div class="topic-meta">
+                            <span>Started by Hira Siddique • 31 replies</span>
+                            <span>12h ago</span>
+                        </div>
+                    </div>
+
+                    <div class="forum-topic" onclick="showScreen('forum-detail')">
+                        <div class="topic-category">TAXES</div>
+                        <div class="topic-title">Tax implications of freelance income</div>
+                        <div class="topic-meta">
+                            <span>Started by Amna Tariq • 9 replies</span>
+                            <span>1d ago</span>
+                        </div>
+                    </div>
+
+                    <div class="forum-topic" onclick="showScreen('forum-detail')">
+                        <div class="topic-category">DEBT</div>
+                        <div class="topic-title">Strategies to pay off credit card debt faster</div>
+                        <div class="topic-meta">
+                            <span>Started by Kiran Javed • 27 replies</span>
+                            <span>1d ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Challenges & Competitions Screen -->
+                <div class="screen" id="challenges">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('main-screen')">←</button>
+                        <h1>Challenges</h1>
+                        <button class="add-btn" onclick="showScreen('leaderboard')">🏆</button>
+                    </div>
+
+                    <div class="tab-nav">
+                        <button class="tab-btn active">Active</button>
+                        <button class="tab-btn">Completed</button>
+                        <button class="tab-btn">Upcoming</button>
+                    </div>
+
+                    <div class="challenge-card">
+                        <div class="challenge-status active">Active</div>
+                        <div class="challenge-header">
+                            <div class="challenge-icon">💰</div>
+                            <div>
+                                <h3 style="font-size: 14px;">30-Day Savings Challenge</h3>
+                                <div class="description">Save PKR 100 more each day for 30 days</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 67%;"></div>
+                        </div>
+                        <div class="challenge-stats">
+                            <span>Day 20 of 30</span>
+                            <span>2,847 participants</span>
+                        </div>
+                    </div>
+
+                    <div class="challenge-card">
+                        <div class="challenge-status active">Active</div>
+                        <div class="challenge-header">
+                            <div class="challenge-icon">📚</div>
+                            <div>
+                                <h3 style="font-size: 14px;">Learning Streak Challenge</h3>
+                                <div class="description">Complete one learning module daily for 7 days</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 43%;"></div>
+                        </div>
+                        <div class="challenge-stats">
+                            <span>Day 3 of 7</span>
+                            <span>1,203 participants</span>
+                        </div>
+                    </div>
+
+                    <div class="challenge-card">
+                        <div class="challenge-status active">Active</div>
+                        <div class="challenge-header">
+                            <div class="challenge-icon">🎯</div>
+                            <div>
+                                <h3 style="font-size: 14px;">Budget Tracking Challenge</h3>
+                                <div class="description">Track all expenses for 14 consecutive days</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 86%;"></div>
+                        </div>
+                        <div class="challenge-stats">
+                            <span>Day 12 of 14</span>
+                            <span>956 participants</span>
+                        </div>
+                    </div>
+
+                    <div class="challenge-card">
+                        <div class="challenge-status upcoming">Upcoming</div>
+                        <div class="challenge-header">
+                            <div class="challenge-icon">📈</div>
+                            <div>
+                                <h3 style="font-size: 14px;">Investment Knowledge Quiz</h3>
+                                <div class="description">Test your investment knowledge and win prizes</div>
+                            </div>
+                        </div>
+                        <div class="challenge-stats">
+                            <span>Starts in 3 days</span>
+                            <span>Register now</span>
+                        </div>
+                    </div>
+
+                    <div class="challenge-card">
+                        <div class="challenge-status upcoming">Upcoming</div>
+                        <div class="challenge-header">
+                            <div class="challenge-icon">🏠</div>
+                            <div>
+                                <h3 style="font-size: 14px;">Home Buying Preparation</h3>
+                                <div class="description">Complete all home buying modules in 21 days</div>
+                            </div>
+                        </div>
+                        <div class="challenge-stats">
+                            <span>Starts in 1 week</span>
+                            <span>Early bird registration</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leaderboard Screen -->
+                <div class="screen" id="leaderboard">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('challenges')">←</button>
+                        <h1>Leaderboard</h1>
+                        <div style="width: 35px;"></div>
+                    </div>
+
+                    <div class="tab-nav">
+                        <button class="tab-btn active">This Month</button>
+                        <button class="tab-btn">All Time</button>
+                        <button class="tab-btn">Friends</button>
+                    </div>
+
+                    <div class="leaderboard-item">
+                        <div class="rank-badge silver">2</div>
+                        <div class="user-info">
+                            <div class="user-name">Fatima Noor</div>
+                            <div class="user-score">Completed 10 challenges</div>
+                        </div>
+                        <div class="points">2,180 pts</div>
+                    </div>
+
+                    <div class="leaderboard-item">
+                        <div class="rank-badge bronze">3</div>
+                        <div class="user-info">
+                            <div class="user-name">Sana Hassan</div>
+                            <div class="user-score">Completed 9 challenges</div>
+                        </div>
+                        <div class="points">1,920 pts</div>
+                    </div>
+
+                    <div class="leaderboard-item">
+                        <div class="rank-badge">4</div>
+                        <div class="user-info">
+                            <div class="user-name">Maria Khan</div>
+                            <div class="user-score">Completed 8 challenges</div>
+                        </div>
+                        <div class="points">1,640 pts</div>
+                    </div>
+
+                    <div class="leaderboard-item">
+                        <div class="rank-badge">5</div>
+                        <div class="user-info">
+                            <div class="user-name">Zara Ahmed</div>
+                            <div class="user-score">Completed 7 challenges</div>
+                        </div>
+                        <div class="points">1,470 pts</div>
+                    </div>
+
+                    <div class="leaderboard-item">
+                        <div class="rank-badge">6</div>
+                        <div class="user-info">
+                            <div class="user-name">Rabia Malik</div>
+                            <div class="user-score">Completed 6 challenges</div>
+                        </div>
+                        <div class="points">1,290 pts</div>
+                    </div>
+
+                    <div class="leaderboard-item" style="border: 2px solid #9b59b6; background: #f8f5ff;">
+                        <div class="rank-badge" style="background: #9b59b6;">12</div>
+                        <div class="user-info">
+                            <div class="user-name">You (Rania)</div>
+                            <div class="user-score">Completed 4 challenges</div>
+                        </div>
+                        <div class="points">850 pts</div>
+                    </div>
+                </div>
+
+                <!-- Forum Detail Screen -->
+                <div class="screen" id="forum-detail">
+                    <div class="header">
+                        <button class="back-btn" onclick="showScreen('discussion-forums')">←</button>
+                        <h1>Forum Topic</h1>
+                        <button class="add-btn">⋮</button>
+                    </div>
+
+                    <div style="background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #eee;">
+                        <div class="topic-category">INVESTMENT</div>
+                        <h2 style="margin-bottom: 10px;">Best mutual funds for beginners in Pakistan?</h2>
+                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                            <div class="user-avatar" style="width: 30px; height: 30px; font-size: 12px;">ZA</div>
+                            <div style="margin-left: 8px;">
+                                <div style="font-size: 13px; font-weight: 600;">Zara Ahmed</div>
+                                <div style="font-size: 11px; color: #7f8c8d;">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 13px; color: #2c3e50; line-height: 1.4; margin-bottom: 10px;">
+                            I'm new to investing and want to start with mutual funds. I have PKR 10,000 to invest monthly. Which funds would you recommend for someone just starting? I'm particularly interested in balanced funds. Any advice would be helpful! 🙏
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn">👍 15</button>
+                            <button class="action-btn">💬 23</button>
+                            <button class="action-btn">📤 Share</button>
+                        </div>
+                    </div>
+
+                    <!-- Replies -->
+                    <div style="background: white; border-radius: 10px; padding: 12px; margin-bottom: 10px; border-left: 3px solid #9b59b6;">
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div class="user-avatar" style="width: 25px; height: 25px; font-size: 11px;">AS</div>
+                            <div style="margin-left: 8px;">
+                                <div style="font-size: 12px; font-weight: 600;">Ayesha Shah</div>
+                                <div style="font-size: 10px; color: #7f8c8d;">1 hour ago</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: #2c3e50; line-height: 1.4; margin-bottom: 8px;">
+                            I'd recommend starting with UBL Growth & Income Fund or HBL Equity Fund. Both have good track records and are suitable for beginners. Start with a smaller amount to test the waters!
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn">👍 8</button>
+                            <button class="action-btn">💬 Reply</button>
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div class="user-avatar" style="width: 25px; height: 25px; font-size: 11px;">FN</div>
+                            <div style="margin-left: 8px;">
+                                <div style="font-size: 12px; font-weight: 600;">Fatima Noor</div>
+                                <div style="font-size: 10px; color: #7f8c8d;">45 minutes ago</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: #2c3e50; line-height: 1.4; margin-bottom: 8px;">
+                            Also consider Al Meezan Mutual Fund and JS Growth Fund. Make sure to read the fund factsheets and understand the risk level. Diversification is key! 📊
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn">👍 5</button>
+                            <button class="action-btn">💬 Reply</button>
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div class="user-avatar" style="width: 25px; height: 25px; font-size: 11px;">SH</div>
+                            <div style="margin-left: 8px;">
+                                <div style="font-size: 12px; font-weight: 600;">Sana Hassan</div>
+                                <div style="font-size: 10px; color: #7f8c8d;">30 minutes ago</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: #2c3e50; line-height: 1.4; margin-bottom: 8px;">
+                            Don't forget to check the expense ratios! Lower fees mean more money stays in your pocket. I personally invest in index funds for lower costs.
+                        </div>
+                        <div class="story-actions">
+                            <button class="action-btn">👍 12</button>
+                            <button class="action-btn">💬 Reply</button>
+                        </div>
+                    </div>
+
+                    <!-- Reply Input -->
+                    <div style="background: white; border-radius: 10px; padding: 12px; border: 1px solid #eee;">
+                        <textarea style="width: 100%; border: none; outline: none; resize: none; font-size: 13px;" rows="3" placeholder="Share your thoughts..."></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                            <div style="display: flex; gap: 10px;">
+                                <button style="background: none; border: none; color: #7f8c8d; font-size: 16px;">📷</button>
+                                <button style="background: none; border: none; color: #7f8c8d; font-size: 16px;">📎</button>
+                            </div>
+                            <button style="background: #9b59b6; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px;">Post Reply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fixed Bottom Navigation -->
+    <div class="bottom-nav">
+    <button onclick="navigateToPage('dashboard.html?quiz=completed')" class="flex flex-col items-center">
+        <div class="w-6 h-6 bg-gray-400 rounded-lg mb-1"></div>
+        <span class="text-xs text-gray-400">Home</span>
+    </button>
+    <button onclick="navigateToPage('community.html')" class="flex flex-col items-center">
+        <div class="w-6 h-6 bg-purple-600 rounded-lg mb-1"></div>
+        <span class="text-xs text-purple-600 font-semibold">Community</span>
+    </button>
+    <button onclick="navigateToPage('learn.html')" class="flex flex-col items-center">
+        <div class="w-6 h-6 bg-gray-400 rounded-lg mb-1"></div>
+        <span class="text-xs text-gray-400">Learn</span>
+    </button>
+    <button onclick="navigateToPage('tracking.html')" class="flex flex-col items-center">
+        <div class="w-6 h-6 bg-gray-400 rounded-lg mb-1"></div>
+        <span class="text-xs text-gray-400">My Money</span>
+    </button>
+    </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            
+            // Show target screen
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+        }
+
+        function navigateToPage(page) {
+        window.location.href = page;
+        }
+
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from siblings
+                    this.parentElement.querySelectorAll('.tab-btn').forEach(sibling => {
+                        sibling.classList.remove('active');
+                    });
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                });
+            });
+
+            // Add hover effects and click feedback
+            const clickableElements = document.querySelectorAll('.section-card, .story-card, .forum-topic, .challenge-card, .leaderboard-item');
+            
+            clickableElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    // Add slight animation feedback
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+            

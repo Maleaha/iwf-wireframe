@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Management Module - Financial App Wireframe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border: 12px solid #333;
+            border-radius: 36px;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            margin: 0 auto;
+        }
+        
+        .screen-content {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .screen {
+            display: none;
+            height: 100%;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+
+        .header-bar {
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+            flex-shrink: 0;
+        }
+
+        .content-area {
+            height: calc(100% - 56px);
+            overflow-y: auto;
+            padding: 16px;
+            background: #F9FAFB;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .button-primary {
+            background: #10B981;
+            color: white;
+            border: 2px solid #10B981;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-weight: 600;
+            text-center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .button-primary:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        .button-secondary {
+            background: white;
+            color: #4B5563;
+            border: 2px solid #D1D5DB;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-weight: 600;
+            text-center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .button-secondary:hover {
+            background: #F9FAFB;
+            border-color: #9CA3AF;
+        }
+
+        .category-item {
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+        }
+
+        .category-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0;
+        }
+
+        .slider {
+            flex: 1;
+            height: 8px;
+            border-radius: 4px;
+            background: #E5E7EB;
+            appearance: none;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #10B981;
+            cursor: pointer;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-good {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .status-warning {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-danger {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .preset-button {
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .preset-button:hover {
+            background: #F9FAFB;
+            border-color: #9CA3AF;
+        }
+
+        .insight-card {
+            border-left: 4px solid #10B981;
+            background: #F0FDF4;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .insight-warning {
+            border-left-color: #F59E0B;
+            background: #FFFBEB;
+        }
+
+        .insight-info {
+            border-left-color: #3B82F6;
+            background: #EFF6FF;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="phone-frame">
+
+        <!-- Budget Overview Screen -->
+        <div id="budget-overview-screen" class="screen active">
+            <div class="screen-content">
+                <!-- Header -->
+                <div class="header-bar">
+                    <a href="dashboard.html?quiz=completed&name=Sara" class="text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                </a>
+                    <h1 class="text-lg font-semibold">Manage Budget</h1>
+                    <button onclick="goToBudgetEdit()" class="text-sm text-blue-600 font-medium">Edit</button>
+                </div>
+
+                <!-- Content -->
+                <div class="content-area">
+                    <!-- Current Budget Summary -->
+                    <div class="card">
+                        <h2 class="font-semibold text-lg mb-3">Current Month Budget</h2>
+                        <div class="text-center mb-4">
+                            <div class="text-2xl font-bold text-gray-800">PKR 25,000</div>
+                            <div class="text-sm text-gray-600">Total Monthly Budget</div>
+                        </div>
+                        
+                        <!-- Overall Progress -->
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Spent This Month</span>
+                                <span>PKR 10,000 / PKR 25,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-green-500" style="width: 40%"></div>
+                            </div>
+                            <div class="text-center mt-2">
+                                <span class="status-badge status-good">On Track</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Allocation -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3">Budget Breakdown</h3>
+                        
+                        <!-- Needs -->
+                        <div class="mb-3">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-medium">Needs (70%)</span>
+                                <span class="text-sm text-gray-600">PKR 7,000 / PKR 17,500</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-red-400" style="width: 40%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">Food, bills, transport, medicine</div>
+                        </div>
+
+                        <!-- Wants -->
+                        <div class="mb-3">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-medium">Wants (20%)</span>
+                                <span class="text-sm text-gray-600">PKR 2,000 / PKR 5,000</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-orange-400" style="width: 40%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">Shopping, treats, entertainment</div>
+                        </div>
+
+                        <!-- Savings -->
+                        <div class="mb-1">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-medium">Savings (10%)</span>
+                                <span class="text-sm text-gray-600">PKR 1,000 / PKR 2,500</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-green-400" style="width: 40%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">Emergency fund, future goals</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <button onclick="goToExpenseCategories()" class="button-secondary">
+                            <div class="text-center">
+                                <div class="w-8 h-8 bg-blue-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
+                                    <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                                </div>
+                                <div class="text-sm font-medium">Categories</div>
+                            </div>
+                        </button>
+                        <button onclick="goToMonthlyReview()" class="button-secondary">
+                            <div class="text-center">
+                                <div class="w-8 h-8 bg-purple-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
+                                    <div class="w-4 h-4 bg-purple-500 rounded"></div>
+                                </div>
+                                <div class="text-sm font-medium">Review</div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Recent Expenses Preview -->
+                    <div class="card">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold">Recent Expenses</h3>
+                            <button class="text-xs text-blue-600">View All</button>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="category-icon bg-red-100">
+                                        <div class="w-4 h-4 bg-red-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium">Grocery Shopping</div>
+                                        <div class="text-xs text-gray-500">Food & Dining</div>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-medium">PKR 2,500</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="category-icon bg-blue-100">
+                                        <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium">Electricity Bill</div>
+                                        <div class="text-xs text-gray-500">Bills & Utilities</div>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-medium">PKR 1,800</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="category-icon bg-orange-100">
+                                        <div class="w-4 h-4 bg-orange-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium">Rickshaw Fare</div>
+                                        <div class="text-xs text-gray-500">Transport</div>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-medium">PKR 200</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Edit Screen -->
+        <div id="budget-edit-screen" class="screen">
+            <div class="screen-content">
+                <!-- Header -->
+                <div class="header-bar">
+                    <button onclick="goToBudgetOverview()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Edit Budget</h1>
+                    <button onclick="saveBudgetChanges()" class="text-sm text-green-600 font-medium">Save</button>
+                </div>
+
+                <!-- Content -->
+                <div class="content-area">
+                    <!-- Monthly Income -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3">Monthly Income</h3>
+                        <div class="border-2 border-gray-200 rounded-lg p-3">
+                            <input type="text" value="PKR 25,000" class="w-full text-lg font-semibold bg-transparent border-none outline-none" id="income-input">
+                        </div>
+                        <div class="text-xs text-gray-500 mt-2">Include all sources: salary, business, family support</div>
+                    </div>
+
+                    <!-- Budget Allocation Sliders -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-4">Budget Allocation</h3>
+                        
+                        <!-- Needs Slider -->
+                        <div class="mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="font-medium">Essential Needs</label>
+                                <span class="text-sm text-gray-600" id="needs-amount">PKR 17,500</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="30" max="80" value="70" class="slider" id="needs-slider" onchange="updateBudgetPreview()">
+                                <span class="text-sm font-medium w-12" id="needs-percent">70%</span>
+                            </div>
+                            <div class="text-xs text-gray-500">Food, bills, transport, medicine</div>
+                        </div>
+
+                        <!-- Wants Slider -->
+                        <div class="mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="font-medium">Personal Wants</label>
+                                <span class="text-sm text-gray-600" id="wants-amount">PKR 5,000</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="10" max="50" value="20" class="slider" id="wants-slider" onchange="updateBudgetPreview()">
+                                <span class="text-sm font-medium w-12" id="wants-percent">20%</span>
+                            </div>
+                            <div class="text-xs text-gray-500">Shopping, treats, entertainment</div>
+                        </div>
+
+                        <!-- Savings Slider -->
+                        <div class="mb-2">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="font-medium">Savings</label>
+                                <span class="text-sm text-gray-600" id="savings-amount">PKR 2,500</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="5" max="30" value="10" class="slider" id="savings-slider" onchange="updateBudgetPreview()">
+                                <span class="text-sm font-medium w-12" id="savings-percent">10%</span>
+                            </div>
+                            <div class="text-xs text-gray-500">Emergency fund, future goals</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Presets -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3">Quick Presets</h3>
+                        <div class="space-y-2">
+                            <button class="preset-button w-full" onclick="applyPreset(70, 20, 10)">
+                                <div class="font-medium text-sm">Conservative (70% Needs, 20% Wants, 10% Savings)</div>
+                                <div class="text-xs text-gray-500">Great for building habits</div>
+                            </button>
+                            <button class="preset-button w-full" onclick="applyPreset(60, 30, 10)">
+                                <div class="font-medium text-sm">Balanced (60% Needs, 30% Wants, 10% Savings)</div>
+                                <div class="text-xs text-gray-500">Good for most people</div>
+                            </button>
+                            <button class="preset-button w-full" onclick="applyPreset(50, 30, 20)">
+                                <div class="font-medium text-sm">Growth Focused (50% Needs, 30% Wants, 20% Savings)</div>
+                                <div class="text-xs text-gray-500">Maximize savings & investments</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Budget Preview -->
+                    <div class="card bg-blue-50 border-blue-200">
+                        <h3 class="font-semibold mb-3 text-blue-800">Preview Your New Budget</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span>Monthly Income:</span>
+                                <span class="font-semibold">PKR 25,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Total Allocated:</span>
+                                <span class="font-semibold" id="total-allocated">PKR 25,000 (100%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expense Categories Screen -->
+        <div id="expense-categories-screen" class="screen">
+            <div class="screen-content">
+                <!-- Header -->
+                <div class="header-bar">
+                    <button onclick="goToBudgetOverview()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Expense Categories</h1>
+                    <button class="text-sm text-blue-600 font-medium">Add New</button>
+                </div>
+
+                <!-- Content -->
+                <div class="content-area">
+                    <!-- Needs Categories -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3 text-red-600">Essential Needs Categories</h3>
+                        <div class="space-y-3">
+                            <div class="category-item">
+                                <div class="flex items-center">
+                                    <div class="category-icon bg-red-100">
+                                        <div class="w-4 h-4 bg-red-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Food & Dining</div>
+                                        <div class="text-xs text-gray-500">PKR 2,500 spent this month</div>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 text-sm">Edit</button>
+                            </div>
+                            <div class="category-item">
+                                <div class="flex items-center">
+                                    <div class="category-icon bg-blue-100">
+                                        <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Bills & Utilities</div>
+                                        <div class="text-xs text-gray-500">PKR 3,000 spent this month</div>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 text-sm">Edit</button>
+                            </div>
+                            <div class="category-item">
+                                <div class="flex items-center">
+                                    <div class="category-icon bg-orange-100">
+                                        <div class="w-4 h-4 bg-orange-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Transport</div>
+                                        <div class="text-xs text-gray-500">PKR 1,500 spent this month</div>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 text-sm">Edit</button>
+                            </div>
+                            <div class="category-item">
+                                <div class="flex items-center">
+                                    <div class="category-icon bg-purple-100">
+                                        <div class="w-4 h-4 bg-purple-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Healthcare</div>
+                                        <div class="text-xs text-gray-500">PKR 0 spent this month</div>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 text-sm">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wants Categories -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3 text-orange-600">Personal Wants Categories</h3>
+                        <div class="space-y-3">
+                            <div class="category-item">
+                                <div class="flex items-center">
+                                    <div class="category-icon bg-pink-100">
+                                        <div class="w-4 h-4 bg-pink-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Shopping</div>
+                                        <div class="text-xs text-gray-500">PKR 1,500 spent this month</div>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 text-sm">Edit</button>
+                            </div>
+                            <div class="category-item">
+                                <div class="flex items-center">
+                                    <div class="category-icon bg-yellow-100">
+                                        <div class="w-4 h-4 bg-yellow-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Entertainment</div>
+                                        <div class="text-xs text-gray-500">PKR 500 spent this month</div>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 text-sm">Edit</button>
+                            </div>
+                            <div class="category-item">
+                                <div class="flex items-center">
+                                    <div class="category-icon bg-indigo-100">
+                                        <div class="w-4 h-4 bg-indigo-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Personal Care</div>
+                                        <div class="text-xs text-gray-500">PKR 0 spent this month</div>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 text-sm">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Savings Categories -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3 text-green-600">Savings Categories</h3>
+                        <div class="space-y-3">
+                            <div class="category-item">
+                                <div class="flex items-center">
+                                    <div class="category-icon bg-green-100">
+                                        <div class="w-4 h-4 bg-green-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Emergency Fund</div>
+                                        <div class="text-xs text-gray-500">PKR 1,000 saved this month</div>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 text-sm">Edit</button>
+                            </div>
+                            <div class="category-item">
+                                <div class="flex items-center">
+                                    <div class="category-icon bg-teal-100">
+                                        <div class="w-4 h-4 bg-teal-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Future Goals</div>
+                                        <div class="text-xs text-gray-500">PKR 0 saved this month</div>
+                                    </div>
+                                </div>
+                                <button class="text-blue-600 text-sm">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Category Button -->
+                    <button class="button-primary w-full">
+                        Add New Category
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Review Screen -->
+        <div id="monthly-review-screen" class="screen">
+            <div class="screen-content">
+                <!-- Header -->
+                <div class="header-bar">
+                    <button onclick="goToBudgetOverview()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Monthly Review</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <!-- Content -->
+                <div class="content-area">
+                    <!-- Month Selector -->
+                    <div class="card">
+                        <div class="flex justify-between items-center">
+                            <button class="text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <h2 class="font-semibold text-lg">July 2024</h2>
+                            <button class="text-gray-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Performance Summary -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3">This Month's Performance</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center">
+                                <div class="text-xl font-bold text-green-600">PKR 15,000</div>
+                                <div class="text-xs text-gray-500">Remaining</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-xl font-bold text-gray-800">40%</div>
+                                <div class="text-xs text-gray-500">Budget Used</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Overall Status -->
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+                            <div class="text-green-700 font-medium text-sm">✓ You're On Track!</div>
+                            <div class="text-green-600 text-xs">You're doing great with your budget this month</div>
+                        </div>
+                    </div>
+
+                    <!-- Budget vs Actual Comparison -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3">Budgeted vs Actual Spending</h3>
+                        
+                        <!-- Needs Comparison -->
+                        <div class="mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium">Essential Needs</span>
+                                <span class="text-xs text-gray-500">PKR 7,000 / PKR 17,500</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-red-200" style="width: 70%"></div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-red-500" style="width: 28%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Budgeted (70%)</span>
+                                <span>Actual (28%)</span>
+                            </div>
+                        </div>
+
+                        <!-- Wants Comparison -->
+                        <div class="mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium">Personal Wants</span>
+                                <span class="text-xs text-gray-500">PKR 2,000 / PKR 5,000</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-orange-200" style="width: 20%"></div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-orange-500" style="width: 8%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Budgeted (20%)</span>
+                                <span>Actual (8%)</span>
+                            </div>
+                        </div>
+
+                        <!-- Savings Comparison -->
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium">Savings</span>
+                                <span class="text-xs text-gray-500">PKR 1,000 / PKR 2,500</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-green-200" style="width: 10%"></div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-green-500" style="width: 4%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Budgeted (10%)</span>
+                                <span>Actual (4%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Spending Categories -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3">Top Spending This Month</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="category-icon bg-blue-100">
+                                        <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Bills & Utilities</div>
+                                        <div class="text-xs text-gray-500">Essential Need</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-semibold text-sm">PKR 3,000</div>
+                                    <div class="text-xs text-gray-500">30%</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="category-icon bg-red-100">
+                                        <div class="w-4 h-4 bg-red-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Food & Dining</div>
+                                        <div class="text-xs text-gray-500">Essential Need</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-semibold text-sm">PKR 2,500</div>
+                                    <div class="text-xs text-gray-500">25%</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="category-icon bg-orange-100">
+                                        <div class="w-4 h-4 bg-orange-500 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-sm">Transport</div>
+                                        <div class="text-xs text-gray-500">Essential Need</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-semibold text-sm">PKR 1,500</div>
+                                    <div class="text-xs text-gray-500">15%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Insights & Tips -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-3">Insights & Tips</h3>
+                        <div class="space-y-3">
+                            <div class="insight-card">
+                                <div class="flex items-start gap-2">
+                                    <div class="w-4 h-4 bg-green-500 rounded-full mt-1 flex-shrink-0"></div>
+                                    <div>
+                                        <div class="text-green-800 font-medium text-sm">Great job on saving!</div>
+                                        <div class="text-green-700 text-xs">You're on track with your savings goal this month.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="insight-card insight-warning">
+                                <div class="flex items-start gap-2">
+                                    <div class="w-4 h-4 bg-yellow-500 rounded-full mt-1 flex-shrink-0"></div>
+                                    <div>
+                                        <div class="text-yellow-800 font-medium text-sm">Watch your transport spending</div>
+                                        <div class="text-yellow-700 text-xs">Consider using public transport or carpooling to reduce costs.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="insight-card">
+                                <div class="flex items-start gap-2">
+                                    <div class="w-4 h-4 bg-green-500 rounded-full mt-1 flex-shrink-0"></div>
+                                    <div>
+                                        <div class="text-green-800 font-medium text-sm">Food budget under control</div>
+                                        <div class="text-green-700 text-xs">Keep up the good work with meal planning and cooking at home!</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="insight-card insight-info">
+                                <div class="flex items-start gap-2">
+                                    <div class="w-4 h-4 bg-blue-500 rounded-full mt-1 flex-shrink-0"></div>
+                                    <div>
+                                        <div class="text-blue-800 font-medium text-sm">Room for improvement</div>
+                                        <div class="text-blue-700 text-xs">You could increase your savings by 5% by reducing wants spending.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export & Share -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="button-secondary">
+                            <div class="text-sm font-medium">Export Report</div>
+                        </button>
+                        <button class="button-secondary">
+                            <div class="text-sm font-medium">Share Progress</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functions
+        function goBackToDashboard() {
+            alert('Going back to main dashboard');
+        }
+
+        function goToBudgetOverview() {
+            showScreen('budget-overview-screen');
+        }
+
+        function goToBudgetEdit() {
+            showScreen('budget-edit-screen');
+            updateBudgetEditDisplay();
+        }
+
+        function goToExpenseCategories() {
+            showScreen('expense-categories-screen');
+        }
+
+        function goToMonthlyReview() {
+            showScreen('monthly-review-screen');
+        }
+
+        function saveBudgetChanges() {
+            alert('Budget changes saved successfully!');
+            goToBudgetOverview();
+        }
+
+        // Budget editing functions
+        function updateBudgetPreview() {
+            const income = 25000; // Fixed for demo
+            const needsSlider = document.getElementById('needs-slider');
+            const wantsSlider = document.getElementById('wants-slider');
+            const savingsSlider = document.getElementById('savings-slider');
+            
+            const needsPercent = parseInt(needsSlider.value);
+            const wantsPercent = parseInt(wantsSlider.value);
+            const savingsPercent = parseInt(savingsSlider.value);
+            
+            // Update percentage displays
+            document.getElementById('needs-percent').textContent = needsPercent + '%';
+            document.getElementById('wants-percent').textContent = wantsPercent + '%';
+            document.getElementById('savings-percent').textContent = savingsPercent + '%';
+            
+            // Calculate amounts
+            const needsAmount = Math.round(income * needsPercent / 100);
+            const wantsAmount = Math.round(income * wantsPercent / 100);
+            const savingsAmount = Math.round(income * savingsPercent / 100);
+            
+            // Update amount displays
+            document.getElementById('needs-amount').textContent = `PKR ${needsAmount.toLocaleString()}`;
+            document.getElementById('wants-amount').textContent = `PKR ${wantsAmount.toLocaleString()}`;
+            document.getElementById('savings-amount').textContent = `PKR ${savingsAmount.toLocaleString()}`;
+            
+            // Update total allocated
+            const totalPercent = needsPercent + wantsPercent + savingsPercent;
+            const totalAmount = needsAmount + wantsAmount + savingsAmount;
+            document.getElementById('total-allocated').textContent = `PKR ${totalAmount.toLocaleString()} (${totalPercent}%)`;
+        }
+
+        function updateBudgetEditDisplay() {
+            // Initialize the budget edit screen with current values
+            updateBudgetPreview();
+        }
+
+        function applyPreset(needs, wants, savings) {
+            document.getElementById('needs-slider').value = needs;
+            document.getElementById('wants-slider').value = wants;
+            document.getElementById('savings-slider').value = savings;
+            updateBudgetPreview();
+        }
+
+        // Utility function to show screens
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateBudgetPreview();
+        });
+    </script>
+</body>
+</html>
