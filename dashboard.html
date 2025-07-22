@@ -227,26 +227,26 @@
 
                 <!-- Secondary Cards -->
                 <div class="px-5 mb-6 flex-1">
-                    <div class="grid grid-cols-2 gap-4 h-full">
-                        <div onclick="navigateToPage('savings.html')" class="border-2 border-gray-200 rounded-xl p-4 bg-white shadow-sm flex flex-col cursor-pointer hover:border-gray-400 hover:bg-gray-50 transition-colors">
-                            <div class="w-8 h-8 bg-pink-200 rounded-lg mb-3 flex items-center justify-center">
+                    <div class="grid grid-cols-2 gap-4 h-full max-h-40">
+                        <div onclick="navigateToPage('savings.html')" class="border-2 border-gray-200 rounded-xl p-3 bg-white shadow-sm flex flex-col cursor-pointer hover:border-gray-400 hover:bg-gray-50 transition-colors overflow-hidden">
+                            <div class="w-8 h-8 bg-pink-200 rounded-lg mb-3 flex items-center justify-center flex-shrink-0">
                                 <div class="w-4 h-4 bg-pink-500 rounded"></div>
                             </div>
-                            <h3 class="font-bold text-base mb-2">Savings 101</h3>
-                            <p class="text-sm text-gray-500 mb-4 flex-1">Build your emergency cushion</p>
-                            <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto">
+                            <h3 class="font-bold text-sm mb-2 leading-tight">Savings 101</h3>
+                            <p class="text-xs text-gray-500 mb-3 flex-1 leading-tight">Build your emergency cushion</p>
+                            <div class="text-xs text-gray-500 flex items-center gap-2 mt-auto">
                                 <span>Explore</span>
                                 <div class="w-2 h-2 bg-gray-400 rounded"></div>
                             </div>
                         </div>
                         
-                        <div onclick="navigateToPage('learn.html')" class="border-2 border-gray-200 rounded-xl p-4 bg-white shadow-sm flex flex-col cursor-pointer hover:border-gray-400 hover:bg-gray-50 transition-colors">
-                            <div class="w-8 h-8 bg-green-200 rounded-lg mb-3 flex items-center justify-center">
+                        <div onclick="navigateToPage('learn.html')" class="border-2 border-gray-200 rounded-xl p-3 bg-white shadow-sm flex flex-col cursor-pointer hover:border-gray-400 hover:bg-gray-50 transition-colors overflow-hidden">
+                            <div class="w-8 h-8 bg-green-200 rounded-lg mb-3 flex items-center justify-center flex-shrink-0">
                                 <div class="w-4 h-4 bg-green-500 rounded"></div>
                             </div>
-                            <h3 class="font-bold text-base mb-2">Investment & Future Planning</h3>
-                            <p class="text-sm text-gray-500 mb-4 flex-1">Plan for growth and retirement</p>
-                            <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto">
+                            <h3 class="font-bold text-sm mb-2 leading-tight">Investment & Future Planning</h3>
+                            <p class="text-xs text-gray-500 mb-3 flex-1 leading-tight">Plan for growth and retirement</p>
+                            <div class="text-xs text-gray-500 flex items-center gap-2 mt-auto">
                                 <span>Explore</span>
                                 <div class="w-2 h-2 bg-gray-400 rounded"></div>
                             </div>
@@ -568,9 +568,6 @@
             document.getElementById(screenId).classList.add('active');
         }
 
-        function navigateToPage(page) {
-        window.location.href = page;
-        }
         // Navigation functions
         function goToQuiz() {
             showScreen('quiz-intro-screen');
@@ -763,7 +760,22 @@
 
         // Navigation function to handle page transitions
         function navigateToPage(filename) {
-            window.location.href = filename;
+            // Pass current state to other pages via URL parameters
+            const params = new URLSearchParams();
+            
+            if (userName) {
+                params.set('name', userName);
+            }
+            
+            if (hasCompletedQuiz) {
+                params.set('quiz', 'completed');
+                if (currentBudget) {
+                    params.set('budget', encodeURIComponent(JSON.stringify(currentBudget)));
+                }
+            }
+            
+            const url = params.toString() ? `${filename}?${params.toString()}` : filename;
+            window.location.href = url;
         }
 
         // Initialize dashboard on page load
@@ -772,6 +784,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const completedQuiz = urlParams.get('quiz');
             const name = urlParams.get('name');
+            const budgetData = urlParams.get('budget');
             
             if (name) {
                 userName = name;
@@ -780,9 +793,38 @@
             
             if (completedQuiz === 'completed') {
                 hasCompletedQuiz = true;
+                
+                // Restore budget data if available
+                if (budgetData) {
+                    try {
+                        currentBudget = JSON.parse(decodeURIComponent(budgetData));
+                        updateBudgetProgressCard();
+                    } catch (e) {
+                        console.log('Could not parse budget data');
+                    }
+                }
+                
                 updateDashboardAfterQuiz();
             }
         });
+
+        // New function to update budget progress card with actual data
+        function updateBudgetProgressCard() {
+            if (currentBudget && hasCompletedQuiz) {
+                const progressCard = document.getElementById('budget-progress-card');
+                
+                // Update budget amounts (using sample usage for demo)
+                const used = Math.round(currentBudget.total * 0.4); // 40% used as example
+                const remaining = currentBudget.total - used;
+                const percentage = Math.round((used / currentBudget.total) * 100);
+                
+                // Update the display
+                progressCard.querySelector('.text-lg.font-bold.text-gray-700').textContent = `PKR ${remaining.toLocaleString()} left`;
+                progressCard.querySelector('.bg-green-500').style.width = `${percentage}%`;
+                progressCard.querySelector('span:contains("Used:")').textContent = `Used: PKR ${used.toLocaleString()}`;
+                progressCard.querySelector('span:contains("Total:")').textContent = `Total: PKR ${currentBudget.total.toLocaleString()}`;
+            }
+        }
     </script>
 </body>
 </html>
