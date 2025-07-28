@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Module - Financial App Wireframe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border: 12px solid #333;
+            border-radius: 36px;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            margin: 0 auto;
+        }
+        
+        .screen-content {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .screen {
+            display: none;
+            height: 100%;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+
+        .header-bar {
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+            flex-shrink: 0;
+        }
+
+        .content-area {
+            height: calc(100% - 56px);
+            overflow-y: auto;
+            padding: 16px;
+            background: #F9FAFB;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .option-card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-card:hover {
+            border-color: #9CA3AF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card.selected {
+            border-color: #3B82F6;
+            background: #EBF8FF;
+        }
+
+        .button-primary {
+            background: #10B981;
+            color: white;
+            border: 2px solid #10B981;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .button-primary:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        .button-primary:disabled {
+            background: #D1D5DB;
+            border-color: #D1D5DB;
+            color: #9CA3AF;
+            cursor: not-allowed;
+        }
+
+        .button-secondary {
+            background: white;
+            color: #4B5563;
+            border: 2px solid #D1D5DB;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .button-secondary:hover {
+            background: #F9FAFB;
+            border-color: #9CA3AF;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 4px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10B981, #059669);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .pathway-card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pathway-card:hover {
+            border-color: #9CA3AF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-placeholder {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .quiz-icon { background: #3B82F6; }
+        .picks-icon { background: #10B981; }
+        .plan-icon { background: #F59E0B; }
+        .learn-icon { background: #8B5CF6; }
+
+        .investment-card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .investment-card:hover {
+            border-color: #9CA3AF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .investment-card.recommended {
+            border-color: #10B981;
+            background: #F0FDF4;
+        }
+
+        .recommended-badge {
+            background: #10B981;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 8px 16px;
+            border: 2px solid #E5E7EB;
+            background: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-button:first-child {
+            border-radius: 8px 0 0 8px;
+            border-right: 1px solid #E5E7EB;
+        }
+
+        .tab-button:last-child {
+            border-radius: 0 8px 8px 0;
+            border-left: 1px solid #E5E7EB;
+        }
+
+        .tab-button.active {
+            background: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+
+        .info-card {
+            background: #EFF6FF;
+            border: 2px solid #3B82F6;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .success-card {
+            background: #F0FDF4;
+            border: 2px solid #10B981;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .warning-card {
+            background: #FFFBEB;
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .risk-conservative {
+            background: #F0FDF4;
+            color: #059669;
+            border: 1px solid #10B981;
+        }
+
+        .risk-moderate {
+            background: #FFFBEB;
+            color: #D97706;
+            border: 1px solid #F59E0B;
+        }
+
+        .risk-aggressive {
+            background: #FEF2F2;
+            color: #DC2626;
+            border: 1px solid #EF4444;
+        }
+
+        .learn-step {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .learn-step:hover {
+            border-color: #8B5CF6;
+            transform: translateY(-2px);
+        }
+
+        .goal-option {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .goal-option:hover {
+            border-color: #9CA3AF;
+            background: #F9FAFB;
+        }
+
+        .goal-option.selected {
+            border-color: #10B981;
+            background: #F0FDF4;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="phone-frame">
+
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="window.location.href='dashboard.html?quiz=completed'" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Investment Journey</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <div class="info-card mb-6">
+                        <h2 class="font-semibold text-blue-800 mb-2">🌟 Let's Understand Your Investment Style</h2>
+                        <p class="text-sm text-blue-700 mb-2">Take a quick quiz to personalize your investment journey.</p>
+                        <div class="text-xs text-blue-600">آئیے آپ کے سرمایہ کاری کے انداز کو سمجھتے ہیں</div>
+                    </div>
+
+                    <!-- Main CTA -->
+                    <div class="card mb-4">
+                        <div class="text-center">
+                            <div class="icon-placeholder quiz-icon mx-auto">
+                                <div class="w-6 h-6 bg-white rounded"></div>
+                            </div>
+                            <h3 class="font-semibold text-lg mb-2">Quick 2-Minute Quiz</h3>
+                            <p class="text-sm text-gray-600 mb-4">Answer 5 simple questions to get your personalized investment profile</p>
+                            <button class="button-primary mb-3" onclick="startQuiz()">
+                                Start Investment Quiz
+                            </button>
+                            <button class="button-secondary" onclick="skipToExplore()">
+                                Skip & Explore Options
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="card">
+                        <h3 class="font-semibold mb-2">What you'll get:</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span>Personalized recommendations</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span>Pakistani markets focus</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span>Beginner friendly guidance</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="goToWelcome()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Investment Quiz</h1>
+                    <div class="text-sm text-gray-600">Q<span id="question-number">1</span>/5</div>
+                </div>
+
+                <div class="content-area">
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Progress</span>
+                            <span><span id="progress-percent">20</span>% Complete</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quiz-progress" style="width: 20%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Question Container -->
+                    <div id="question-container">
+                        <!-- Questions will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="flex gap-3 mt-6">
+                        <button id="prev-btn" onclick="previousQuestion()" class="button-secondary flex-1" style="display: none;">
+                            Previous
+                        </button>
+                        <button id="next-btn" onclick="nextQuestion()" class="button-primary flex-1" disabled>
+                            Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="retakeQuiz()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Your Profile</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <!-- Profile Result -->
+                    <div class="success-card mb-4">
+                        <div class="text-4xl mb-3" id="risk-emoji">🛡️</div>
+                        <h2 class="text-xl font-bold text-green-800 mb-2">Your Investment Profile</h2>
+                        <div id="risk-badge" class="risk-badge risk-conservative">Conservative Investor</div>
+                    </div>
+
+                    <!-- Profile Description -->
+                    <div class="card mb-4">
+                        <h3 class="font-semibold mb-3">What this means:</h3>
+                        <p id="risk-description" class="text-sm text-gray-700 leading-relaxed mb-4">
+                            You prefer stable, secure investments with predictable returns. You're comfortable with lower returns in exchange for safety.
+                        </p>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <h4 class="font-medium text-sm mb-2">Recommended for you:</h4>
+                            <ul id="recommendations-preview" class="text-sm text-gray-600 space-y-1">
+                                <li>• Government bonds and savings schemes</li>
+                                <li>• Conservative mutual funds</li>
+                                <li>• Fixed deposits with good banks</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <button class="button-primary" onclick="showPathways()">
+                            Explore Investment Options
+                        </button>
+                        <button class="button-secondary" onclick="retakeQuiz()">
+                            Retake Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investment Pathways Screen -->
+        <div id="pathways-screen" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="goToWelcome()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Choose Your Journey</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <div class="info-card mb-4">
+                        <h2 class="font-semibold text-blue-800 mb-2">What would you like to do next?</h2>
+                        <p class="text-sm text-blue-700">Choose the path that best fits your needs and experience level.</p>
+                    </div>
+
+                    <!-- Pathway Options -->
+                    <div class="space-y-4">
+                        <!-- Option A: Show Me What to Pick -->
+                        <div class="pathway-card" onclick="selectPathway('picks')">
+                            <div class="flex items-start gap-4">
+                                <div class="icon-placeholder picks-icon">
+                                    <div class="w-6 h-6 bg-white rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-lg mb-2">I'm Already Investing - Show Me What to Pick</h3>
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        Get personalized investment recommendations based on your risk profile
+                                    </p>
+                                    <div class="flex gap-2">
+                                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Pakistani Markets</span>
+                                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Curated Picks</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">→</div>
+                            </div>
+                        </div>
+
+                        <!-- Option B: Build Investment Plan -->
+                        <div class="pathway-card" onclick="selectPathway('plan')">
+                            <div class="flex items-start gap-4">
+                                <div class="icon-placeholder plan-icon">
+                                    <div class="w-6 h-6 bg-white rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-lg mb-2">I Want to Build an Investment Plan</h3>
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        Set financial goals and get a complete investment strategy
+                                    </p>
+                                    <div class="flex gap-2">
+                                        <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">Goal-Based</span>
+                                        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Asset Allocation</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">→</div>
+                            </div>
+                        </div>
+
+                        <!-- Option C: Learn How to Invest -->
+                        <div class="pathway-card" onclick="selectPathway('learn')">
+                            <div class="flex items-start gap-4">
+                                <div class="icon-placeholder learn-icon">
+                                    <div class="w-6 h-6 bg-white rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-lg mb-2">How Do I Start Investing?</h3>
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        Learn the basics with step-by-step guides in Urdu & English
+                                    </p>
+                                    <div class="flex gap-2">
+                                        <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Beginner Guide</span>
+                                        <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded">اردو + English</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">→</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investment Picks Screen -->
+        <div id="picks-screen" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="goToPathways()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Investment Picks</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <!-- Profile Indicator -->
+                    <div class="card mb-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-semibold">For <span id="profile-type">Conservative</span> Investors</h3>
+                                <p class="text-sm text-gray-600">Based on your risk assessment</p>
+                            </div>
+                            <div id="profile-badge-picks" class="risk-badge risk-conservative">Conservative</div>
+                        </div>
+                    </div>
+
+                    <!-- Market Tabs -->
+                    <div class="flex mb-4">
+                        <button class="tab-button active" onclick="showMarket('pakistani', this)">
+                            Pakistani Markets
+                        </button>
+                        <button class="tab-button" onclick="showMarket('international', this)">
+                            International
+                        </button>
+                    </div>
+
+                    <!-- Pakistani Markets Content -->
+                    <div id="pakistani-content">
+                        <!-- Recommended Pick -->
+                        <div class="investment-card recommended mb-4">
+                            <div class="recommended-badge">RECOMMENDED</div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-lg">UBL Growth & Income Fund</h3>
+                                    <p class="text-sm text-gray-600 mb-2">
+                                        Balanced mutual fund perfect for conservative investors
+                                    </p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-semibold text-green-600">+12.5%</div>
+                                    <div class="text-xs text-gray-500">annually</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Min: PKR 1,000</span>
+                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                    Learn More
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Other Options -->
+                        <div class="space-y-3">
+                            <div class="investment-card">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold">Government Bonds (PIBs)</h4>
+                                        <p class="text-sm text-gray-600">Safest investment backed by government</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-semibold text-blue-600">~10%</div>
+                                        <div class="text-xs text-gray-500">annually</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-500">Min: PKR 100,000</span>
+                                    <button class="text-blue-600 text-sm font-medium">Details →</button>
+                                </div>
+                            </div>
+
+                            <div class="investment-card">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold">National Savings Certificates</h4>
+                                        <p class="text-sm text-gray-600">Government savings scheme with fixed returns</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-semibold text-purple-600">~8.5%</div>
+                                        <div class="text-xs text-gray-500">annually</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-500">Min: PKR 500</span>
+                                    <button class="text-purple-600 text-sm font-medium">Details →</button>
+                                </div>
+                            </div>
+
+                            <div class="investment-card">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold">Al Meezan Mutual Fund</h4>
+                                        <p class="text-sm text-gray-600">Shariah-compliant investment option</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-semibold text-green-600">~11%</div>
+                                        <div class="text-xs text-gray-500">annually</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-500">Min: PKR 1,000 • Halal</span>
+                                    <button class="text-green-600 text-sm font-medium">Details →</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- International Content (Hidden initially) -->
+                    <div id="international-content" style="display: none;">
+                        <div class="warning-card mb-4">
+                            <h3 class="font-semibold text-yellow-800 mb-2">⚠️ For Pakistani Investors</h3>
+                            <p class="text-sm text-yellow-700">
+                                International investing requires special accounts and has regulatory considerations in Pakistan.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="investment-card">
+                                <h4 class="font-semibold mb-2">Index Funds</h4>
+                                <p class="text-sm text-gray-600 mb-2">
+                                    Diversified exposure to global markets
+                                </p>
+                                <div class="text-xs text-gray-500">Requires international brokerage account</div>
+                            </div>
+
+                            <div class="investment-card">
+                                <h4 class="font-semibold mb-2">Emerging Markets ETFs</h4>
+                                <p class="text-sm text-gray-600 mb-2">
+                                    Focus on developing economies including Pakistan
+                                </p>
+                                <div class="text-xs text-gray-500">Available through select Pakistani brokers</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom CTA -->
+                    <div class="mt-6">
+                        <button class="button-primary mb-3">
+                            Start Investing Today
+                        </button>
+                        <button class="button-secondary">
+                            Compare All Options
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investment Plan Screen -->
+        <div id="plan-screen" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="goToPathways()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Investment Plan</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <div class="info-card mb-4">
+                        <h2 class="font-semibold text-blue-800 mb-2">🎯 Set Your Investment Goal</h2>
+                        <p class="text-sm text-blue-700">Choose what you're investing for - this helps us create the right strategy for you.</p>
+                    </div>
+
+                    <!-- Goal Selection -->
+                    <div class="space-y-3">
+                        <div class="goal-option" onclick="selectGoal('retirement', this)">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-purple-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Retirement Planning</h3>
+                                    <p class="text-sm text-gray-600">Long-term wealth building for your future</p>
+                                    <div class="text-xs text-gray-500 mt-1">Timeline: 15-30+ years</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="goal-option" onclick="selectGoal('home', this)">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-green-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Buying a Home</h3>
+                                    <p class="text-sm text-gray-600">Save for your dream home down payment</p>
+                                    <div class="text-xs text-gray-500 mt-1">Timeline: 3-10 years</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="goal-option" onclick="selectGoal('education', this)">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-blue-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Children's Education</h3>
+                                    <p class="text-sm text-gray-600">Secure their academic future</p>
+                                    <div class="text-xs text-gray-500 mt-1">Timeline: 5-18 years</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="goal-option" onclick="selectGoal('marriage', this)">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-pink-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Marriage Fund</h3>
+                                    <p class="text-sm text-gray-600">Wedding and ceremony expenses</p>
+                                    <div class="text-xs text-gray-500 mt-1">Timeline: 2-8 years</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="goal-option" onclick="selectGoal('income', this)">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-orange-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Generate Passive Income</h3>
+                                    <p class="text-sm text-gray-600">Create regular income from investments</p>
+                                    <div class="text-xs text-gray-500 mt-1">Timeline: 2-5 years</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Continue Button -->
+                    <div class="mt-6">
+                        <button id="goal-continue" class="button-primary" onclick="assessSituation()" disabled>
+                            Continue to Assessment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learn Screen -->
+        <div id="learn-screen" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="goToPathways()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Learn to Invest</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <div class="info-card mb-4">
+                        <h2 class="font-semibold text-blue-800 mb-2">📚 Investment Learning Hub</h2>
+                        <p class="text-sm text-blue-700">Step-by-step guides for each investment type. Choose what interests you most!</p>
+                    </div>
+
+                    <!-- Learning Categories -->
+                    <div class="space-y-3">
+                        <div class="learn-step" onclick="learnAbout('basics')">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-green-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Investment Basics</h3>
+                                    <p class="text-sm text-gray-600">What is investing and how does it work?</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Beginner</span>
+                                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">اردو میں</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">→</div>
+                            </div>
+                        </div>
+
+                        <div class="learn-step" onclick="learnAbout('stocks')">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-red-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Pakistan Stock Exchange (PSX)</h3>
+                                    <p class="text-sm text-gray-600">How to buy and sell company shares</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">Intermediate</span>
+                                        <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Higher Risk</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">→</div>
+                            </div>
+                        </div>
+
+                        <div class="learn-step" onclick="learnAbout('mutual-funds')">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-blue-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Mutual Funds</h3>
+                                    <p class="text-sm text-gray-600">Professional fund management made simple</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Recommended</span>
+                                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Low Risk</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">→</div>
+                            </div>
+                        </div>
+
+                        <div class="learn-step" onclick="learnAbout('bonds')">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-indigo-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Government Bonds & Sukuk</h3>
+                                    <p class="text-sm text-gray-600">Safe government and Islamic bonds</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Very Safe</span>
+                                        <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded">Halal</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">→</div>
+                            </div>
+                        </div>
+
+                        <div class="learn-step" onclick="learnAbout('gold')">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-yellow-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Gold Investment</h3>
+                                    <p class="text-sm text-gray-600">Traditional store of value and inflation hedge</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Physical</span>
+                                        <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">ETFs</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">→</div>
+                            </div>
+                        </div>
+
+                        <div class="learn-step" onclick="learnAbout('alternatives')">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <div class="w-6 h-6 bg-purple-500 rounded"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold">Alternative Investments</h3>
+                                    <p class="text-sm text-gray-600">REITs, commodities, and other options</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Advanced</span>
+                                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Diversification</span>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">→</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Important Reminders -->
+                    <div class="warning-card mt-6">
+                        <h3 class="font-semibold text-yellow-800 mb-3">⚠️ Important Reminders</h3>
+                        <div class="space-y-2 text-sm text-yellow-700">
+                            <div>• Never invest borrowed money</div>
+                            <div>• Start small and learn as you go</div>
+                            <div>• Diversify across different investments</div>
+                            <div>• Only invest what you can afford to lose</div>
+                            <div>• Stay invested for the long term</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let currentQuestion = 0;
+        let quizAnswers = [];
+        let userProfile = {
+            riskType: 'conservative',
+            goals: [],
+            experience: 'beginner'
+        };
+
+        // Quiz questions
+        const quizQuestions = [
+            {
+                question: "What's your main goal with investing?",
+                urdu: "سرمایہ کاری کے ساتھ آپ کا بنیادی مقصد کیا ہے؟",
+                options: [
+                    { text: "Grow my money steadily and safely", urdu: "اپنے پیسے کو محفوظ طریقے سے بڑھانا", value: "safety" },
+                    { text: "Balance growth with some risk", urdu: "کچھ خطرے کے ساتھ ترقی میں توازن", value: "balanced" },
+                    { text: "Maximize returns, I can handle risk", urdu: "زیادہ سے زیادہ منافع، میں خطرہ سنبھال سکتا ہوں", value: "growth" }
+                ]
+            },
+            {
+                question: "How would you react if your investment lost 10% in value?",
+                urdu: "اگر آپ کی سرمایہ کاری کی قیمت 10% کم ہو جائے تو آپ کا رد عمل کیا ہوگا؟",
+                options: [
+                    { text: "I'd be very worried and might sell", urdu: "میں بہت پریشان ہوں گا اور شاید بیچ دوں", value: "conservative" },
+                    { text: "I'd wait and see what happens", urdu: "میں انتظار کروں گا کہ کیا ہوتا ہے", value: "moderate" },
+                    { text: "I might buy more at the lower price", urdu: "میں کم قیمت پر مزید خرید سکتا ہوں", value: "aggressive" }
+                ]
+            },
+            {
+                question: "What's your experience with investing?",
+                urdu: "سرمایہ کاری میں آپ کا تجربہ کیا ہے؟",
+                options: [
+                    { text: "I'm completely new to this", urdu: "میں اس میں بالکل نیا ہوں", value: "beginner" },
+                    { text: "I have some basic knowledge", urdu: "میرے پاس کچھ بنیادی معلومات ہیں", value: "intermediate" },
+                    { text: "I'm quite experienced", urdu: "میں کافی تجربہ کار ہوں", value: "experienced" }
+                ]
+            },
+            {
+                question: "How much can you invest monthly?",
+                urdu: "آپ ماہانہ کتنی سرمایہ کاری کر سکتے ہیں؟",
+                options: [
+                    { text: "PKR 1,000 - 5,000", urdu: "پی کے آر 1,000 - 5,000", value: "low" },
+                    { text: "PKR 5,000 - 20,000", urdu: "پی کے آر 5,000 - 20,000", value: "medium" },
+                    { text: "PKR 20,000+", urdu: "پی کے آر 20,000+", value: "high" }
+                ]
+            },
+            {
+                question: "When do you need this money?",
+                urdu: "آپ کو یہ رقم کب چاہیے؟",
+                options: [
+                    { text: "In 1-3 years", urdu: "1-3 سال میں", value: "short" },
+                    { text: "In 3-10 years", urdu: "3-10 سال میں", value: "medium" },
+                    { text: "More than 10 years", urdu: "10 سال سے زیادہ", value: "long" }
+                ]
+            }
+        ];
+
+        // Utility functions
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function goToWelcome() {
+            showScreen('welcome-screen');
+        }
+
+        function goToPathways() {
+            showScreen('pathways-screen');
+        }
+
+        // Quiz functions
+        function startQuiz() {
+            currentQuestion = 0;
+            quizAnswers = [];
+            showScreen('quiz-screen');
+            displayQuestion();
+        }
+
+        function skipToExplore() {
+            userProfile.riskType = 'moderate';
+            showScreen('pathways-screen');
+        }
+
+        function displayQuestion() {
+            const question = quizQuestions[currentQuestion];
+            const container = document.getElementById('question-container');
+            
+            container.innerHTML = `
+                <div class="card">
+                    <h3 class="text-lg font-semibold mb-3">${question.question}</h3>
+                    <p class="text-sm text-gray-600 mb-4">${question.urdu}</p>
+                    <div class="space-y-3">
+                        ${question.options.map((option, index) => `
+                            <div class="option-card" onclick="selectAnswer(${index}, this)">
+                                <div class="font-medium mb-1">${option.text}</div>
+                                <div class="text-sm text-gray-600">${option.urdu}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Update progress
+            const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
+            document.getElementById('quiz-progress').style.width = progress + '%';
+            document.getElementById('question-number').textContent = currentQuestion + 1;
+            document.getElementById('progress-percent').textContent = Math.round(progress);
+
+            // Update navigation
+            document.getElementById('prev-btn').style.display = currentQuestion > 0 ? 'block' : 'none';
+            document.getElementById('next-btn').disabled = true;
+            document.getElementById('next-btn').textContent = currentQuestion < quizQuestions.length - 1 ? 'Next Question' : 'See My Results';
+        }
+
+        function selectAnswer(optionIndex, element) {
+            // Clear previous selections
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Select current option
+            element.classList.add('selected');
+            
+            // Store answer
+            quizAnswers[currentQuestion] = quizQuestions[currentQuestion].options[optionIndex].value;
+            
+            // Enable next button
+            document.getElementById('next-btn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizQuestions.length - 1) {
+                currentQuestion++;
+                displayQuestion();
+            } else {
+                calculateResults();
+                showScreen('results-screen');
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+            }
+        }
+
+        function calculateResults() {
+            // Simple risk calculation based on answers
+            const riskScore = quizAnswers.reduce((score, answer) => {
+                if (answer === 'safety' || answer === 'conservative' || answer === 'beginner' || answer === 'low' || answer === 'short') return score + 1;
+                if (answer === 'balanced' || answer === 'moderate' || answer === 'intermediate' || answer === 'medium') return score + 2;
+                if (answer === 'growth' || answer === 'aggressive' || answer === 'experienced' || answer === 'high' || answer === 'long') return score + 3;
+                return score + 2; // default
+            }, 0);
+
+            // Determine risk profile
+            if (riskScore <= 8) {
+                userProfile.riskType = 'conservative';
+            } else if (riskScore <= 12) {
+                userProfile.riskType = 'moderate';
+            } else {
+                userProfile.riskType = 'aggressive';
+            }
+
+            displayResults();
+        }
+
+        function displayResults() {
+            const profiles = {
+                conservative: {
+                    badge: 'Conservative Investor',
+                    emoji: '🛡️',
+                    class: 'risk-conservative',
+                    description: 'You prefer stable, secure investments with predictable returns. You\'re comfortable with lower returns in exchange for safety and peace of mind.',
+                    recommendations: [
+                        '• Government bonds and savings schemes',
+                        '• Conservative mutual funds',
+                        '• Fixed deposits with good banks',
+                        '• National savings certificates'
+                    ]
+                },
+                moderate: {
+                    badge: 'Moderate Investor',
+                    emoji: '⚖️',
+                    class: 'risk-moderate',
+                    description: 'You want a balanced approach - some growth potential with manageable risk. You understand that markets go up and down.',
+                    recommendations: [
+                        '• Balanced mutual funds',
+                        '• Mix of stocks and bonds',
+                        '• Diversified portfolios',
+                        '• Index funds'
+                    ]
+                },
+                aggressive: {
+                    badge: 'Aggressive Investor',
+                    emoji: '🚀',
+                    class: 'risk-aggressive',
+                    description: 'You\'re willing to take higher risks for potentially higher returns. You have a long investment timeline and can handle volatility.',
+                    recommendations: [
+                        '• Growth stocks and equity funds',
+                        '• Emerging market investments',
+                        '• Technology and innovation funds',
+                        '• Individual stock picking'
+                    ]
+                }
+            };
+
+            const profile = profiles[userProfile.riskType];
+            
+            document.getElementById('risk-emoji').textContent = profile.emoji;
+            document.getElementById('risk-badge').textContent = profile.badge;
+            document.getElementById('risk-badge').className = `risk-badge ${profile.class}`;
+            document.getElementById('risk-description').textContent = profile.description;
+            document.getElementById('recommendations-preview').innerHTML = profile.recommendations.map(rec => `<li>${rec}</li>`).join('');
+            
+            // Update picks screen profile indicator
+            document.getElementById('profile-type').textContent = userProfile.riskType.charAt(0).toUpperCase() + userProfile.riskType.slice(1);
+            document.getElementById('profile-badge-picks').textContent = userProfile.riskType.charAt(0).toUpperCase() + userProfile.riskType.slice(1);
+            document.getElementById('profile-badge-picks').className = `risk-badge ${profile.class}`;
+        }
+
+        function retakeQuiz() {
+            startQuiz();
+        }
+
+        function showPathways() {
+            showScreen('pathways-screen');
+        }
+
+        // Pathway functions
+        function selectPathway(pathway) {
+            switch(pathway) {
+                case 'picks':
+                    showScreen('picks-screen');
+                    break;
+                case 'plan':
+                    showScreen('plan-screen');
+                    break;
+                case 'learn':
+                    showScreen('learn-screen');
+                    break;
+            }
+        }
+
+        // Market tabs functionality
+        function showMarket(market, button) {
+            // Update button states
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+            
+            // Show/hide content
+            if (market === 'pakistani') {
+                document.getElementById('pakistani-content').style.display = 'block';
+                document.getElementById('international-content').style.display = 'none';
+            } else {
+                document.getElementById('pakistani-content').style.display = 'none';
+                document.getElementById('international-content').style.display = 'block';
+            }
+        }
+
+        // Goal selection
+        function selectGoal(goal, element) {
+            document.querySelectorAll('.goal-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            
+            document.getElementById('goal-continue').disabled = false;
+            userProfile.selectedGoal = goal;
+        }
+
+        function assessSituation() {
+            alert('Goal-based investment plan coming soon! This would lead to situation assessment and personalized asset allocation.');
+        }
+
+        function learnAbout(topic) {
+            alert(`Learning module for ${topic} coming soon! This would show step-by-step guides in Urdu and English.`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default profile for demonstration
+            userProfile.riskType = 'conservative';
+            displayResults();
+        });
+    </script>
+</body>
+</html>

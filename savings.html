@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emergency Savings Module - Financial App Wireframe</title>
+    <title>Savings 101 - Goal Setup Flow</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .phone-frame {
@@ -50,12 +50,37 @@
             background: #F9FAFB;
         }
 
-        .card {
+        .goal-card {
             background: white;
             border: 2px solid #E5E7EB;
             border-radius: 12px;
             padding: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .goal-card:hover {
+            border-color: #9CA3AF;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .goal-card.add-custom {
+            border: 2px dashed #9CA3AF;
+            background: #F9FAFB;
+            text-align: center;
+            color: #6B7280;
+        }
+
+        .goal-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
         }
 
         .input-field {
@@ -108,25 +133,52 @@
             text-center;
             cursor: pointer;
             transition: all 0.2s;
+            width: 100%;
         }
 
-        .button-secondary:hover {
-            background: #F9FAFB;
+        .option-card {
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-card:hover {
             border-color: #9CA3AF;
+            background: #F9FAFB;
         }
 
-        .progress-bar {
-            height: 12px;
-            background: #E5E7EB;
-            border-radius: 6px;
-            overflow: hidden;
-            margin: 12px 0;
+        .option-card.selected {
+            border-color: #10B981;
+            background: #ECFDF5;
+            color: #065F46;
         }
 
-        .progress-fill {
-            height: 100%;
-            border-radius: 6px;
-            transition: width 0.3s ease;
+        .info-card {
+            background: #F0F9FF;
+            border: 2px solid #3B82F6;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .warning-card {
+            background: #FFFBEB;
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .success-card {
+            background: #ECFDF5;
+            border: 2px solid #10B981;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
         }
 
         .step-indicator {
@@ -154,39 +206,6 @@
             background: #059669;
         }
 
-        .calculator-card {
-            background: linear-gradient(135deg, #EBF8FF 0%, #F0F9FF 100%);
-            border: 2px solid #3B82F6;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 16px;
-        }
-
-        .result-card {
-            background: linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%);
-            border: 2px solid #10B981;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .warning-card {
-            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
-            border: 2px solid #F59E0B;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-
-        .info-card {
-            background: #F0F9FF;
-            border: 2px solid #3B82F6;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-
         .expense-item {
             display: flex;
             justify-content: space-between;
@@ -195,641 +214,625 @@
             border-bottom: 1px solid #F3F4F6;
         }
 
-        .expense-item:last-child {
-            border-bottom: none;
-        }
-
-        .frequency-option {
-            border: 2px solid #E5E7EB;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .frequency-option:hover {
-            border-color: #9CA3AF;
-            background: #F9FAFB;
-        }
-
-        .frequency-option.selected {
-            border-color: #10B981;
-            background: #ECFDF5;
-            color: #059669;
-        }
-
-        .savings-method {
-            border: 2px solid #E5E7EB;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .savings-method:hover {
-            border-color: #9CA3AF;
-            background: #F9FAFB;
-        }
-
-        .savings-method.selected {
-            border-color: #3B82F6;
-            background: #EBF8FF;
-            color: #1D4ED8;
-        }
-
-        .milestone-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border: 2px solid #E5E7EB;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-
-        .milestone-item.completed {
-            border-color: #10B981;
-            background: #ECFDF5;
-        }
-
-        .circular-progress {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: conic-gradient(#10B981 0deg 144deg, #E5E7EB 144deg 360deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
+        .recommendation-card {
+            background: linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%);
+            border: 2px solid #10B981;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
             position: relative;
         }
 
-        .circular-progress::before {
-            content: '';
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: white;
+        .recommendation-badge {
             position: absolute;
-        }
-
-        .progress-text {
-            position: relative;
-            z-index: 1;
-            text-align: center;
+            top: -8px;
+            right: 12px;
+            background: #10B981;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div class="phone-frame">
 
-        <!-- Emergency Savings Introduction -->
-        <div id="intro-screen" class="screen active">
+        <!-- Goals Overview Screen -->
+        <div id="goals-overview-screen" class="screen active">
             <div class="screen-content">
-                <!-- Header -->
                 <div class="header-bar">
-        <button onclick="window.location.href='dashboard.html?quiz=completed'" class="text-gray-600">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-        </button>
-                    <h1 class="text-lg font-semibold">Emergency Savings</h1>
+                    <button onclick="goBackToDashboard()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Savings 101</h1>
                     <div class="w-6 h-6"></div>
                 </div>
 
-                <!-- Content -->
                 <div class="content-area">
-                    <!-- Introduction Card -->
-                    <div class="info-card">
-                        <div class="text-center mb-4">
-                            <div class="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
-                            </div>
-                            <h2 class="text-xl font-bold text-blue-800 mb-2">Build Your Safety Net</h2>
-                            <p class="text-sm text-blue-700">An emergency fund protects you and your family from unexpected expenses</p>
-                        </div>
+                    <div class="info-card mb-6">
+                        <h2 class="font-semibold text-blue-800 mb-2">Start Your Savings Journey</h2>
+                        <p class="text-sm text-blue-700">Choose a savings goal that matters to you. We'll help you set it up properly!</p>
                     </div>
 
-                    <!-- Why Emergency Fund -->
-                    <div class="card">
-                        <h3 class="font-semibold mb-3">Why Do You Need Emergency Savings?</h3>
-                        <div class="space-y-3">
-                            <div class="flex items-start gap-3">
-                                <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-sm">Medical Emergencies</div>
-                                    <div class="text-xs text-gray-600">Hospital bills, sudden illness, family health issues</div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start gap-3">
-                                <div class="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                    <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-sm">Job Loss or Income Reduction</div>
-                                    <div class="text-xs text-gray-600">Business slowdown, husband's job loss, reduced hours</div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start gap-3">
-                                <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                    <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                </div>
-                                <div>
-                                    <div class="font-medium text-sm">Home & Family Emergencies</div>
-                                    <div class="text-xs text-gray-600">House repairs, appliance breakdown, child's needs</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Stats -->
-                    <div class="card bg-green-50 border-green-200">
-                        <h3 class="font-semibold mb-3 text-green-800">Recommended Emergency Fund</h3>
-                        <div class="grid grid-cols-2 gap-4 text-center">
-                            <div>
-                                <div class="text-2xl font-bold text-green-600">3-6</div>
-                                <div class="text-xs text-green-700">Months of Expenses</div>
-                            </div>
-                            <div>
-                                <div class="text-2xl font-bold text-green-600">5%</div>
-                                <div class="text-xs text-green-700">Of Monthly Income</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
                     <div class="space-y-3">
-                        <button class="button-primary" onclick="goToCalculator()">
-                            Calculate My Emergency Fund
-                        </button>
-                        <button class="button-secondary" onclick="goToProgress()">
-                            View My Progress
-                        </button>
+                        <!-- Emergency Fund -->
+                        <div class="goal-card" onclick="startGoalSetup('emergency')">
+                            <div class="flex items-start gap-3">
+                                <div class="goal-icon bg-red-100">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-gray-800 mb-1">Emergency Fund</h3>
+                                    <p class="text-sm text-gray-600 mb-2">For unexpected expenses and peace of mind</p>
+                                    <div class="text-xs text-gray-500">Most important goal to start with</div>
+                                </div>
+                                <div class="text-xs text-gray-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other goals abbreviated for space -->
+                        <div class="goal-card" onclick="startGoalSetup('gold')">
+                            <div class="flex items-start gap-3">
+                                <div class="goal-icon bg-yellow-100">
+                                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-gray-800 mb-1">Save to Buy Gold</h3>
+                                    <p class="text-sm text-gray-600">Traditional investment for security</p>
+                                </div>
+                                <div class="text-xs text-gray-400">→</div>
+                            </div>
+                        </div>
+
+                        <div class="goal-card add-custom" onclick="startGoalSetup('custom')">
+                            <div class="py-4">
+                                <div class="w-12 h-12 border-2 border-dashed border-gray-400 rounded-lg mx-auto mb-3 flex items-center justify-center">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                </div>
+                                <div class="font-semibold mb-1">Add a Custom Goal</div>
+                                <div class="text-sm">Create your own savings target</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Emergency Fund Calculator -->
-        <div id="calculator-screen" class="screen">
+        <!-- Step 1: Goal Introduction & Situation Assessment -->
+        <div id="setup-step-1" class="screen">
             <div class="screen-content">
-                <!-- Header -->
                 <div class="header-bar">
-                    <button onclick="goToIntro()" class="text-gray-600">
+                    <button onclick="goBackToGoals()" class="text-gray-600">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
                     </button>
-                    <h1 class="text-lg font-semibold">Emergency Fund Calculator</h1>
+                    <h1 class="text-lg font-semibold" id="setup-title">Emergency Fund Setup</h1>
                     <div class="w-6 h-6"></div>
                 </div>
 
-                <!-- Content -->
                 <div class="content-area">
                     <!-- Step Indicator -->
                     <div class="step-indicator">
-                        <div class="step-dot active" id="step-1-dot"></div>
-                        <div class="step-dot" id="step-2-dot"></div>
-                        <div class="step-dot" id="step-3-dot"></div>
+                        <div class="step-dot active"></div>
+                        <div class="step-dot"></div>
+                        <div class="step-dot"></div>
+                        <div class="step-dot"></div>
+                        <div class="step-dot"></div>
                     </div>
 
-                    <!-- Step 1: Monthly Expenses -->
-                    <div id="step-1" class="calculator-step">
-                        <div class="calculator-card">
-                            <h3 class="font-semibold mb-3 text-blue-800">Step 1: Calculate Your Monthly Expenses</h3>
-                            <p class="text-sm text-blue-700 mb-4">Add up all your essential monthly expenses</p>
-                        </div>
-
-                        <div class="card">
-                            <h4 class="font-semibold mb-3">Essential Monthly Expenses</h4>
-                            <div class="space-y-3">
-                                <div class="expense-item">
-                                    <span class="text-sm">Rent/Home costs</span>
-                                    <input type="number" placeholder="0" class="input-field w-24 text-right" id="rent-input" oninput="calculateTotal()">
-                                </div>
-                                <div class="expense-item">
-                                    <span class="text-sm">Groceries & food</span>
-                                    <input type="number" placeholder="0" class="input-field w-24 text-right" id="food-input" oninput="calculateTotal()">
-                                </div>
-                                <div class="expense-item">
-                                    <span class="text-sm">Utility bills</span>
-                                    <input type="number" placeholder="0" class="input-field w-24 text-right" id="utilities-input" oninput="calculateTotal()">
-                                </div>
-                                <div class="expense-item">
-                                    <span class="text-sm">Transport</span>
-                                    <input type="number" placeholder="0" class="input-field w-24 text-right" id="transport-input" oninput="calculateTotal()">
-                                </div>
-                                <div class="expense-item">
-                                    <span class="text-sm">Childcare & education</span>
-                                    <input type="number" placeholder="0" class="input-field w-24 text-right" id="childcare-input" oninput="calculateTotal()">
-                                </div>
-                                <div class="expense-item">
-                                    <span class="text-sm">Medical & insurance</span>
-                                    <input type="number" placeholder="0" class="input-field w-24 text-right" id="medical-input" oninput="calculateTotal()">
-                                </div>
-                                <div class="expense-item">
-                                    <span class="text-sm">Other essentials</span>
-                                    <input type="number" placeholder="0" class="input-field w-24 text-right" id="other-input" oninput="calculateTotal()">
-                                </div>
-                                
-                                <div class="border-t pt-3 mt-3">
-                                    <div class="expense-item">
-                                        <span class="font-semibold">Total Monthly Expenses</span>
-                                        <span class="font-bold text-lg" id="total-expenses">PKR 0</span>
-                                    </div>
-                                </div>
+                    <!-- Goal Introduction -->
+                    <div class="info-card mb-6">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
                             </div>
+                            <h2 class="text-lg font-bold text-blue-800">Why Emergency Fund?</h2>
                         </div>
-
-                        <button class="button-primary" id="step-1-continue" onclick="goToStep2()" disabled style="opacity: 0.5;">
-                            Continue to Step 2
-                        </button>
+                        <p class="text-sm text-blue-700 mb-3">
+                            An emergency fund protects you from unexpected expenses like medical bills, job loss, or urgent repairs. 
+                            In Pakistan's uncertain economy, this is your most important financial safety net.
+                        </p>
+                        <div class="text-xs text-blue-600 font-medium">Let's build one that's right for your situation!</div>
                     </div>
 
-                    <!-- Step 2: Choose Duration -->
-                    <div id="step-2" class="calculator-step" style="display: none;">
-                        <div class="calculator-card">
-                            <h3 class="font-semibold mb-3 text-blue-800">Step 2: Choose Your Safety Level</h3>
-                            <p class="text-sm text-blue-700 mb-4">How many months of expenses do you want to save?</p>
-                        </div>
-
-                        <div class="card">
-                            <h4 class="font-semibold mb-3">Emergency Fund Duration</h4>
-                            <div class="space-y-3">
-                                <div class="frequency-option" onclick="selectDuration(3, this)">
-                                    <div class="font-medium">3 Months</div>
-                                    <div class="text-sm text-gray-600">Basic safety net - Good for stable income</div>
-                                    <div class="text-xs text-gray-500 mt-1" id="amount-3">PKR 0</div>
-                                </div>
-                                
-                                <div class="frequency-option" onclick="selectDuration(6, this)">
-                                    <div class="font-medium">6 Months (Recommended)</div>
-                                    <div class="text-sm text-gray-600">Strong protection - Ideal for most families</div>
-                                    <div class="text-xs text-gray-500 mt-1" id="amount-6">PKR 0</div>
-                                </div>
-                                
-                                <div class="frequency-option" onclick="selectDuration(9, this)">
-                                    <div class="font-medium">9 Months</div>
-                                    <div class="text-sm text-gray-600">Maximum security - For uncertain income</div>
-                                    <div class="text-xs text-gray-500 mt-1" id="amount-9">PKR 0</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button class="button-primary" id="step-2-continue" onclick="goToStep3()" disabled style="opacity: 0.5;">
-                            Continue to Results
-                        </button>
-                    </div>
-
-                    <!-- Step 3: Results & Recommendations -->
-                    <div id="step-3" class="calculator-step" style="display: none;">
-                        <div class="result-card">
-                            <h3 class="font-semibold mb-3 text-green-800">Your Emergency Fund Goal</h3>
-                            <div class="text-4xl font-bold text-green-600 mb-2" id="final-goal">PKR 0</div>
-                            <div class="text-sm text-green-700" id="final-months">0 months of expenses</div>
-                        </div>
-
-                        <div class="card">
-                            <h4 class="font-semibold mb-3">Recommended Savings Plan</h4>
-                            <div class="space-y-3">
-                                <div class="flex justify-between">
-                                    <span class="text-sm">Save monthly (5% of income):</span>
-                                    <span class="font-medium" id="monthly-save">PKR 0</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-sm">Time to reach goal:</span>
-                                    <span class="font-medium" id="time-to-goal">0 months</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-sm">Save weekly:</span>
-                                    <span class="font-medium" id="weekly-save">PKR 0</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="warning-card">
-                            <h4 class="font-semibold mb-2 text-yellow-800">💡 Smart Tips</h4>
-                            <div class="text-sm text-yellow-700 space-y-1">
-                                <div>• Start small - even PKR 500/month helps</div>
-                                <div>• Keep emergency money in a separate account</div>
-                                <div>• Only use for real emergencies</div>
-                                <div>• Refill after using emergency funds</div>
-                            </div>
-                        </div>
-
+                    <!-- Situation Assessment -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">First, tell us about your work situation:</h3>
                         <div class="space-y-3">
-                            <button class="button-primary" onclick="startSaving()">
-                                Start My Emergency Fund
-                            </button>
-                            <button class="button-secondary" onclick="goToProgress()">
-                                View My Progress
-                            </button>
+                            <div class="option-card" onclick="selectSituation('stable', this)">
+                                <div class="font-medium mb-1">Stable Job (Government/Corporate)</div>
+                                <div class="text-sm text-gray-600">Regular salary, job security, benefits</div>
+                                <div class="text-xs text-green-600 mt-1">→ 3-6 months expenses recommended</div>
+                            </div>
+                            
+                            <div class="option-card" onclick="selectSituation('private', this)">
+                                <div class="font-medium mb-1">Private Sector Job</div>
+                                <div class="text-sm text-gray-600">Regular salary but moderate job risk</div>
+                                <div class="text-xs text-yellow-600 mt-1">→ 6-9 months expenses recommended</div>
+                            </div>
+                            
+                            <div class="option-card" onclick="selectSituation('business', this)">
+                                <div class="font-medium mb-1">Self-Employed/Business Owner</div>
+                                <div class="text-sm text-gray-600">Variable income, seasonal business</div>
+                                <div class="text-xs text-orange-600 mt-1">→ 9-12 months expenses recommended</div>
+                            </div>
+                            
+                            <div class="option-card" onclick="selectSituation('housewife', this)">
+                                <div class="font-medium mb-1">Housewife/Dependent</div>
+                                <div class="text-sm text-gray-600">Manage household, depend on spouse income</div>
+                                <div class="text-xs text-blue-600 mt-1">→ 6-9 months expenses recommended</div>
+                            </div>
                         </div>
                     </div>
+
+                    <button class="button-primary" onclick="goToStep2()" id="step1-continue" disabled style="opacity: 0.5;">
+                        Next: Calculate Your Expenses
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Emergency Fund Progress -->
-        <div id="progress-screen" class="screen">
+        <!-- Step 2: Expense Calculation -->
+        <div id="setup-step-2" class="screen">
             <div class="screen-content">
-                <!-- Header -->
                 <div class="header-bar">
-                    <button onclick="goToIntro()" class="text-gray-600">
+                    <button onclick="goToStep1()" class="text-gray-600">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
                     </button>
-                    <h1 class="text-lg font-semibold">My Emergency Fund</h1>
-                    <button onclick="goToSettings()" class="text-sm text-blue-600 font-medium">Settings</button>
+                    <h1 class="text-lg font-semibold">Calculate Your Expenses</h1>
+                    <div class="w-6 h-6"></div>
                 </div>
 
-                <!-- Content -->
                 <div class="content-area">
-                    <!-- Progress Overview -->
-                    <div class="card">
-                        <div class="circular-progress">
-                            <div class="progress-text">
-                                <div class="text-lg font-bold text-green-600">40%</div>
-                                <div class="text-xs text-gray-600">Complete</div>
+                    <!-- Step Indicator -->
+                    <div class="step-indicator">
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot active"></div>
+                        <div class="step-dot"></div>
+                        <div class="step-dot"></div>
+                        <div class="step-dot"></div>
+                    </div>
+
+                    <div class="warning-card mb-4">
+                        <h3 class="font-semibold text-yellow-800 mb-2">💡 Important</h3>
+                        <p class="text-sm text-yellow-700">Only include essential expenses - things you absolutely must pay even during an emergency.</p>
+                    </div>
+
+                    <!-- Expense Categories -->
+                    <div class="bg-white border-2 border-gray-200 rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold mb-3">Essential Monthly Expenses</h3>
+                        <div class="space-y-3">
+                            <div class="expense-item">
+                                <span class="text-sm font-medium">Rent/Home payments</span>
+                                <input type="number" placeholder="25,000" class="w-24 text-right input-field text-sm" oninput="calculateExpenses()">
+                            </div>
+                            <div class="expense-item">
+                                <span class="text-sm font-medium">Groceries & food</span>
+                                <input type="number" placeholder="15,000" class="w-24 text-right input-field text-sm" oninput="calculateExpenses()">
+                            </div>
+                            <div class="expense-item">
+                                <span class="text-sm font-medium">Utilities (gas, electricity, water)</span>
+                                <input type="number" placeholder="5,000" class="w-24 text-right input-field text-sm" oninput="calculateExpenses()">
+                            </div>
+                            <div class="expense-item">
+                                <span class="text-sm font-medium">Transport/Fuel</span>
+                                <input type="number" placeholder="8,000" class="w-24 text-right input-field text-sm" oninput="calculateExpenses()">
+                            </div>
+                            <div class="expense-item">
+                                <span class="text-sm font-medium">Children's school fees</span>
+                                <input type="number" placeholder="10,000" class="w-24 text-right input-field text-sm" oninput="calculateExpenses()">
+                            </div>
+                            <div class="expense-item">
+                                <span class="text-sm font-medium">Medical/Insurance</span>
+                                <input type="number" placeholder="3,000" class="w-24 text-right input-field text-sm" oninput="calculateExpenses()">
+                            </div>
+                            <div class="expense-item">
+                                <span class="text-sm font-medium">Debt payments (loans)</span>
+                                <input type="number" placeholder="0" class="w-24 text-right input-field text-sm" oninput="calculateExpenses()">
+                            </div>
+                            
+                            <div class="border-t pt-3 mt-3">
+                                <div class="expense-item">
+                                    <span class="font-bold text-base">Total Essential Expenses</span>
+                                    <span class="font-bold text-lg text-green-600" id="total-expenses">PKR 0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Helper Text -->
+                    <div class="info-card mb-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">💡 What NOT to include:</h4>
+                        <div class="text-sm text-blue-700 space-y-1">
+                            <div>• Entertainment, dining out, shopping</div>
+                            <div>• Gym memberships, subscriptions</div>
+                            <div>• Travel, holidays</div>
+                            <div>• Savings or investments</div>
+                        </div>
+                    </div>
+
+                    <button class="button-primary" onclick="goToStep3()" id="step2-continue" disabled style="opacity: 0.5;">
+                        Next: Choose Your Target
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Target Amount Recommendations -->
+        <div id="setup-step-3" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="goToStep2()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Choose Your Target</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <!-- Step Indicator -->
+                    <div class="step-indicator">
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot active"></div>
+                        <div class="step-dot"></div>
+                        <div class="step-dot"></div>
+                    </div>
+
+                    <div class="info-card mb-4">
+                        <h3 class="font-semibold text-blue-800 mb-2">Based on your situation:</h3>
+                        <div class="text-sm text-blue-700" id="situation-advice">
+                            As someone in <span class="font-medium" id="user-situation">private sector</span>, we recommend 6-9 months of expenses for better security.
+                        </div>
+                    </div>
+
+                    <!-- Target Options -->
+                    <div class="space-y-3 mb-6">
+                        <!-- 3 Months Option -->
+                        <div class="option-card" onclick="selectTarget(3, this)">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-semibold">3 Months</div>
+                                <div class="text-lg font-bold text-gray-800" id="target-3">PKR 192,000</div>
+                            </div>
+                            <div class="text-sm text-gray-600 mb-2">Basic emergency fund - Good for very stable situations</div>
+                            <div class="text-xs text-gray-500">Covers: Short-term job loss, minor emergencies</div>
+                        </div>
+
+                        <!-- 6 Months Option (Recommended) -->
+                        <div class="recommendation-card" onclick="selectTarget(6, this)">
+                            <div class="recommendation-badge">Recommended</div>
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-semibold text-green-800">6 Months</div>
+                                <div class="text-lg font-bold text-green-800" id="target-6">PKR 384,000</div>
+                            </div>
+                            <div class="text-sm text-green-700 mb-2">Strong protection - Ideal for most Pakistani families</div>
+                            <div class="text-xs text-green-600">Covers: Extended job search, major medical expenses, business recovery</div>
+                        </div>
+
+                        <!-- 9 Months Option -->
+                        <div class="option-card" onclick="selectTarget(9, this)">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-semibold">9 Months</div>
+                                <div class="text-lg font-bold text-gray-800" id="target-9">PKR 576,000</div>
+                            </div>
+                            <div class="text-sm text-gray-600 mb-2">Maximum security - For uncertain or variable income</div>
+                            <div class="text-xs text-gray-500">Covers: Long-term recovery, major life changes</div>
+                        </div>
+
+                        <!-- 12 Months Option -->
+                        <div class="option-card" onclick="selectTarget(12, this)">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-semibold">12 Months (1 Year)</div>
+                                <div class="text-lg font-bold text-gray-800" id="target-12">PKR 768,000</div>
+                            </div>
+                            <div class="text-sm text-gray-600 mb-2">Ultra-safe - Recommended for Pakistan's economic conditions</div>
+                            <div class="text-xs text-gray-500">Covers: Economic downturns, major life disruptions</div>
+                        </div>
+                    </div>
+
+                    <div class="warning-card mb-4">
+                        <h4 class="font-semibold text-yellow-800 mb-2">🎯 Remember</h4>
+                        <p class="text-sm text-yellow-700">You can always start smaller and increase your target later. The key is to start!</p>
+                    </div>
+
+                    <button class="button-primary" onclick="goToStep4()" id="step3-continue" disabled style="opacity: 0.5;">
+                        Next: Set Timeline
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Timeline & Monthly Contribution -->
+        <div id="setup-step-4" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="goToStep3()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Set Your Timeline</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <!-- Step Indicator -->
+                    <div class="step-indicator">
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot active"></div>
+                        <div class="step-dot"></div>
+                    </div>
+
+                    <!-- Goal Summary -->
+                    <div class="success-card mb-4">
+                        <h3 class="font-semibold text-green-800 mb-2">Your Goal</h3>
+                        <div class="text-2xl font-bold text-green-600 mb-2" id="selected-target">PKR 384,000</div>
+                        <div class="text-sm text-green-700" id="selected-duration">6 months of emergency expenses</div>
+                    </div>
+
+                    <!-- Timeline Options -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-3">How quickly do you want to reach this goal?</h3>
+                        <div class="space-y-3">
+                            <div class="option-card" onclick="selectTimeline(12, this)">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-medium">12 Months (1 Year)</div>
+                                        <div class="text-sm text-gray-600">Aggressive saving plan</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-lg" id="monthly-12">PKR 32,000</div>
+                                        <div class="text-xs text-gray-500">per month</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="option-card" onclick="selectTimeline(18, this)">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-medium">18 Months</div>
+                                        <div class="text-sm text-gray-600">Balanced approach</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-lg" id="monthly-18">PKR 21,333</div>
+                                        <div class="text-xs text-gray-500">per month</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="option-card" onclick="selectTimeline(24, this)">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-medium">24 Months (2 Years)</div>
+                                        <div class="text-sm text-gray-600">Comfortable timeline</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-lg" id="monthly-24">PKR 16,000</div>
+                                        <div class="text-xs text-gray-500">per month</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="option-card" onclick="selectTimeline(36, this)">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-medium">36 Months (3 Years)</div>
+                                        <div class="text-sm text-gray-600">Gradual, steady progress</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-lg" id="monthly-36">PKR 10,667</div>
+                                        <div class="text-xs text-gray-500">per month</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Timeline -->
+                    <div class="info-card mb-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">Or set a custom amount you can save monthly:</h4>
+                        <div class="flex gap-2">
+                            <span class="text-sm py-3">PKR</span>
+                            <input type="number" placeholder="15,000" class="flex-1 input-field" id="custom-monthly" oninput="calculateCustomTimeline()">
+                            <span class="text-sm py-3">per month</span>
+                        </div>
+                        <div class="text-sm text-blue-700 mt-2" id="custom-timeline-result" style="display: none;">
+                            You'll reach your goal in <span class="font-semibold" id="custom-months">0</span> months
+                        </div>
+                    </div>
+
+                    <button class="button-primary" onclick="goToStep5()" id="step4-continue" disabled style="opacity: 0.5;">
+                        Next: Final Review
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: Final Review & Goal Creation -->
+        <div id="setup-step-5" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <button onclick="goToStep4()" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">Review & Create Goal</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <!-- Step Indicator -->
+                    <div class="step-indicator">
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot completed"></div>
+                        <div class="step-dot active"></div>
+                    </div>
+
+                    <!-- Goal Summary -->
+                    <div class="success-card mb-4">
+                        <h2 class="text-xl font-bold text-green-800 mb-4">Your Emergency Fund Plan</h2>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4 text-left">
+                            <div>
+                                <div class="text-sm text-green-700">Target Amount</div>
+                                <div class="font-bold text-lg" id="final-target">PKR 384,000</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-green-700">Timeline</div>
+                                <div class="font-bold text-lg" id="final-timeline">24 months</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-green-700">Monthly Savings</div>
+                                <div class="font-bold text-lg" id="final-monthly">PKR 16,000</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-green-700">Coverage</div>
+                                <div class="font-bold text-lg" id="final-coverage">6 months</div>
                             </div>
                         </div>
                         
-                        <div class="text-center mb-4">
-                            <h3 class="font-semibold text-lg mb-2">PKR 60,000 Saved</h3>
-                            <p class="text-sm text-gray-600">Goal: PKR 150,000 (6 months)</p>
-                        </div>
-
-                        <div class="progress-bar">
-                            <div class="progress-fill bg-green-500" style="width: 40%"></div>
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-4 mt-4 text-center">
-                            <div>
-                                <div class="text-lg font-bold text-gray-800">PKR 90,000</div>
-                                <div class="text-xs text-gray-500">Remaining</div>
-                            </div>
-                            <div>
-                                <div class="text-lg font-bold text-blue-600">18</div>
-                                <div class="text-xs text-gray-500">Months to go</div>
-                            </div>
-                            <div>
-                                <div class="text-lg font-bold text-green-600">PKR 5,000</div>
-                                <div class="text-xs text-gray-500">Monthly saving</div>
-                            </div>
+                        <div class="text-sm text-green-700">
+                            This fund will cover <span class="font-semibold" id="final-months-coverage">6 months</span> of your essential expenses!
                         </div>
                     </div>
 
-                    <!-- Savings Milestones -->
-                    <div class="card">
-                        <h3 class="font-semibold mb-3">Savings Milestones</h3>
-                        <div class="space-y-3">
-                            <div class="milestone-item completed">
-                                <div>
-                                    <div class="font-medium text-sm">First PKR 25,000</div>
-                                    <div class="text-xs text-gray-500">1 month of expenses ✓</div>
-                                </div>
-                                <div class="text-green-600 font-medium">Completed</div>
-                            </div>
-                            
-                            <div class="milestone-item completed">
-                                <div>
-                                    <div class="font-medium text-sm">PKR 50,000</div>
-                                    <div class="text-xs text-gray-500">2 months of expenses ✓</div>
-                                </div>
-                                <div class="text-green-600 font-medium">Completed</div>
-                            </div>
-                            
-                            <div class="milestone-item">
-                                <div>
-                                    <div class="font-medium text-sm">PKR 75,000</div>
-                                    <div class="text-xs text-gray-500">3 months of expenses</div>
-                                </div>
-                                <div class="text-gray-500 font-medium">PKR 15,000 to go</div>
-                            </div>
-                            
-                            <div class="milestone-item">
-                                <div>
-                                    <div class="font-medium text-sm">PKR 150,000</div>
-                                    <div class="text-xs text-gray-500">6 months - Final goal!</div>
-                                </div>
-                                <div class="text-gray-500 font-medium">PKR 90,000 to go</div>
-                            </div>
+                    <!-- Key Tips -->
+                    <div class="info-card mb-4">
+                        <h3 class="font-semibold text-blue-800 mb-3">🎯 Smart Tips for Success</h3>
+                        <div class="text-sm text-blue-700 space-y-2">
+                            <div>• Keep emergency money in a separate savings account</div>
+                            <div>• Set up automatic transfers on salary day</div>
+                            <div>• Only use this money for real emergencies</div>
+                            <div>• Refill the fund after using it</div>
+                            <div>• Review and adjust every 6 months</div>
                         </div>
                     </div>
 
-                    <!-- Recent Activity -->
-                    <div class="card">
-                        <h3 class="font-semibold mb-3">Recent Savings</h3>
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <div class="font-medium text-sm">Monthly Savings</div>
-                                    <div class="text-xs text-gray-500">November 2024</div>
-                                </div>
-                                <span class="font-medium text-green-600">+PKR 5,000</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <div class="font-medium text-sm">Bonus Savings</div>
-                                    <div class="text-xs text-gray-500">October 2024</div>
-                                </div>
-                                <span class="font-medium text-green-600">+PKR 2,000</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <div class="font-medium text-sm">Monthly Savings</div>
-                                    <div class="text-xs text-gray-500">October 2024</div>
-                                </div>
-                                <span class="font-medium text-green-600">+PKR 5,000</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="space-y-3">
-                        <button class="button-primary">
-                            Add to Emergency Fund
-                        </button>
-                        <button class="button-secondary" onclick="goToCalculator()">
-                            Recalculate Goal
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Emergency Fund Settings -->
-        <div id="settings-screen" class="screen">
-            <div class="screen-content">
-                <!-- Header -->
-                <div class="header-bar">
-                    <button onclick="goToProgress()" class="text-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <h1 class="text-lg font-semibold">Emergency Fund Settings</h1>
-                    <button onclick="saveSettings()" class="text-sm text-green-600 font-medium">Save</button>
-                </div>
-
-                <!-- Content -->
-                <div class="content-area">
-                    <!-- Goal Settings -->
-                    <div class="card">
-                        <h3 class="font-semibold mb-3">Savings Goal</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium mb-2">Target Amount</label>
-                                <div class="relative">
-                                    <span class="absolute left-3 top-3 text-gray-500 font-medium">PKR</span>
-                                    <input type="number" value="150000" class="input-field pl-16" id="goal-amount">
-                                </div>
-                                <div class="text-xs text-gray-500 mt-1">Equivalent to 6 months of expenses</div>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium mb-2">Target Duration</label>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <div class="frequency-option" onclick="selectGoalDuration(3, this)">
-                                        <div class="font-medium text-sm">3 Months</div>
-                                    </div>
-                                    <div class="frequency-option selected" onclick="selectGoalDuration(6, this)">
-                                        <div class="font-medium text-sm">6 Months</div>
-                                    </div>
-                                    <div class="frequency-option" onclick="selectGoalDuration(9, this)">
-                                        <div class="font-medium text-sm">9 Months</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Savings Frequency -->
-                    <div class="card">
-                        <h3 class="font-semibold mb-3">How Often Do You Want to Save?</h3>
-                        <div class="space-y-3">
-                            <div class="frequency-option selected" onclick="selectFrequency('monthly', this)">
-                                <div class="font-medium">Monthly</div>
-                                <div class="text-sm text-gray-600">Save once per month - PKR 5,000</div>
-                            </div>
-                            
-                            <div class="frequency-option" onclick="selectFrequency('weekly', this)">
-                                <div class="font-medium">Weekly</div>
-                                <div class="text-sm text-gray-600">Save every week - PKR 1,250</div>
-                            </div>
-                            
-                            <div class="frequency-option" onclick="selectFrequency('daily', this)">
-                                <div class="font-medium">Daily</div>
-                                <div class="text-sm text-gray-600">Save every day - PKR 167</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Savings Methods -->
-                    <div class="card">
-                        <h3 class="font-semibold mb-3">Where Do You Want to Save?</h3>
-                        <div class="space-y-3">
-                            <div class="savings-method selected" onclick="selectMethod('bank', this)">
+                    <!-- Where to Save Options -->
+                    <div class="mb-4">
+                        <h3 class="font-semibold mb-3">Where will you save this money?</h3>
+                        <div class="space-y-2">
+                            <div class="option-card" onclick="selectSavingLocation('bank', this)">
                                 <div class="flex items-center gap-3">
                                     <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <div class="w-4 h-4 bg-blue-500 rounded"></div>
                                     </div>
                                     <div>
                                         <div class="font-medium text-sm">Bank Savings Account</div>
-                                        <div class="text-xs text-gray-600">Safe, earns small interest, easy access</div>
+                                        <div class="text-xs text-gray-600">Safe, earns interest, easy access</div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="savings-method" onclick="selectMethod('cash', this)">
+                            <div class="option-card" onclick="selectSavingLocation('digital', this)">
                                 <div class="flex items-center gap-3">
                                     <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                                         <div class="w-4 h-4 bg-green-500 rounded"></div>
                                     </div>
                                     <div>
-                                        <div class="font-medium text-sm">Cash at Home</div>
-                                        <div class="text-xs text-gray-600">Immediate access, but less secure</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="savings-method" onclick="selectMethod('committee', this)">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                                        <div class="w-4 h-4 bg-purple-500 rounded"></div>
-                                    </div>
-                                    <div>
-                                        <div class="font-medium text-sm">Savings Committee (Committee)</div>
-                                        <div class="text-xs text-gray-600">Disciplined saving with friends/family</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="savings-method" onclick="selectMethod('digital', this)">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                                        <div class="w-4 h-4 bg-orange-500 rounded"></div>
-                                    </div>
-                                    <div>
                                         <div class="font-medium text-sm">Digital Wallet (JazzCash/Easypaisa)</div>
-                                        <div class="text-xs text-gray-600">Convenient mobile savings</div>
+                                        <div class="text-xs text-gray-600">Convenient, mobile access</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Reminders -->
-                    <div class="card">
-                        <h3 class="font-semibold mb-3">Savings Reminders</h3>
-                        <div class="space-y-3">
-                            <label class="flex items-center gap-3">
-                                <input type="checkbox" class="w-4 h-4" checked>
-                                <div>
-                                    <div class="text-sm font-medium">Monthly savings reminder</div>
-                                    <div class="text-xs text-gray-500">Remind me on the 1st of each month</div>
-                                </div>
-                            </label>
-                            
-                            <label class="flex items-center gap-3">
-                                <input type="checkbox" class="w-4 h-4" checked>
-                                <div>
-                                    <div class="text-sm font-medium">Progress updates</div>
-                                    <div class="text-xs text-gray-500">Show me milestone achievements</div>
-                                </div>
-                            </label>
-                            
-                            <label class="flex items-center gap-3">
-                                <input type="checkbox" class="w-4 h-4">
-                                <div>
-                                    <div class="text-sm font-medium">Emergency fund tips</div>
-                                    <div class="text-xs text-gray-500">Weekly money-saving tips</div>
-                                </div>
-                            </label>
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <button class="button-primary" onclick="createGoal()">
+                            Create My Emergency Fund
+                        </button>
+                        <button class="button-secondary" onclick="goToStep4()">
+                            Back to Edit Timeline
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Goal Created Success Screen -->
+        <div id="goal-created-screen" class="screen">
+            <div class="screen-content">
+                <div class="header-bar">
+                    <div class="w-6 h-6"></div>
+                    <h1 class="text-lg font-semibold">Goal Created!</h1>
+                    <div class="w-6 h-6"></div>
+                </div>
+
+                <div class="content-area">
+                    <!-- Success Message -->
+                    <div class="success-card mb-6">
+                        <div class="w-16 h-16 bg-green-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        
+                        <h2 class="text-xl font-bold text-green-800 mb-2">Emergency Fund Created!</h2>
+                        <p class="text-sm text-green-700 mb-4">You're now on your way to financial security. Every rupee saved brings you closer to peace of mind.</p>
+                        
+                        <div class="text-2xl font-bold text-green-600 mb-2">PKR 384,000 Goal</div>
+                        <div class="text-sm text-green-700">Save PKR 16,000 monthly for 24 months</div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div class="info-card mb-6">
+                        <h3 class="font-semibold text-blue-800 mb-3">🚀 Your Next Steps</h3>
+                        <div class="text-sm text-blue-700 space-y-2">
+                            <div class="flex items-start gap-2">
+                                <span class="font-bold">1.</span>
+                                <span>Open a separate savings account for your emergency fund</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="font-bold">2.</span>
+                                <span>Set up automatic transfer on your salary day</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="font-bold">3.</span>
+                                <span>Track your progress in the app weekly</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="font-bold">4.</span>
+                                <span>Celebrate small milestones along the way!</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Quick Actions -->
-                    <div class="card bg-yellow-50 border-yellow-200">
-                        <h3 class="font-semibold mb-3 text-yellow-800">Quick Actions</h3>
-                        <div class="space-y-2">
-                            <button class="button-secondary w-full" onclick="pauseSavings()">
-                                Pause Savings Plan
-                            </button>
-                            <button class="button-secondary w-full" onclick="resetGoal()">
-                                Reset Emergency Fund Goal
-                            </button>
-                        </div>
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <button class="button-primary" onclick="goToGoalTracking()">
+                            Start Tracking My Progress
+                        </button>
+                        <button class="button-secondary" onclick="goBackToGoals()">
+                            Create Another Goal
+                        </button>
                     </div>
                 </div>
             </div>
@@ -837,191 +840,207 @@
     </div>
 
     <script>
-        let calculatorData = {
+        // Goal setup state
+        let setupData = {
+            goalType: 'emergency',
+            situation: '',
             monthlyExpenses: 0,
-            selectedDuration: 0,
-            emergencyGoal: 0,
-            monthlyIncome: 85000 // Mock income for calculations
+            targetMonths: 0,
+            targetAmount: 0,
+            timelineMonths: 0,
+            monthlyContribution: 0,
+            savingLocation: ''
         };
 
         // Navigation functions
         function goBackToDashboard() {
-            alert('Going back to dashboard');
+            window.location.href = 'dashboard.html?quiz=completed';
         }
 
-        function goToIntro() {
-            showScreen('intro-screen');
+        function goBackToGoals() {
+            showScreen('goals-overview-screen');
         }
 
-        function goToCalculator() {
-            showScreen('calculator-screen');
-            resetCalculator();
-        }
-
-        function goToProgress() {
-            showScreen('progress-screen');
-        }
-
-        function goToSettings() {
-            showScreen('settings-screen');
-        }
-
-        // Calculator functions
-        function calculateTotal() {
-            const rent = parseFloat(document.getElementById('rent-input').value) || 0;
-            const food = parseFloat(document.getElementById('food-input').value) || 0;
-            const utilities = parseFloat(document.getElementById('utilities-input').value) || 0;
-            const transport = parseFloat(document.getElementById('transport-input').value) || 0;
-            const childcare = parseFloat(document.getElementById('childcare-input').value) || 0;
-            const medical = parseFloat(document.getElementById('medical-input').value) || 0;
-            const other = parseFloat(document.getElementById('other-input').value) || 0;
-
-            const total = rent + food + utilities + transport + childcare + medical + other;
-            calculatorData.monthlyExpenses = total;
-
-            document.getElementById('total-expenses').textContent = `PKR ${total.toLocaleString()}`;
-
-            // Enable/disable continue button
-            const continueBtn = document.getElementById('step-1-continue');
-            if (total > 0) {
-                continueBtn.disabled = false;
-                continueBtn.style.opacity = '1';
-            } else {
-                continueBtn.disabled = true;
-                continueBtn.style.opacity = '0.5';
+        // Start goal setup flow
+        function startGoalSetup(goalType) {
+            setupData.goalType = goalType;
+            if (goalType === 'emergency') {
+                document.getElementById('setup-title').textContent = 'Emergency Fund Setup';
             }
+            showScreen('setup-step-1');
         }
 
-        function goToStep2() {
-            // Update step indicator
-            document.getElementById('step-1-dot').classList.remove('active');
-            document.getElementById('step-1-dot').classList.add('completed');
-            document.getElementById('step-2-dot').classList.add('active');
-
-            // Hide step 1, show step 2
-            document.getElementById('step-1').style.display = 'none';
-            document.getElementById('step-2').style.display = 'block';
-
-            // Update duration amounts
-            const monthly = calculatorData.monthlyExpenses;
-            document.getElementById('amount-3').textContent = `PKR ${(monthly * 3).toLocaleString()}`;
-            document.getElementById('amount-6').textContent = `PKR ${(monthly * 6).toLocaleString()}`;
-            document.getElementById('amount-9').textContent = `PKR ${(monthly * 9).toLocaleString()}`;
+        // Step navigation
+        function goToStep1() { showScreen('setup-step-1'); }
+        function goToStep2() { showScreen('setup-step-2'); }
+        function goToStep3() { 
+            updateTargetAmounts();
+            showScreen('setup-step-3'); 
+        }
+        function goToStep4() { 
+            updateTimelineOptions();
+            showScreen('setup-step-4'); 
+        }
+        function goToStep5() { 
+            updateFinalReview();
+            showScreen('setup-step-5'); 
         }
 
-        function selectDuration(months, element) {
-            calculatorData.selectedDuration = months;
-            calculatorData.emergencyGoal = calculatorData.monthlyExpenses * months;
-
-            // Update selection
-            document.querySelectorAll('.frequency-option').forEach(opt => {
-                opt.classList.remove('selected');
+        // Step 1: Situation selection
+        function selectSituation(situation, element) {
+            setupData.situation = situation;
+            
+            // Update UI
+            document.querySelectorAll('#setup-step-1 .option-card').forEach(card => {
+                card.classList.remove('selected');
             });
             element.classList.add('selected');
-
+            
             // Enable continue button
-            const continueBtn = document.getElementById('step-2-continue');
+            const continueBtn = document.getElementById('step1-continue');
+            continueBtn.disabled = false;
+            continueBtn.style.opacity = '1';
+            
+            // Update advice text
+            const situationText = {
+                'stable': 'stable government/corporate job',
+                'private': 'private sector job',
+                'business': 'self-employed/business',
+                'housewife': 'housewife managing household finances'
+            };
+            
+            document.getElementById('user-situation').textContent = situationText[situation];
+        }
+
+        // Step 2: Expense calculation
+        function calculateExpenses() {
+            const inputs = document.querySelectorAll('#setup-step-2 input[type="number"]');
+            let total = 0;
+            
+            inputs.forEach(input => {
+                total += parseInt(input.value) || 0;
+            });
+            
+            setupData.monthlyExpenses = total;
+            document.getElementById('total-expenses').textContent = `PKR ${total.toLocaleString()}`;
+            
+            // Enable continue button if expenses > 0
+            const continueBtn = document.getElementById('step2-continue');
+            continueBtn.disabled = total === 0;
+            continueBtn.style.opacity = total === 0 ? '0.5' : '1';
+        }
+
+        // Step 3: Update target amounts based on calculated expenses
+        function updateTargetAmounts() {
+            const monthly = setupData.monthlyExpenses;
+            document.getElementById('target-3').textContent = `PKR ${(monthly * 3).toLocaleString()}`;
+            document.getElementById('target-6').textContent = `PKR ${(monthly * 6).toLocaleString()}`;
+            document.getElementById('target-9').textContent = `PKR ${(monthly * 9).toLocaleString()}`;
+            document.getElementById('target-12').textContent = `PKR ${(monthly * 12).toLocaleString()}`;
+        }
+
+        function selectTarget(months, element) {
+            setupData.targetMonths = months;
+            setupData.targetAmount = setupData.monthlyExpenses * months;
+            
+            // Update UI
+            document.querySelectorAll('#setup-step-3 .option-card, #setup-step-3 .recommendation-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            // Enable continue button
+            const continueBtn = document.getElementById('step3-continue');
             continueBtn.disabled = false;
             continueBtn.style.opacity = '1';
         }
 
-        function goToStep3() {
-            // Update step indicator
-            document.getElementById('step-2-dot').classList.remove('active');
-            document.getElementById('step-2-dot').classList.add('completed');
-            document.getElementById('step-3-dot').classList.add('active');
-
-            // Hide step 2, show step 3
-            document.getElementById('step-2').style.display = 'none';
-            document.getElementById('step-3').style.display = 'block';
-
-            // Update results
-            updateResults();
-        }
-
-        function updateResults() {
-            const goal = calculatorData.emergencyGoal;
-            const monthlySave = Math.round(calculatorData.monthlyIncome * 0.05); // 5% of income
-            const timeToGoal = Math.ceil(goal / monthlySave);
-            const weeklySave = Math.round(monthlySave / 4);
-
-            document.getElementById('final-goal').textContent = `PKR ${goal.toLocaleString()}`;
-            document.getElementById('final-months').textContent = `${calculatorData.selectedDuration} months of expenses`;
-            document.getElementById('monthly-save').textContent = `PKR ${monthlySave.toLocaleString()}`;
-            document.getElementById('time-to-goal').textContent = `${timeToGoal} months`;
-            document.getElementById('weekly-save').textContent = `PKR ${weeklySave.toLocaleString()}`;
-        }
-
-        function resetCalculator() {
-            // Reset all inputs
-            document.querySelectorAll('#step-1 input').forEach(input => input.value = '');
-            document.getElementById('total-expenses').textContent = 'PKR 0';
+        // Step 4: Update timeline options based on target amount
+        function updateTimelineOptions() {
+            const target = setupData.targetAmount;
+            document.getElementById('selected-target').textContent = `PKR ${target.toLocaleString()}`;
+            document.getElementById('selected-duration').textContent = `${setupData.targetMonths} months of emergency expenses`;
             
-            // Reset calculator data
-            calculatorData = {
-                monthlyExpenses: 0,
-                selectedDuration: 0,
-                emergencyGoal: 0,
-                monthlyIncome: 85000
-            };
-
-            // Reset step indicator
-            document.querySelectorAll('.step-dot').forEach(dot => {
-                dot.classList.remove('active', 'completed');
-            });
-            document.getElementById('step-1-dot').classList.add('active');
-
-            // Show only step 1
-            document.getElementById('step-1').style.display = 'block';
-            document.getElementById('step-2').style.display = 'none';
-            document.getElementById('step-3').style.display = 'none';
-
-            // Disable continue buttons
-            document.getElementById('step-1-continue').disabled = true;
-            document.getElementById('step-1-continue').style.opacity = '0.5';
-            document.getElementById('step-2-continue').disabled = true;
-            document.getElementById('step-2-continue').style.opacity = '0.5';
+            // Update monthly amounts for each timeline
+            document.getElementById('monthly-12').textContent = `PKR ${Math.round(target / 12).toLocaleString()}`;
+            document.getElementById('monthly-18').textContent = `PKR ${Math.round(target / 18).toLocaleString()}`;
+            document.getElementById('monthly-24').textContent = `PKR ${Math.round(target / 24).toLocaleString()}`;
+            document.getElementById('monthly-36').textContent = `PKR ${Math.round(target / 36).toLocaleString()}`;
         }
 
-        // Settings functions
-        function selectGoalDuration(months, element) {
-            document.querySelectorAll('#settings-screen .frequency-option').forEach(opt => {
-                opt.classList.remove('selected');
+        function selectTimeline(months, element) {
+            setupData.timelineMonths = months;
+            setupData.monthlyContribution = Math.round(setupData.targetAmount / months);
+            
+            // Clear custom input
+            document.getElementById('custom-monthly').value = '';
+            document.getElementById('custom-timeline-result').style.display = 'none';
+            
+            // Update UI
+            document.querySelectorAll('#setup-step-4 .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            // Enable continue button
+            const continueBtn = document.getElementById('step4-continue');
+            continueBtn.disabled = false;
+            continueBtn.style.opacity = '1';
+        }
+
+        function calculateCustomTimeline() {
+            const monthlyAmount = parseInt(document.getElementById('custom-monthly').value);
+            if (monthlyAmount && monthlyAmount > 0) {
+                const months = Math.ceil(setupData.targetAmount / monthlyAmount);
+                document.getElementById('custom-months').textContent = months;
+                document.getElementById('custom-timeline-result').style.display = 'block';
+                
+                // Update setup data
+                setupData.timelineMonths = months;
+                setupData.monthlyContribution = monthlyAmount;
+                
+                // Clear other selections
+                document.querySelectorAll('#setup-step-4 .option-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                // Enable continue button
+                const continueBtn = document.getElementById('step4-continue');
+                continueBtn.disabled = false;
+                continueBtn.style.opacity = '1';
+            } else {
+                document.getElementById('custom-timeline-result').style.display = 'none';
+            }
+        }
+
+        // Step 5: Update final review
+        function updateFinalReview() {
+            document.getElementById('final-target').textContent = `PKR ${setupData.targetAmount.toLocaleString()}`;
+            document.getElementById('final-timeline').textContent = `${setupData.timelineMonths} months`;
+            document.getElementById('final-monthly').textContent = `PKR ${setupData.monthlyContribution.toLocaleString()}`;
+            document.getElementById('final-coverage').textContent = `${setupData.targetMonths} months`;
+            document.getElementById('final-months-coverage').textContent = setupData.targetMonths;
+        }
+
+        function selectSavingLocation(location, element) {
+            setupData.savingLocation = location;
+            
+            // Update UI
+            document.querySelectorAll('#setup-step-5 .option-card').forEach(card => {
+                card.classList.remove('selected');
             });
             element.classList.add('selected');
         }
 
-        function selectFrequency(frequency, element) {
-            document.querySelectorAll('#settings-screen .frequency-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            element.classList.add('selected');
+        // Create goal and show success
+        function createGoal() {
+            showScreen('goal-created-screen');
         }
 
-        function selectMethod(method, element) {
-            document.querySelectorAll('.savings-method').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            element.classList.add('selected');
-        }
-
-        function startSaving() {
-            alert('Emergency fund started! You can now track your progress.');
-            goToProgress();
-        }
-
-        function saveSettings() {
-            alert('Settings saved successfully!');
-            goToProgress();
-        }
-
-        function pauseSavings() {
-            alert('Savings plan paused. You can resume anytime.');
-        }
-
-        function resetGoal() {
-            alert('Emergency fund goal reset. Please recalculate your target.');
-            goToCalculator();
+        function goToGoalTracking() {
+            // This would navigate to the goal tracking screen
+            alert('Goal created! Navigating to tracking screen...');
+            goBackToDashboard();
         }
 
         // Utility function to show screens

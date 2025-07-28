@@ -378,7 +378,8 @@
                 </div>
 
                 <div class="mt-4">
-                    <button onclick="goToNameInput()" class="w-full bg-gray-800 text-white py-3 rounded-lg mb-4" id="profile-continue-btn" style="opacity: 0.5;" disabled>Continue</button>
+                    <button onclick="goToNameInput()" class="w-full bg-gray-800 text-white py-3 rounded-lg mb-3" id="profile-continue-btn" style="opacity: 0.5;" disabled>Continue</button>
+                    <button onclick="skipToNameInput()" class="w-full border-2 border-gray-300 text-gray-700 py-3 rounded-lg mb-4 hover:border-gray-400 hover:bg-gray-50 transition-colors">Skip for Now</button>
                     <div class="flex justify-center gap-2">
                         <div class="w-2 h-2 rounded-full bg-gray-300"></div>
                         <div class="w-2 h-2 rounded-full bg-gray-300"></div>
@@ -445,6 +446,10 @@
         }
         
         function goToNameInput() {
+            showScreen('name-input-screen');
+        }
+        
+        function skipToNameInput() {
             showScreen('name-input-screen');
         }
         
